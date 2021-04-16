@@ -1,3 +1,4 @@
+
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 
@@ -5,7 +6,7 @@ export default function Home() {
   return (
     <div className={styles.container}>
       <Head>
-        <title>Create Next App</title>
+        <title>Create Next TypeScript App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
@@ -39,7 +40,7 @@ export default function Home() {
           </a>
 
           <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
+            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
             className={styles.card}
           >
             <h3>Deploy &rarr;</h3>
