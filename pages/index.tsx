@@ -1,14 +1,18 @@
 import Head from "next/head";
+import { Box, Container, Heading } from "@chakra-ui/react";
+import Navbar from "../components/Navbar";
+import Hero from "../components/Hero";
 import styles from "../styles/Home.module.css";
 
 export default function Home() {
   return (
-    <div className={styles.container}>
+    <>
       <Head>
-        <title>Create Next TypeScript App</title>
+        <title>K Party</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <h1>KPARTY</h1>
-    </div>
+      <Navbar />
+      <Hero />
+    </>
   );
 }
