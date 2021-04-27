@@ -12,59 +12,78 @@ import {
   Flex,
   Spacer,
   VStack,
+  Divider,
+  SimpleGrid,
+  Wrap,
 } from "@chakra-ui/react";
+
+const rooms = [
+  { title: "Happy Hour", people: 3, songs: 40 },
+  { title: "Girls Night", people: 3, songs: 40 },
+  { title: "Epic Karaoke", people: 3, songs: 40 },
+];
 
 export default function CallToActionWithAnnotation() {
   return (
     <>
-      <Container maxW={"3xl"}>
-        <Stack
-          as={Box}
-          textAlign={"center"}
-          spacing={{ base: 8, md: 14 }}
-          py={{ base: 20, md: 36 }}
-        >
-          <Heading
-            fontWeight={600}
-            fontSize={{ base: "2xl", sm: "4xl", md: "6xl" }}
-            lineHeight={"110%"}
-          >
-            Public Karaoke Rooms
-            <br />
-            <Text as={"span"} color={"green.400"}>
-              Join and sing
+      <Container maxW={"4xl"}>
+        <SimpleGrid columns={2} spacing={6} p="10">
+          <Box bg="#333" height="80px" p="5" minH="30rem">
+            <Heading
+              as="h3"
+              color="white"
+              textAlign="center"
+              marginBottom="20px"
+            >
+              Public Rooms
+            </Heading>
+            {rooms.map((room) => (
+              <Box
+                bg="white"
+                borderRadius="md"
+                h="87px"
+                p="3"
+                marginBottom="1rem"
+              >
+                <Flex>
+                  <Box w="90%">
+                    <Heading as="h4" size="md">
+                      {room.title}
+                    </Heading>
+                    <Divider p="1" />
+                    <Wrap p="2">
+                      <Text fontSize="sm">{room.people} People</Text>
+                      <Text fontSize="sm">{room.songs} songs</Text>
+                    </Wrap>
+                  </Box>
+                  <Box p="3">
+                    <Button>Join</Button>
+                  </Box>
+                </Flex>
+              </Box>
+            ))}
+          </Box>
+          <Box height="80px">
+            <Heading as="h2" size="2xl" marginBottom="2rem">
+              Where Karaoke Happens
+            </Heading>
+            <Text marginBottom="2rem">
+              Lorem Ipsum is simply dummy text of the printing and typesetting
+              industry. Lorem Ipsum has been the industry's standard dummy text
+              ever since the 1500s, when an unknown printer took a galley of
+              type and scrambled it to make a type specimen book. It has
+              survived not only five centuries, but also the leap into
+              electronic typesetting, remaining essentially unchanged. It was
+              popularised in the 1960s with the release of Letraset sheets
+              containing Lorem Ipsum passages, and more recently with desktop
+              publishing software like Aldus PageMaker including versions of
+              Lorem Ipsum.
             </Text>
-          </Heading>
-          <VStack border="1px" borderRadius="md" p="3">
-            <Box w="90%" border="1px" p="1" color="gray.200" borderRadius="md">
-              <Center w="100%" h="4rem" bg="gray.100" color="black">
-                <Text fontSize="2xl"> Friday Night </Text>
-              </Center>
-              <Flex>
-                <Spacer />
-                <Center p="4">
-                  <Button colorScheme="facebook" size="lg">
-                    Join
-                  </Button>
-                </Center>
-              </Flex>
+            <Box textAlign="right">
+              <Button>Sign In</Button>
             </Box>
-            <Box w="90%" border="1px" p="1" color="gray.200" borderRadius="md">
-              <Center w="100%" h="4rem" bg="gray.100" color="black">
-                <Text fontSize="2xl"> Friday Night </Text>
-              </Center>
-              <Flex w="100%" p="2">
-                <Box w="30%" color="gray.700" p="1">
-                  4 people
-                </Box>
-                <Spacer />
-                <Button colorScheme="facebook" size="lg">
-                  Join
-                </Button>
-              </Flex>
-            </Box>
-          </VStack>
-        </Stack>
+          </Box>
+        </SimpleGrid>
       </Container>
     </>
   );
