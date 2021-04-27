@@ -11,7 +11,7 @@ export default function Home() {
         <title>K Party</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Navbar />
+      <Navbar heading={"Living room karaoke parties just got easier"} />
       <Hero />
     </>
   );

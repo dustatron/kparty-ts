@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC } from "react";
 import {
   Container,
   Center,
@@ -9,7 +9,11 @@ import {
   Button,
 } from "@chakra-ui/react";
 
-const Navbar = () => {
+type Props = {
+  heading: string;
+};
+
+const Navbar: FC<Props> = ({ heading }) => {
   return (
     <>
       <Box>
@@ -29,7 +33,7 @@ const Navbar = () => {
       </Box>
       <Box background="#333333">
         <Center h="50px" fontWeight="600" color="#C1C1C1">
-          Living room karaoke parties just got easier
+          {heading}
         </Center>
       </Box>
     </>
