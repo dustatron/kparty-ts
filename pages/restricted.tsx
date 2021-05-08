@@ -1,9 +1,9 @@
 import React from "react";
-import Navbar from "../components/Navbar";
 import {
   SimpleGrid,
   Heading,
   Container,
+  Center,
   Box,
   Text,
   Button,
@@ -12,26 +12,24 @@ import {
 
 const restricted = () => {
   return (
-    <>
-      <Navbar heading={"Living room karaoke parties just got easier"} />
-      <Container maxW={"3xl"}>
-        <SimpleGrid columns={2} spacing={6} p="8">
-          <Box>
-            <Heading>You must Sign In First</Heading>
-            <Text>
-              In order to keep track of the songs you add we need you to sign
-              in.
-            </Text>
-          </Box>
-          <Box>
-            <Button size="lg" width="10em">
+    <Container maxW={"3xl"}>
+      <SimpleGrid columns={2} spacing={6} p="8">
+        <Box>
+          <Heading>You must Sign In First</Heading>
+          <Text>
+            In order to keep track of the songs you add we need you to sign in.
+          </Text>
+        </Box>
+        <Box>
+          <Center h="100%">
+            <Button size="lg" width="10em" colorScheme="blue">
               Sign In
             </Button>
-          </Box>
-        </SimpleGrid>
-        <Divider />
-      </Container>
-    </>
+          </Center>
+        </Box>
+      </SimpleGrid>
+      <Divider />
+    </Container>
   );
 };
 

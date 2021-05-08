@@ -1,4 +1,5 @@
 import React, { FC } from "react";
+import Link from "next/link";
 import {
   Container,
   Center,
@@ -20,9 +21,13 @@ const Navbar: FC<Props> = ({ heading }) => {
         <Container maxW="container.md">
           <Flex>
             <Box p="1">
-              <Text fontSize="24px">
-                K<strong>Party</strong>
-              </Text>
+              <Link href="/">
+                <a>
+                  <Text fontSize="24px">
+                    K<strong>Party</strong>
+                  </Text>
+                </a>
+              </Link>
             </Box>
             <Spacer />
             <Box p="1" fontSize="20px">

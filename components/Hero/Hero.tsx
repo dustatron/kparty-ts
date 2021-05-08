@@ -1,29 +1,24 @@
+import Link from "next/link";
+import { useEffect } from "react";
 import {
   Box,
   Heading,
   Container,
-  Center,
   Text,
   Button,
-  Stack,
-  Icon,
-  useColorModeValue,
   createIcon,
   Flex,
-  Spacer,
-  VStack,
   Divider,
   SimpleGrid,
   Wrap,
 } from "@chakra-ui/react";
+import { Rooms } from "../../utils";
 
-const rooms = [
-  { title: "Happy Hour", people: 3, songs: 40 },
-  { title: "Girls Night", people: 3, songs: 40 },
-  { title: "Epic Karaoke", people: 3, songs: 40 },
-];
+export default function CallToActionWithAnnotation({ setTitle }) {
+  useEffect(() => {
+    setTitle("Living room karaoke parties just got easier");
+  }, []);
 
-export default function CallToActionWithAnnotation() {
   return (
     <>
       <Container maxW={"4xl"}>
@@ -37,13 +32,14 @@ export default function CallToActionWithAnnotation() {
             >
               Public Rooms
             </Heading>
-            {rooms.map((room) => (
+            {Rooms.map((room) => (
               <Box
                 bg="white"
                 borderRadius="md"
                 h="87px"
                 p="3"
                 marginBottom="1rem"
+                key={room.id}
               >
                 <Flex>
                   <Box w="90%">
@@ -53,11 +49,15 @@ export default function CallToActionWithAnnotation() {
                     <Divider p="1" />
                     <Wrap p="2">
                       <Text fontSize="sm">{room.people} People</Text>
-                      <Text fontSize="sm">{room.songs} songs</Text>
+                      <Text fontSize="sm">{room.playlist.length} songs</Text>
                     </Wrap>
                   </Box>
                   <Box p="3">
-                    <Button>Join</Button>
+                    <Link href={`/room/${room.id}`}>
+                      <a>
+                        <Button colorScheme="blue">Join</Button>
+                      </a>
+                    </Link>
                   </Box>
                 </Flex>
               </Box>
@@ -80,7 +80,7 @@ export default function CallToActionWithAnnotation() {
               Lorem Ipsum.
             </Text>
             <Box textAlign="right">
-              <Button>Sign In</Button>
+              <Button colorScheme="blue">Sign In</Button>
             </Box>
           </Box>
         </SimpleGrid>

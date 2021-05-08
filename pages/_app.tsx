@@ -1,12 +1,20 @@
+import { useState } from "react";
 import { ChakraProvider } from "@chakra-ui/react";
-
+import Navbar from "../components/Navbar";
+import Head from "next/head";
 import "../styles/globals.css";
 import type { AppProps /*, AppContext */ } from "next/app";
 
 function App({ Component, pageProps }: AppProps) {
+  const [subTitle, setSubTitle] = useState("");
   return (
     <ChakraProvider>
-      <Component {...pageProps} />
+      <Head>
+        <title>K Party</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <Navbar heading={subTitle} />
+      <Component {...pageProps} setTitle={setSubTitle} />
     </ChakraProvider>
   );
 }
