@@ -11,7 +11,7 @@ interface Room {
   people: number;
   id: string;
   isActive: boolean;
-  activeSong: number;
+  currentSong: number;
   playlist: Array<Song>;
 }
 
@@ -21,10 +21,10 @@ const Rooms: Room[] = [
     people: 3,
     id: "happyHour",
     isActive: false,
-    activeSong: 0,
+    currentSong: 0,
     playlist: [
       {
-        link: "https://www.youtube.com/watch?v=-RdNw43s40s",
+        link: "https://www.youtube.com/watch?v=1dsdTdAZRYU",
         name: "Careless Whisper",
         songId: "1",
         artist: "George Michael (Wham!)",
@@ -37,7 +37,7 @@ const Rooms: Room[] = [
     people: 3,
     id: "GirlsNight",
     isActive: false,
-    activeSong: 0,
+    currentSong: 0,
     playlist: [],
   },
   {
@@ -45,7 +45,7 @@ const Rooms: Room[] = [
     people: 3,
     id: "EpicKaraoke",
     isActive: false,
-    activeSong: 0,
+    currentSong: 0,
     playlist: [],
   },
 ];
