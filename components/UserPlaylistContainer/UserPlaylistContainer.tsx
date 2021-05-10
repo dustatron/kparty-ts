@@ -10,8 +10,7 @@ import {
   TabPanel,
 } from "@chakra-ui/react";
 import SongBox from "../../components/SongBox";
-import playlist from "../../pages/playlist/[roomId]";
-
+import SongSearch from "../SongSearch";
 interface Props {
   playlist: ISong[];
   showModal: (songId: string) => void;
@@ -94,7 +93,9 @@ export const UserPlaylistContainer = ({ playlist, showModal }: Props) => {
               </Droppable>
             </DragDropContext>
           </TabPanel>
-          <TabPanel>Search stuff here</TabPanel>
+          <TabPanel>
+            <SongSearch />
+          </TabPanel>
           <TabPanel>Favorites</TabPanel>
           <TabPanel>Room Details here</TabPanel>
         </TabPanels>
