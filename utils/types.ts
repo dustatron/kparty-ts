@@ -8,14 +8,17 @@ export interface IVideoData {
 }
 
 export interface ISong {
+  videoId: string;
   link: string;
   thumbnail: string;
   songTitle: string;
   songId: string;
   artist: string;
+  duration: number;
   userRating: number;
   playCount: number;
   singer?: string;
+  publishedAt: string;
 }
 
 export interface IRoom {
