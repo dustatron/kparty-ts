@@ -34,3 +34,4 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 - [React-video-player](https://github.com/CookPete/react-player)
 - [Chakra-ui](https://chakra-ui.com/docs)
 - React Icons
+- [react beautiful dnd](https://github.com/atlassian/react-beautiful-dnd)

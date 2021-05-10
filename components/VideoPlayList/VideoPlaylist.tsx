@@ -20,21 +20,21 @@ function VideoPlaylist({
   }, [playlist, currentSong]);
   return (
     <>
-      <Wrap p="5" justify="center">
+      <Wrap p="2" justify="center">
         {upcomingSongs.map((song: ISong, index) => (
           <Stack
             borderRadius="lg"
             border="1px"
-            p="3"
+            p="2"
             w="25rem"
-            h="7rem"
+            h="6rem"
             bg={
               isPlaying &&
               playlist[currentSong].songId === song.songId &&
               "#C6F6D5"
             }
           >
-            <Heading size="sm">
+            <Heading size="xs">
               {song.songId} | {song.songTitle}
             </Heading>
             <Divider p="1" />
