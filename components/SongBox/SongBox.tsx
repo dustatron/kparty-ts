@@ -9,7 +9,7 @@ interface Props {
 function SongBox({ songData }: Props): ReactElement {
   const { songTitle } = songData;
   return (
-    <Box border="1px" borderRadius="md" p="2" h="6rem" w="100%">
+    <Box border="1px" borderRadius="md" p="2" h="6rem" w="90%">
       {songTitle}
     </Box>
   );

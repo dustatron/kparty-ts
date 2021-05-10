@@ -16,8 +16,8 @@ interface Props {
 
 export const UserPlaylistContainer = ({ playlist }: Props) => {
   return (
-    <div>
-      <Tabs variant="enclosed">
+    <>
+      <Tabs variant="enclosed" isFitted w="100%">
         <TabList>
           <Tab>Playlist</Tab>
           <Tab>Search</Tab>
@@ -27,7 +27,7 @@ export const UserPlaylistContainer = ({ playlist }: Props) => {
 
         <TabPanels>
           <TabPanel>
-            <Stack>
+            <Stack align="center">
               {playlist?.map((song: ISong) => (
                 <SongBox songData={song} />
               ))}
@@ -38,7 +38,7 @@ export const UserPlaylistContainer = ({ playlist }: Props) => {
           <TabPanel>Room Details here</TabPanel>
         </TabPanels>
       </Tabs>
-    </div>
+    </>
   );
 };
 
