@@ -16,9 +16,10 @@ import { ISong } from "../../utils";
 interface Props {
   songData: ISong;
   isDragging: () => boolean;
+  showModal: () => void;
 }
 
-function SongBox({ songData, isDragging }: Props): ReactElement {
+function SongBox({ songData, isDragging, showModal }: Props): ReactElement {
   const { songTitle, thumbnail } = songData;
   const [isFav, setIsFav] = useState(false);
 
@@ -56,7 +57,7 @@ function SongBox({ songData, isDragging }: Props): ReactElement {
           </Box>
         </Stack>
         <Box h="100%" align="center" w="5%">
-          <Button variant="ghost" marginBottom="5px">
+          <Button variant="ghost" marginBottom="5px" onClick={showModal}>
             <Icon as={HiCog} h={4} w={4} />
           </Button>
           <Button variant="ghost" onClick={favSong}>

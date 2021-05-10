@@ -14,6 +14,7 @@ import playlist from "../../pages/playlist/[roomId]";
 
 interface Props {
   playlist: ISong[];
+  showModal: (songId: string) => void;
 }
 
 // a little function to help us with reordering the result
@@ -25,7 +26,7 @@ const reorder = (list, startIndex, endIndex) => {
   return result;
 };
 
-export const UserPlaylistContainer = ({ playlist }: Props) => {
+export const UserPlaylistContainer = ({ playlist, showModal }: Props) => {
   const [songList, setSongList] = useState([]);
 
   useEffect(() => {
@@ -81,6 +82,7 @@ export const UserPlaylistContainer = ({ playlist }: Props) => {
                             <SongBox
                               songData={song}
                               isDragging={snapshot.isDragging}
+                              showModal={() => showModal(song.songId)}
                             />
                           </div>
                         )}
