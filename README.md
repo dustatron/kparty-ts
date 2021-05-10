@@ -35,3 +35,4 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 - [Chakra-ui](https://chakra-ui.com/docs)
 - React Icons
 - [react beautiful dnd](https://github.com/atlassian/react-beautiful-dnd)
+- [code sandbox for dnd](https://codesandbox.io/s/k260nyxq9v?file=/index.js:2414-2433)

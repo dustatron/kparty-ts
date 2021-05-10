@@ -70,7 +70,7 @@ const Rooms: IRoom[] = [
       },
       {
         link: "https://www.youtube.com/watch?v=FvdsYTCK3HA",
-        thumbnail: "https://i.ytimg.com/vi/kMIj0P0JJvs/default.jpg",
+        thumbnail: null,
         songTitle:
           "Modern Talking - You're My Heart, You're My Soul (Back-Vocal) (Original Karaoke Version)",
         songId: "5",
