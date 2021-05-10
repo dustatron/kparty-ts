@@ -3,6 +3,8 @@ import { useRouter } from "next/router";
 import { Rooms } from "../../utils";
 import type { IRoom } from "../../utils";
 import VideoPlayer from "../../components/VideoPlayer";
+import VideoPlaylist from "../../components/VideoPlayList";
+
 interface Props {
   setTitle: Function;
 }
@@ -40,13 +42,20 @@ const player: React.FC<Props> = ({ setTitle }) => {
   return (
     <>
       {roomData && (
-        <VideoPlayer
-          roomData={roomData}
-          isPlaying={isPlaying}
-          setIsPlaying={setIsPlaying}
-          nextSong={nextSong}
-          previousSong={previousSong}
-        />
+        <>
+          <VideoPlayer
+            roomData={roomData}
+            isPlaying={isPlaying}
+            setIsPlaying={setIsPlaying}
+            nextSong={nextSong}
+            previousSong={previousSong}
+          />
+          <VideoPlaylist
+            playlist={roomData.playlist}
+            currentSong={roomData.currentSong}
+            isPlaying={isPlaying}
+          />
+        </>
       )}
     </>
   );

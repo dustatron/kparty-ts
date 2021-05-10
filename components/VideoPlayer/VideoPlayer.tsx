@@ -23,12 +23,21 @@ const VideoPlayer: FC<Props> = ({
 
   return (
     <VStack spacing={0} align="stretch">
-      <Center bg="#4A4A4A" p="2">
+      <Center bg="#4A4A4A" h="33rem">
         {playlist[currentSong]?.link && (
           <ReactPlayer
             controls
             playing={isPlaying}
             url={playlist[currentSong]?.link}
+            height="100%"
+            width="1000%"
+            onEnded={nextSong}
+            onPlay={() => {
+              setIsPlaying(true);
+            }}
+            onPause={() => {
+              setIsPlaying(false);
+            }}
           />
         )}
       </Center>
