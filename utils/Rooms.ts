@@ -1,21 +1,24 @@
-interface Song {
+export interface ISong {
   link: string;
-  name: string;
+  thumbnail: string;
+  songTitle: string;
   songId: string;
   artist: string;
-  singer: string;
+  userRating: number;
+  playCount: number;
+  singer?: string;
 }
 
-interface Room {
+export interface IRoom {
   title: string;
   people: number;
   id: string;
   isActive: boolean;
   currentSong: number;
-  playlist: Array<Song>;
+  playlist: Array<ISong>;
 }
 
-const Rooms: Room[] = [
+const Rooms: IRoom[] = [
   {
     title: "Happy Hour",
     people: 3,
@@ -25,10 +28,24 @@ const Rooms: Room[] = [
     playlist: [
       {
         link: "https://www.youtube.com/watch?v=1dsdTdAZRYU",
-        name: "Careless Whisper",
+        thumbnail: "",
+        songTitle: "Careless Whisper",
         songId: "1",
         artist: "George Michael (Wham!)",
         singer: "Amy",
+        playCount: 1,
+        userRating: 1,
+      },
+      {
+        link: "https://www.youtube.com/watch?v=aMqnd93EqSk",
+        thumbnail: "https://i.ytimg.com/vi/aMqnd93EqSk/default.jpg",
+        songTitle:
+          "♬ Thank You for Being a Friend Karaoke Version - The Golden Girls",
+        songId: "2",
+        artist: "unknown",
+        userRating: 2,
+        playCount: 1,
+        singer: "Dusty",
       },
     ],
   },
