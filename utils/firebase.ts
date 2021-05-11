@@ -1,13 +1,12 @@
 import { env } from "node:process";
 
 export const firebaseConfig = {
-  apiKey: "AIzaSyBclxMSOj2cGxnWDXLSV9-a0Agu_YmpWPM",
-  // apiKey: process.env.API_KEY,
-  authDomain: "kparty-38f4c.firebaseapp.com",
-  databaseURL: "https://kparty-38f4c.firebaseio.com",
-  projectId: "kparty-38f4c",
-  storageBucket: "kparty-38f4c.appspot.com",
-  messagingSenderId: "619007555753",
-  appId: "1:619007555753:web:f20c6f32e1942512ec11b8",
-  measurementId: "G-40HY6HS3RY",
+  apiKey: process.env.NEXT_PUBLIC_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_AUTH_DOMAIN,
+  databaseURL: process.env.NEXT_PUBLIC_DATABASE_URL,
+  projectId: process.env.NEXT_PUBLIC_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_MESSAGING,
+  appId: process.env.NEXT_PUBLIC_APP_ID,
+  measurementId: process.env.NEXT_PUBLIC_MEASUREMENT_ID,
 };
