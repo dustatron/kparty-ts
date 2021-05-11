@@ -12,9 +12,12 @@ import {
 
 type Props = {
   heading: string;
+  signIn: () => void;
+  signOut: () => void;
+  isLoggedIn: boolean;
 };
 
-const Navbar: FC<Props> = ({ heading }) => {
+const Navbar: FC<Props> = ({ heading, signIn, signOut, isLoggedIn }) => {
   return (
     <>
       <Box>
@@ -31,7 +34,16 @@ const Navbar: FC<Props> = ({ heading }) => {
             </Box>
             <Spacer />
             <Box p="1" fontSize="20px">
-              <Button variant="ghost">Sign In</Button>
+              {isLoggedIn && (
+                <Button variant="ghost" onClick={signOut}>
+                  Sign Out
+                </Button>
+              )}
+              {!isLoggedIn && (
+                <Button variant="ghost" onClick={signIn}>
+                  Sign In
+                </Button>
+              )}
             </Box>
           </Flex>
         </Container>
