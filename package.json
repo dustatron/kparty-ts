@@ -17,6 +17,8 @@
     "@fortawesome/react-fontawesome": "^0.1.14",
     "@types/node": "^14.14.41",
     "@types/react": "^17.0.3",
+    "firebase": "^8.5.0",
+    "firebase-admin": "^9.8.0",
     "framer-motion": "^4.1.5",
     "next": "10.1.3",
     "react": "17.0.2",
