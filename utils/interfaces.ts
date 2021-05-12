@@ -6,7 +6,6 @@ export interface IVideoData {
   publishedAt: string;
   title: string;
 }
-
 export interface IUser {
   displayName: string;
   email: string;
@@ -14,14 +13,12 @@ export interface IUser {
   uid: string;
   isAnonymous: boolean;
 }
-
 export interface IAuth {
   currentUser: IUser;
   login: () => void;
   logout: () => void;
   loading: boolean;
 }
-
 export interface ISong {
   videoId: string;
   link: string;
@@ -35,7 +32,6 @@ export interface ISong {
   singer?: string;
   publishedAt: string;
 }
-
 export interface IRoom {
   title: string;
   people: number;
