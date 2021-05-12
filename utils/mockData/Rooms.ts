@@ -1,4 +1,4 @@
-import { IRoom } from "./types";
+import { IRoom } from "../index";
 
 const Rooms: IRoom[] = [
   {

@@ -7,6 +7,21 @@ export interface IVideoData {
   title: string;
 }
 
+export interface IUser {
+  displayName: string;
+  email: string;
+  photoURL: string;
+  uid: string;
+  isAnonymous: boolean;
+}
+
+export interface IAuth {
+  currentUser: IUser;
+  login: () => void;
+  logout: () => void;
+  loading: boolean;
+}
+
 export interface ISong {
   videoId: string;
   link: string;

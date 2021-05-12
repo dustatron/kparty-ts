@@ -9,15 +9,14 @@ import {
   Text,
   Button,
 } from "@chakra-ui/react";
+import { IAuth, useAuth } from "../../utils";
 
 type Props = {
   heading: string;
-  signIn: () => void;
-  signOut: () => void;
-  isLoggedIn: boolean;
 };
 
-const Navbar: FC<Props> = ({ heading, signIn, signOut, isLoggedIn }) => {
+const Navbar: FC<Props> = ({ heading }) => {
+  const { login, logout, currentUser, loading }: IAuth = useAuth();
   return (
     <>
       <Box>
@@ -34,13 +33,13 @@ const Navbar: FC<Props> = ({ heading, signIn, signOut, isLoggedIn }) => {
             </Box>
             <Spacer />
             <Box p="1" fontSize="20px">
-              {isLoggedIn && (
-                <Button variant="ghost" onClick={signOut}>
+              {!!currentUser && (
+                <Button variant="ghost" onClick={logout}>
                   Sign Out
                 </Button>
               )}
-              {!isLoggedIn && (
-                <Button variant="ghost" onClick={signIn}>
+              {!currentUser && (
+                <Button variant="ghost" onClick={login} isLoading={loading}>
                   Sign In
                 </Button>
               )}
