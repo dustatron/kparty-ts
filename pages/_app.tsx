@@ -12,7 +12,7 @@ function App({ Component, pageProps }: AppProps) {
     <ChakraProvider>
       <AuthProvider>
         <Head>
-          <title>K Party</title>
+          <title>KParty</title>
           <link rel="icon" href="/favicon.ico" />
         </Head>
         <Navbar heading={subTitle} />
