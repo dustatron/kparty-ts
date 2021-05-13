@@ -9,8 +9,10 @@ import {
   Button,
   Divider,
 } from "@chakra-ui/react";
+import { useAuth, IAuth } from "../utils";
 
 const restricted = () => {
+  const { login }: IAuth = useAuth();
   return (
     <Container maxW={"3xl"}>
       <SimpleGrid columns={2} spacing={6} p="8">
@@ -22,7 +24,7 @@ const restricted = () => {
         </Box>
         <Box>
           <Center h="100%">
-            <Button size="lg" width="10em" colorScheme="blue">
+            <Button size="lg" width="10em" colorScheme="blue" onClick={login}>
               Sign In
             </Button>
           </Center>

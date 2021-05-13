@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import Image from "next/image";
+import WithAuth from "../../components/WithAuth";
 import {
   Container,
   Center,
@@ -11,7 +12,11 @@ import {
   Text,
 } from "@chakra-ui/react";
 
-const room = ({ setTitle }) => {
+interface Props {
+  setTitle: (string) => void;
+}
+
+const room: React.FC<Props> = ({ setTitle }) => {
   const router = useRouter();
   const { roomId } = router.query;
 
@@ -68,4 +73,4 @@ const room = ({ setTitle }) => {
   );
 };
 
-export default room;
+export default WithAuth(room);

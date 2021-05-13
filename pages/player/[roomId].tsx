@@ -4,6 +4,7 @@ import { Rooms } from "../../utils";
 import type { IRoom } from "../../utils";
 import VideoPlayer from "../../components/VideoPlayer";
 import VideoPlaylist from "../../components/VideoPlayList";
+import WithAuth from "../../components/WithAuth";
 
 interface Props {
   setTitle: Function;
@@ -61,4 +62,4 @@ const player: React.FC<Props> = ({ setTitle }) => {
   );
 };
 
-export default player;
+export default WithAuth(player);
