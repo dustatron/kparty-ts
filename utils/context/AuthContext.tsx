@@ -7,6 +7,7 @@ import React, {
 } from "react";
 import firebase from "firebase/app";
 import { auth, IUser, IAuth } from "../index";
+import { useRouter } from "next/router";
 
 type AuthContext = {
   currentUser: object;
@@ -23,6 +24,9 @@ export function useAuth() {
 export function AuthProvider({ children }): ReactElement {
   const [currentUser, setCurrentUser] = useState<IUser>(null);
   const [loading, setLoading] = useState(true);
+  const [redirect, setRedirect] = useState(null);
+
+  const router = useRouter();
 
   const login = async () => {
     setLoading(true);
@@ -52,11 +56,16 @@ export function AuthProvider({ children }): ReactElement {
     return unsubscribe;
   }, []);
 
+  // useEffect(() => {
+  //   setRedirect(redirect);
+  // }, [redirect]);
+
   const value: IAuth = {
     currentUser,
     login,
     logout,
     loading,
+    setRedirect,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
