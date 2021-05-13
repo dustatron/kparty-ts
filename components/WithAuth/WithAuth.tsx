@@ -7,17 +7,19 @@ interface Props {
 }
 
 const WithAuth = (WrappedComponent) => {
-  const { currentUser }: IAuth = useAuth();
-  const router = useRouter();
-  useEffect(() => {
-    if (!currentUser) {
-      // remember the page that user tried to access
-      // setRedirect(router.route);
-      // redirect
-      router.push("/restricted");
-    }
-  }, [router, currentUser]);
   return (props) => {
+    const { currentUser }: IAuth = useAuth();
+    const router = useRouter();
+
+    useEffect(() => {
+      if (!currentUser) {
+        // remember the page that user tried to access
+        // setRedirect(router.route);
+        // redirect
+        router.push("/restricted");
+      }
+    }, [router, currentUser]);
+
     return <WrappedComponent {...props} />;
   };
 };
