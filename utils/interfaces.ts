@@ -25,7 +25,6 @@ export interface IAuth {
   login: () => void;
   logout: () => void;
   loading: boolean;
-  setRedirect: (string) => void;
 }
 export interface ISong {
   videoId: string;
