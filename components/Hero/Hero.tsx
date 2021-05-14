@@ -12,12 +12,15 @@ import {
   SimpleGrid,
   Wrap,
 } from "@chakra-ui/react";
-import { Rooms } from "../../utils";
+import { IAuth, Rooms } from "../../utils";
+import { useAuth } from "../../utils";
 
 export default function CallToActionWithAnnotation({ setTitle }) {
   useEffect(() => {
     setTitle("Living room karaoke parties just got easier");
   }, []);
+
+  const { login, currentUser }: IAuth = useAuth();
 
   return (
     <>
@@ -80,7 +83,11 @@ export default function CallToActionWithAnnotation({ setTitle }) {
               Lorem Ipsum.
             </Text>
             <Box textAlign="right">
-              <Button colorScheme="blue">Sign In</Button>
+              {!currentUser && (
+                <Button colorScheme="blue" onClick={login}>
+                  Sign In
+                </Button>
+              )}
             </Box>
           </Box>
         </SimpleGrid>

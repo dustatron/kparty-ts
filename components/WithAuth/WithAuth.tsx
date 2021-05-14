@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
-import { useRouter } from "next/router";
+import React from "react";
 import { useAuth, IAuth } from "../../utils";
+import SignIn from "./SignIng";
 
 interface Props {
   WrappedComponent: React.ReactNode;
@@ -8,19 +8,17 @@ interface Props {
 
 const WithAuth = (WrappedComponent) => {
   return (props) => {
-    const { currentUser, setRedirect }: IAuth = useAuth();
-    const router = useRouter();
+    const { currentUser, loading }: IAuth = useAuth();
 
-    useEffect(() => {
-      if (!currentUser) {
-        // remember the page that user tried to access
-        setRedirect(router.route);
-        // redirect
-        router.push("/restricted");
-      }
-    }, [router, currentUser]);
+    if (!loading && !currentUser) {
+      return <SignIn />;
+    }
 
-    return <WrappedComponent {...props} />;
+    if (!loading && currentUser) {
+      return <WrappedComponent {...props} />;
+    }
+
+    return null;
   };
 };
 

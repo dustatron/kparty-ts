@@ -9,23 +9,18 @@ import {
   Icon,
 } from "@chakra-ui/react";
 import { FiSearch } from "react-icons/fi";
-import { fetchYTSongs, IVideoData } from "../../utils";
+import { useFetchYT, IUseFetchYT } from "../../utils";
 import SongSearchResultBox from "../SongSearchResultBox";
 
 interface Props {}
 
 export const SongSearch = (props: Props) => {
-  const [isShowingSpinner, setIsShowingSpinner] = useState<boolean>(false);
   const [inputData, setInputData] = useState<string>("");
-  const [searchData, setSearchData] = useState<IVideoData[] | null>(null);
+  const { error, isLoading, runSearch, results }: IUseFetchYT = useFetchYT();
 
-  const handleSearch = async (e) => {
+  const handleSearch = (e) => {
     e.preventDefault();
-    const results = await fetchYTSongs(
-      setIsShowingSpinner,
-      inputData.toLocaleLowerCase()
-    );
-    setSearchData(results);
+    runSearch(inputData);
   };
 
   return (
@@ -36,27 +31,29 @@ export const SongSearch = (props: Props) => {
             <FormLabel>Search for a song</FormLabel>
             <Input
               placeholder="Search Title"
-              disabled={isShowingSpinner}
+              disabled={isLoading}
               value={inputData}
               onChange={(e) => {
                 setInputData(e.target.value);
               }}
             />
           </FormControl>
-          <Button type="submit" isLoading={isShowingSpinner}>
+          <Button type="submit" isLoading={isLoading}>
             <Icon as={FiSearch} marginRight="5px" /> Search
           </Button>
         </form>
       </Box>
-      {searchData &&
-        searchData.map((video) => {
+      {results &&
+        results.map((video) => {
           return <SongSearchResultBox videoData={video} />;
         })}
-      {searchData?.length === 0 && !isShowingSpinner && (
+      {results?.length === 0 && !isLoading && (
         <Heading w="100%" textAlign="center" p="5" size="sm">
           No Search Results
         </Heading>
       )}
+
+      {error && <Heading>Error: {error}</Heading>}
     </>
   );
 };
