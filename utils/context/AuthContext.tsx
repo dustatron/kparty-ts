@@ -5,7 +5,7 @@ import React, {
   ReactElement,
   createContext,
 } from "react";
-import firebase from "firebase";
+import firebase from "firebase/app";
 import { auth, IUser, IAuth } from "../index";
 
 type AuthContext = {
@@ -14,9 +14,16 @@ type AuthContext = {
   logout: () => void;
 };
 
+interface useAuth {
+  currentUser;
+  login: () => void;
+  logout: () => void;
+  loading: boolean;
+}
+
 const AuthContext = createContext(null);
 
-export function useAuth() {
+export function useAuth(): useAuth {
   return useContext(AuthContext);
 }
 

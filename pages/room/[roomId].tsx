@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import Image from "next/image";
 import WithAuth from "../../components/WithAuth";
-import { useGameData } from "../../utils";
+import { useRoomData } from "../../utils";
 import {
   Container,
   Center,
@@ -20,7 +20,7 @@ interface Props {
 const room: React.FC<Props> = ({ setTitle }) => {
   const router = useRouter();
   const { roomId } = router.query;
-  const { roomData, setRoomKey, isLoading } = useGameData();
+  const { roomData, setRoomKey, isLoading } = useRoomData();
 
   useEffect(() => {
     setRoomKey(roomId);

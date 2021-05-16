@@ -10,22 +10,55 @@ import {
   HStack,
   Spacer,
 } from "@chakra-ui/react";
-import { IVideoData } from "../../utils";
+import { IVideoData, ISongAction } from "../../utils";
 import { SiAddthis } from "react-icons/si";
 import { FaHeart, FaPlay } from "react-icons/fa";
+
 interface Props {
   videoData: IVideoData;
+  addSong: (ISongAction) => void;
+  authorId: string;
+  userName: string;
+  roomId: string | string[];
 }
 
-const SongSearchResultBox = ({ videoData }: Props) => {
-  const {
-    title,
-    artist,
-    duration,
-    id,
-    original_title,
-    publishedAt,
-  } = videoData;
+const SongSearchResultBox = ({
+  videoData,
+  addSong,
+  authorId,
+  roomId,
+  userName,
+}: Props) => {
+  const { title, artist, duration, id, original_title, publishedAt } =
+    videoData;
+
+  const thumbnail = `https://i.ytimg.com/vi/${id}/default.jpg`;
+  const link = `https://www.youtube.com/watch?v=${id}`;
+
+  const handleAdd = () => {
+    const newSongAction: ISongAction = {
+      authorId,
+      authorName: userName,
+      roomId,
+      createdAt: new Date(),
+      type: "ADD_SONG",
+      song: {
+        artist,
+        duration,
+        link,
+        playCount: 0,
+        publishedAt,
+        songId: "1",
+        songTitle: title,
+        thumbnail,
+        userRating: 0,
+        videoId: id,
+        singer: userName,
+      },
+    };
+
+    addSong(newSongAction);
+  };
 
   const getDuration = (seconds) => {
     const toMinutes = seconds / 60;
@@ -53,11 +86,7 @@ const SongSearchResultBox = ({ videoData }: Props) => {
       </Heading>
       <Wrap p="3">
         <Box w="30%">
-          <Image
-            src={`https://i.ytimg.com/vi/${id}/default.jpg`}
-            alt="thumbnail"
-            borderRadius="lg"
-          />
+          <Image src={thumbnail} alt="thumbnail" borderRadius="lg" />
         </Box>
         <Box w="65%">
           <Text fontSize="xs"> artist: {artist} </Text>
@@ -66,10 +95,10 @@ const SongSearchResultBox = ({ videoData }: Props) => {
         </Box>
       </Wrap>
       <HStack>
-        <Button>
+        <Button onClick={handleAdd}>
           <Icon as={SiAddthis} />
         </Button>
-        <a href={`https://www.youtube.com/watch?v=${id}`} target="_blank">
+        <a href={link} target="_blank">
           <Button variant="outline">
             <Icon as={FaPlay} marginRight="5px" /> Preview
           </Button>

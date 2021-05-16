@@ -6,11 +6,13 @@ import {
   IUser,
   IAuth,
   IUseFetchYT,
+  ISongAction,
 } from "./interfaces";
 import { useFetchYT } from "./useFetchYT";
 import { useAuth, AuthProvider } from "./context/AuthContext";
-import { GameDataProvider, useGameData } from "./context/GameDataContext";
+import { RoomDataProvider, useRoomData } from "./context/RoomDataContext";
 import { auth } from "./firebase";
+import useFirestoreAction from "./hooks/useFirestoreAction";
 
 export {
   Rooms,
@@ -18,7 +20,16 @@ export {
   useAuth,
   AuthProvider,
   auth,
-  GameDataProvider,
-  useGameData,
+  RoomDataProvider,
+  useRoomData,
+  useFirestoreAction,
 };
-export type { IRoom, ISong, IVideoData, IUser, IAuth, IUseFetchYT };
+export type {
+  IRoom,
+  ISong,
+  IVideoData,
+  IUser,
+  IAuth,
+  IUseFetchYT,
+  ISongAction,
+};

@@ -47,3 +47,12 @@ export interface IRoom {
   currentSong: number;
   playlist: Array<ISong>;
 }
+
+export interface ISongAction {
+  type: string;
+  roomId: string | string[];
+  song: ISong;
+  authorId: string;
+  authorName: string;
+  createdAt: Date;
+}

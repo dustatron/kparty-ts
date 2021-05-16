@@ -6,21 +6,22 @@ import React, {
   createContext,
 } from "react";
 import firebase from "firebase/app";
+import "firebase/firestore";
 import { isNil } from "lodash";
 
-type GameDataContext = {
+type RoomDataContext = {
   currentUser: object;
   login: () => void;
   logout: () => void;
 };
 
-const GameDataContext = createContext(null);
+const RoomDataContext = createContext(null);
 
-export function useGameData() {
-  return useContext(GameDataContext);
+export function useRoomData() {
+  return useContext(RoomDataContext);
 }
 
-export function GameDataProvider({ children }): ReactElement {
+export function RoomDataProvider({ children }): ReactElement {
   const [roomData, setRoomData] = useState(null);
   const [playlist, setPlaylist] = useState(null);
   const [roomKey, setRoomKey] = useState(null);
@@ -50,8 +51,8 @@ export function GameDataProvider({ children }): ReactElement {
   };
 
   return (
-    <GameDataContext.Provider value={value}>
+    <RoomDataContext.Provider value={value}>
       {children}
-    </GameDataContext.Provider>
+    </RoomDataContext.Provider>
   );
 }

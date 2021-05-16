@@ -3,7 +3,7 @@ import { ChakraProvider } from "@chakra-ui/react";
 import type { AppProps /*, AppContext */ } from "next/app";
 import Navbar from "../components/Navbar";
 import Head from "next/head";
-import { AuthProvider, GameDataProvider } from "../utils";
+import { AuthProvider, RoomDataProvider } from "../utils";
 
 function App({ Component, pageProps }: AppProps) {
   const [subTitle, setSubTitle] = useState("");
@@ -11,14 +11,14 @@ function App({ Component, pageProps }: AppProps) {
   return (
     <ChakraProvider>
       <AuthProvider>
-        <GameDataProvider>
+        <RoomDataProvider>
           <Head>
             <title>KParty</title>
             <link rel="icon" href="/favicon.ico" />
           </Head>
           <Navbar heading={subTitle} />
           <Component {...pageProps} setTitle={setSubTitle} />
-        </GameDataProvider>
+        </RoomDataProvider>
       </AuthProvider>
     </ChakraProvider>
   );

@@ -11,12 +11,19 @@ import {
 import { FiSearch } from "react-icons/fi";
 import { useFetchYT, IUseFetchYT } from "../../utils";
 import SongSearchResultBox from "../SongSearchResultBox";
+import { useFirestoreAction, useAuth } from "../../utils";
+import { useRouter } from "next/router";
 
 interface Props {}
 
 export const SongSearch = (props: Props) => {
   const [inputData, setInputData] = useState<string>("");
   const { error, isLoading, runSearch, results }: IUseFetchYT = useFetchYT();
+  const { addSong } = useFirestoreAction();
+  const { currentUser } = useAuth();
+
+  const router = useRouter();
+  const { roomId } = router.query;
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -45,7 +52,15 @@ export const SongSearch = (props: Props) => {
       </Box>
       {results &&
         results.map((video) => {
-          return <SongSearchResultBox videoData={video} />;
+          return (
+            <SongSearchResultBox
+              videoData={video}
+              addSong={addSong}
+              authorId={currentUser.uid}
+              userName={currentUser.displayName}
+              roomId={roomId}
+            />
+          );
         })}
       {results?.length === 0 && !isLoading && (
         <Heading w="100%" textAlign="center" p="5" size="sm">
