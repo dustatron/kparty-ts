@@ -12,8 +12,8 @@ import {
 import SongBox from "../../components/SongBox";
 import SongSearch from "../SongSearch";
 interface Props {
-  playlist: ISong[];
   showModal: (songId: string) => void;
+  playlist: ISong[];
 }
 
 // a little function to help us with reordering the result
@@ -25,7 +25,7 @@ const reorder = (list, startIndex, endIndex) => {
   return result;
 };
 
-export const UserPlaylistContainer = ({ playlist, showModal }: Props) => {
+export const UserPlaylistContainer = ({ showModal, playlist }: Props) => {
   const [songList, setSongList] = useState([]);
 
   useEffect(() => {

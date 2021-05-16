@@ -5,6 +5,7 @@ import type { IRoom } from "../../utils";
 import VideoPlayer from "../../components/VideoPlayer";
 import VideoPlaylist from "../../components/VideoPlayList";
 import WithAuth from "../../components/WithAuth";
+import { useRoomData } from "../../utils";
 
 interface Props {
   setTitle: Function;
@@ -13,11 +14,21 @@ interface Props {
 const player: React.FC<Props> = ({ setTitle }) => {
   const router = useRouter();
   const { roomId } = router.query;
-  const [roomData, setRoomData] = useState<IRoom>(null);
+
+  const { roomData, setRoomKey } = useRoomData();
+  // const [roomData, setRoomData] = useState<IRoom>(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
-    setRoomData(Rooms.find((room) => room.id === roomId));
+    setRoomKey(roomId);
+
+    return () => {
+      setRoomKey(null);
+    };
+  }, []);
+
+  useEffect(() => {
+    // setRoomData(Rooms.find((room) => room.id === roomId));
   }, [roomId]);
 
   useEffect(() => {
@@ -30,14 +41,15 @@ const player: React.FC<Props> = ({ setTitle }) => {
     }
   }, [roomData, isPlaying]);
 
+  // TODO: make these work.
   const nextSong = () => {
     const newState = { ...roomData, currentSong: roomData.currentSong + 1 };
-    setRoomData(newState);
+    // setRoomData(newState);
   };
 
   const previousSong = () => {
     const newState = { ...roomData, currentSong: roomData.currentSong - 1 };
-    setRoomData(newState);
+    // setRoomData(newState);
   };
 
   return (

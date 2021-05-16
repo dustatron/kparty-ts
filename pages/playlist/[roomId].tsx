@@ -2,9 +2,9 @@ import { useEffect, useState, FC } from "react";
 import { useRouter } from "next/router";
 import UserPlaylistContainer from "../../components/UserPlaylistContainer";
 import SongEditModal from "../../components/SongEditModal";
-import { Rooms, IRoom } from "../../utils";
 import { Container } from "@chakra-ui/react";
 import WithAuth from "../../components/WithAuth";
+import { useRoomData } from "../../utils";
 
 interface Props {
   setTitle: (title: string) => void;
@@ -13,11 +13,16 @@ interface Props {
 const playlist: FC<Props> = ({ setTitle }) => {
   const router = useRouter();
   const { roomId } = router.query;
-  const [roomData, setRoomData] = useState<IRoom>(null);
+  // const [roomData, setRoomData] = useState<IRoom>(null);
   const [isModalShowing, setIsModalShowing] = useState<boolean>(false);
+  const { roomData, setRoomKey } = useRoomData();
 
   useEffect(() => {
-    setRoomData(Rooms.find((room) => room.id === roomId));
+    setRoomKey(roomId);
+
+    return () => {
+      setRoomKey(null);
+    };
   }, [roomId]);
 
   useEffect(() => {
