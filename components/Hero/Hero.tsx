@@ -25,7 +25,7 @@ export default function CallToActionWithAnnotation({ setTitle }) {
   return (
     <>
       <Container maxW={"4xl"}>
-        <SimpleGrid columns={2} spacing={6} p="10">
+        <SimpleGrid columns={[1, null, 2]} spacing={6} p="10">
           <Box bg="#333" height="80px" p="5" minH="30rem">
             <Heading
               as="h3"

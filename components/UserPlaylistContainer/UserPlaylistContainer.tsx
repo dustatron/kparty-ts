@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { ISong, useFirestoreAction } from "../../utils";
+import { FaForward, FaBackward } from "react-icons/fa";
 import {
   Stack,
   Tabs,
@@ -9,6 +10,8 @@ import {
   TabPanels,
   TabPanel,
   Container,
+  Button,
+  VStack,
 } from "@chakra-ui/react";
 import SongBox from "../../components/SongBox";
 import SongSearch from "../SongSearch";
@@ -32,7 +35,7 @@ export const UserPlaylistContainer = ({
   playlist,
   roomId,
 }: Props) => {
-  const { playlistUpdate } = useFirestoreAction();
+  const { playlistUpdate, nextSong, prevSong } = useFirestoreAction();
   const [songList, setSongList] = useState([]);
 
   useEffect(() => {
@@ -60,8 +63,8 @@ export const UserPlaylistContainer = ({
         <TabList>
           <Tab>Playlist</Tab>
           <Tab>Search</Tab>
-          <Tab>Favorites</Tab>
-          <Tab>Room Details</Tab>
+          {/* <Tab>Favorites</Tab> */}
+          <Tab>Controls</Tab>
         </TabList>
 
         <TabPanels>
@@ -106,8 +109,30 @@ export const UserPlaylistContainer = ({
           <TabPanel>
             <SongSearch />
           </TabPanel>
-          <TabPanel>Favorites</TabPanel>
-          <TabPanel>Room Details here</TabPanel>
+          {/* <TabPanel>Favorites</TabPanel> */}
+          <TabPanel>
+            <VStack>
+              <Button
+                leftIcon={<FaForward />}
+                onClick={() => nextSong(roomId)}
+                size="lg"
+                w="90%"
+              >
+                Next{" "}
+              </Button>
+              <Button
+                leftIcon={<FaBackward />}
+                onClick={() => prevSong(roomId)}
+                size="lg"
+                w="90%"
+              >
+                Previous{" "}
+              </Button>
+              <Button size="lg" w="90%">
+                Clear All Songs
+              </Button>
+            </VStack>
+          </TabPanel>
         </TabPanels>
       </Tabs>
     </>
