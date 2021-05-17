@@ -8,6 +8,7 @@ import {
   TabList,
   TabPanels,
   TabPanel,
+  Container,
 } from "@chakra-ui/react";
 import SongBox from "../../components/SongBox";
 import SongSearch from "../SongSearch";
@@ -65,40 +66,42 @@ export const UserPlaylistContainer = ({
 
         <TabPanels>
           <TabPanel>
-            <DragDropContext onDragEnd={onDragEnd}>
-              <Droppable droppableId="droppable">
-                {(provided, snapshot) => (
-                  <Stack
-                    {...provided.droppableProps}
-                    ref={provided.innerRef}
-                    align="center"
-                  >
-                    {songList.map((song: ISong, index) => (
-                      <Draggable
-                        key={song.songId}
-                        draggableId={song.songId}
-                        index={index}
-                      >
-                        {(provided, snapshot) => (
-                          <div
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                          >
-                            <SongBox
-                              songData={song}
-                              isDragging={snapshot.isDragging}
-                              showModal={() => showModal(song.songId)}
-                            />
-                          </div>
-                        )}
-                      </Draggable>
-                    ))}
-                    {provided.placeholder}
-                  </Stack>
-                )}
-              </Droppable>
-            </DragDropContext>
+            <Container>
+              <DragDropContext onDragEnd={onDragEnd}>
+                <Droppable droppableId="droppable">
+                  {(provided, snapshot) => (
+                    <Stack
+                      {...provided.droppableProps}
+                      ref={provided.innerRef}
+                      align="center"
+                    >
+                      {songList.map((song: ISong, index) => (
+                        <Draggable
+                          key={song.songId}
+                          draggableId={song.songId}
+                          index={index}
+                        >
+                          {(provided, snapshot) => (
+                            <div
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                            >
+                              <SongBox
+                                songData={song}
+                                isDragging={snapshot.isDragging}
+                                showModal={() => showModal(song.songId)}
+                              />
+                            </div>
+                          )}
+                        </Draggable>
+                      ))}
+                      {provided.placeholder}
+                    </Stack>
+                  )}
+                </Droppable>
+              </DragDropContext>
+            </Container>
           </TabPanel>
           <TabPanel>
             <SongSearch />

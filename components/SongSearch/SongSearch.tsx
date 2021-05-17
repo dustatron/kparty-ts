@@ -7,6 +7,7 @@ import {
   Input,
   Box,
   Icon,
+  Wrap,
 } from "@chakra-ui/react";
 import { FiSearch } from "react-icons/fi";
 import { useFetchYT, IUseFetchYT } from "../../utils";
@@ -34,20 +35,26 @@ export const SongSearch = (props: Props) => {
     <>
       <Box border="1px" borderRadius="lg" p="4">
         <form onSubmit={handleSearch}>
-          <FormControl id="first-name" isRequired>
-            <FormLabel>Search for a song</FormLabel>
-            <Input
-              placeholder="Search Title"
-              disabled={isLoading}
-              value={inputData}
-              onChange={(e) => {
-                setInputData(e.target.value);
-              }}
-            />
-          </FormControl>
-          <Button type="submit" isLoading={isLoading}>
-            <Icon as={FiSearch} marginRight="5px" /> Search
-          </Button>
+          <Wrap>
+            <Box w="75%">
+              <FormControl id="first-name" isRequired>
+                <FormLabel>Search for a song</FormLabel>
+                <Input
+                  placeholder="Search Title"
+                  disabled={isLoading}
+                  value={inputData}
+                  onChange={(e) => {
+                    setInputData(e.target.value);
+                  }}
+                />
+              </FormControl>
+            </Box>
+            <Box w="20%" paddingTop="1.85rem">
+              <Button type="submit" isLoading={isLoading}>
+                <Icon as={FiSearch} marginRight="5px" /> Search
+              </Button>
+            </Box>
+          </Wrap>
         </form>
       </Box>
       {results &&

@@ -38,8 +38,7 @@ function SongBox({ songData, isDragging, showModal }: Props): ReactElement {
       border="1px"
       borderRadius="md"
       p="2"
-      // h="7rem"
-      w="30rem"
+      // w="22rem"
       bg={isDragging ? "#EBF8FF" : "#F7FAFC"}
       alignItems="center"
     >
@@ -53,8 +52,8 @@ function SongBox({ songData, isDragging, showModal }: Props): ReactElement {
             alt="Dan Abramov"
           />
         </Box>
-        <Stack w="70%">
-          <Heading size="xs" w="70%">
+        <Stack w="20rem">
+          <Heading size="xs" w="100%">
             {songTitle}
           </Heading>
           <Box h="2px" w="100%" bg="blackAlpha.400" margin="5px auto" />
