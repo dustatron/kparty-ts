@@ -28,16 +28,16 @@ export interface IAuth {
 }
 export interface ISong {
   videoId: string;
-  link: string;
-  thumbnail: string;
-  songTitle: string;
+  link?: string;
+  thumbnail?: string;
+  songTitle?: string;
   songId: string;
-  artist: string;
-  duration: number;
-  userRating: number;
-  playCount: number;
+  artist?: string;
+  duration?: number;
+  userRating?: number;
+  playCount?: number;
   singer?: string;
-  publishedAt: string;
+  publishedAt?: string;
 }
 export interface IRoom {
   title: string;
@@ -51,8 +51,19 @@ export interface IRoom {
 export interface ISongAction {
   type: string;
   roomId: string | string[];
-  song: ISong;
-  authorId: string;
-  authorName: string;
-  createdAt: Date;
+  authorId?: string;
+  authorName?: string;
+  createdAt?: Date;
+  isPlaying?: boolean;
+  song?: ISong;
+  playlist?: ISong[];
+}
+
+export enum ActionTypes {
+  addSong = "ADD_SONG",
+  nextSong = "NEXT_SONG",
+  prevSong = "PREV_SONG",
+  deleteSong = "DELETE_SONG",
+  isPlaying = "SET_IS_PLAYING",
+  PlaylistUpdate = "PLAYLIST_UPDATE",
 }

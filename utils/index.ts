@@ -7,6 +7,7 @@ import {
   IAuth,
   IUseFetchYT,
   ISongAction,
+  ActionTypes,
 } from "./interfaces";
 import { useFetchYT } from "./useFetchYT";
 import { useAuth, AuthProvider } from "./context/AuthContext";
@@ -23,6 +24,7 @@ export {
   RoomDataProvider,
   useRoomData,
   useFirestoreAction,
+  ActionTypes,
 };
 export type {
   IRoom,

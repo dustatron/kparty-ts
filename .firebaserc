@@ -1,0 +1,6 @@
+{
+  "projects": {
+    "default": "kparty-38f4c",
+    "prod": "kparty-production"
+  }
+}

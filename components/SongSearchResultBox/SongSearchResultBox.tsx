@@ -48,7 +48,7 @@ const SongSearchResultBox = ({
         link,
         playCount: 0,
         publishedAt,
-        songId: "1",
+        songId: id,
         songTitle: title,
         thumbnail,
         userRating: 0,

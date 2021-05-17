@@ -10,6 +10,7 @@ type Props = {
   setIsPlaying: (bool) => void;
   nextSong: () => void;
   previousSong: () => void;
+  isLoading: boolean;
 };
 
 const VideoPlayer: FC<Props> = ({
@@ -18,6 +19,7 @@ const VideoPlayer: FC<Props> = ({
   setIsPlaying,
   nextSong,
   previousSong,
+  isLoading,
 }) => {
   const { currentSong, playlist } = roomData;
 
@@ -45,12 +47,14 @@ const VideoPlayer: FC<Props> = ({
         <Button
           colorScheme="blackAlpha"
           onClick={previousSong}
+          isLoading={isLoading}
           disabled={roomData?.currentSong === 0}
         >
           <Icon as={FaBackward} h={5} w={5} />
         </Button>
         <Button
           colorScheme="blackAlpha"
+          isLoading={isLoading}
           onClick={() => {
             setIsPlaying(!isPlaying);
           }}
@@ -61,6 +65,7 @@ const VideoPlayer: FC<Props> = ({
         <Button
           colorScheme="blackAlpha"
           disabled={!isPlaying}
+          isLoading={isLoading}
           onClick={() => {
             setIsPlaying(false);
           }}
@@ -71,6 +76,7 @@ const VideoPlayer: FC<Props> = ({
           colorScheme="blackAlpha"
           disabled={playlist.length === currentSong + 1}
           onClick={nextSong}
+          isLoading={isLoading}
         >
           <Icon as={FaForward} h={5} w={5} />
         </Button>

@@ -5,8 +5,7 @@ import type { IRoom } from "../../utils";
 import VideoPlayer from "../../components/VideoPlayer";
 import VideoPlaylist from "../../components/VideoPlayList";
 import WithAuth from "../../components/WithAuth";
-import { useRoomData } from "../../utils";
-
+import { useRoomData, useFirestoreAction } from "../../utils";
 interface Props {
   setTitle: Function;
 }
@@ -16,7 +15,7 @@ const player: React.FC<Props> = ({ setTitle }) => {
   const { roomId } = router.query;
 
   const { roomData, setRoomKey } = useRoomData();
-  // const [roomData, setRoomData] = useState<IRoom>(null);
+  const { nextSong, prevSong, isLoading } = useFirestoreAction();
   const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
@@ -28,10 +27,6 @@ const player: React.FC<Props> = ({ setTitle }) => {
   }, []);
 
   useEffect(() => {
-    // setRoomData(Rooms.find((room) => room.id === roomId));
-  }, [roomId]);
-
-  useEffect(() => {
     if (roomData && isPlaying) {
       const songTitle = roomData.playlist[roomData.currentSong].songTitle;
       setTitle(`playing ${songTitle}`);
@@ -41,17 +36,6 @@ const player: React.FC<Props> = ({ setTitle }) => {
     }
   }, [roomData, isPlaying]);
 
-  // TODO: make these work.
-  const nextSong = () => {
-    const newState = { ...roomData, currentSong: roomData.currentSong + 1 };
-    // setRoomData(newState);
-  };
-
-  const previousSong = () => {
-    const newState = { ...roomData, currentSong: roomData.currentSong - 1 };
-    // setRoomData(newState);
-  };
-
   return (
     <>
       {roomData && (
@@ -60,8 +44,13 @@ const player: React.FC<Props> = ({ setTitle }) => {
             roomData={roomData}
             isPlaying={isPlaying}
             setIsPlaying={setIsPlaying}
-            nextSong={nextSong}
-            previousSong={previousSong}
+            nextSong={() => {
+              nextSong(roomId);
+            }}
+            previousSong={() => {
+              prevSong(roomId);
+            }}
+            isLoading={isLoading}
           />
           <VideoPlaylist
             playlist={roomData.playlist}
