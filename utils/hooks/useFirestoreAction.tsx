@@ -43,19 +43,22 @@ const useFirestoreAction = () => {
       .update({
         playlist: firebase.firestore.FieldValue.arrayUnion(song),
       })
+      .then(() => {
+        setIsLoading(true);
+      })
       .catch((err) => setError(err));
-    // also add song to songs collection
-    // songsDB
-    //   .add(song)
-    //   .then(() => {
-    //     setIsLoading(false);
-    //   })
-    //   .catch((err) => setError(err));
   };
 
-  const removeSong = (song: ISong, roomId: string) => {
+  const removeSong = (song: ISong, roomId: any) => {
+    setIsLoading(true);
     const { arrayRemove } = firebase.firestore.FieldValue;
-    roomsDB.doc(roomId).update({ playlist: arrayRemove(song) });
+    roomsDB
+      .doc(roomId)
+      .update({ playlist: arrayRemove(song) })
+      .then(() => {
+        setIsLoading(false);
+      })
+      .catch((err) => setError(err));
   };
 
   const nextSong = (roomId) => {
@@ -71,31 +74,35 @@ const useFirestoreAction = () => {
   };
 
   const prevSong = (roomId) => {
+    setIsLoading(true);
     const { increment } = firebase.firestore.FieldValue;
-    roomsDB.doc(roomId).update({ currentSong: increment(-1) });
-    const prevSongAction = {
-      type: ActionTypes.prevSong,
-      roomId,
-    };
-    createAction(prevSongAction);
+    roomsDB
+      .doc(roomId)
+      .update({ currentSong: increment(-1) })
+      .then(() => {
+        setIsLoading(false);
+      })
+      .catch((err) => setError(err));
   };
 
-  const setIsPlaying = (roomId, isPlaying) => {
-    roomsDB.doc(roomId).update({ isActive: isPlaying });
+  const setIsActive = (roomId, isPlaying) => {
+    roomsDB
+      .doc(roomId)
+      .update({ isActive: isPlaying })
+      .then(() => {
+        setIsLoading(false);
+      })
+      .catch((err) => setError(err));
   };
 
   const playlistUpdate = (roomId: string, playlistUpdated: ISong[]) => {
     const roomDoc = roomsDB.doc(roomId);
-    // const roomData = roomDoc.get().then((doc) => doc.data());
-    // const newRoomData = { ...roomData, playlist: playlist };
-    roomDoc.update({ playlist: playlistUpdated });
-    // const playlistPayload: ISongAction = {
-    //   type: ActionTypes.PlaylistUpdate,
-    //   roomId,
-    //   playlist,
-    // };
-
-    // createAction(playlistPayload);
+    roomDoc
+      .update({ playlist: playlistUpdated })
+      .then(() => {
+        setIsLoading(false);
+      })
+      .catch((err) => setError(err));
   };
 
   return {
@@ -105,7 +112,7 @@ const useFirestoreAction = () => {
     nextSong,
     prevSong,
     removeSong,
-    setIsPlaying,
+    setIsActive,
     playlistUpdate,
   };
 };

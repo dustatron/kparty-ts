@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
 import { HiCog } from "react-icons/hi";
-import { ISong } from "../../utils";
+import { ISong, useRoomData } from "../../utils";
 
 interface Props {
   songData: ISong;
@@ -22,9 +22,15 @@ interface Props {
 function SongBox({ songData, isDragging, showModal }: Props): ReactElement {
   const { songTitle, thumbnail } = songData;
   const [isFav, setIsFav] = useState(false);
+  const { setSelected } = useRoomData();
 
   const favSong = () => {
     setIsFav(!isFav);
+  };
+
+  const handleShowModal = () => {
+    setSelected(songData);
+    showModal();
   };
 
   return (
@@ -57,7 +63,7 @@ function SongBox({ songData, isDragging, showModal }: Props): ReactElement {
           </Box>
         </Stack>
         <Box h="100%" align="center" w="5%">
-          <Button variant="ghost" marginBottom="5px" onClick={showModal}>
+          <Button variant="ghost" marginBottom="5px" onClick={handleShowModal}>
             <Icon as={HiCog} h={4} w={4} />
           </Button>
           <Button variant="ghost" onClick={favSong}>

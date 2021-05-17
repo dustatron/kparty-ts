@@ -46,6 +46,7 @@ const playlist: FC<Props> = ({ setTitle }) => {
         <UserPlaylistContainer
           playlist={roomData.playlist}
           showModal={handleShowModal}
+          roomId={roomId}
         />
       )}
       <SongEditModal

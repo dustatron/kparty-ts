@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { ISong } from "../../utils";
+import { ISong, useFirestoreAction } from "../../utils";
 import {
   Stack,
   Tabs,
@@ -14,18 +14,24 @@ import SongSearch from "../SongSearch";
 interface Props {
   showModal: (songId: string) => void;
   playlist: ISong[];
+  roomId: any;
 }
 
 // a little function to help us with reordering the result
 const reorder = (list, startIndex, endIndex) => {
-  const result = Array.from(list);
+  const result: ISong[] = Array.from(list);
   const [removed] = result.splice(startIndex, 1);
   result.splice(endIndex, 0, removed);
 
   return result;
 };
 
-export const UserPlaylistContainer = ({ showModal, playlist }: Props) => {
+export const UserPlaylistContainer = ({
+  showModal,
+  playlist,
+  roomId,
+}: Props) => {
+  const { playlistUpdate } = useFirestoreAction();
   const [songList, setSongList] = useState([]);
 
   useEffect(() => {
@@ -43,6 +49,7 @@ export const UserPlaylistContainer = ({ showModal, playlist }: Props) => {
       result.source.index,
       result.destination.index
     );
+    playlistUpdate(roomId, reorderedList);
     setSongList(reorderedList);
   };
 

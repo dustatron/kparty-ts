@@ -1,4 +1,5 @@
 import React, { ReactElement } from "react";
+import { useRouter } from "next/router";
 import {
   Modal,
   ModalOverlay,
@@ -9,6 +10,7 @@ import {
   ModalCloseButton,
   Button,
 } from "@chakra-ui/react";
+import { useFirestoreAction, ISong, useRoomData } from "../../utils";
 
 interface Props {
   isModalShowing: boolean;
@@ -16,22 +18,42 @@ interface Props {
 }
 
 function SongEditModal({ isModalShowing, hideModal }: Props): ReactElement {
+  const router = useRouter();
+  const { roomId } = router.query;
+
+  const { removeSong } = useFirestoreAction();
+  const { selected } = useRoomData();
+
+  const handleDelete = () => {
+    removeSong(selected, roomId);
+    hideModal();
+  };
+
   return (
     <>
       <Modal isOpen={isModalShowing} onClose={hideModal}>
         <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Edit Song Details</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>Stuff here</ModalBody>
+        {selected && (
+          <ModalContent>
+            <ModalHeader>{selected.songTitle}</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <div>duration: {selected.duration}</div>
+              <div>artist: {selected.artist}</div>
+              <div>singer: {selected.singer}</div>
+            </ModalBody>
 
-          <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={hideModal}>
-              Close
-            </Button>
-            <Button variant="ghost">Save</Button>
-          </ModalFooter>
-        </ModalContent>
+            <ModalFooter>
+              <Button colorScheme="blue" mr={3} onClick={hideModal}>
+                Close
+              </Button>
+              <Button colorScheme="red" mr={3} onClick={handleDelete}>
+                delete
+              </Button>
+              <Button variant="ghost">Save</Button>
+            </ModalFooter>
+          </ModalContent>
+        )}
       </Modal>
     </>
   );

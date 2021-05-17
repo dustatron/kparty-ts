@@ -1,7 +1,5 @@
 import React, { useEffect, useState, FC } from "react";
 import { useRouter } from "next/router";
-import { Rooms } from "../../utils";
-import type { IRoom } from "../../utils";
 import VideoPlayer from "../../components/VideoPlayer";
 import VideoPlaylist from "../../components/VideoPlayList";
 import WithAuth from "../../components/WithAuth";
@@ -15,7 +13,7 @@ const player: React.FC<Props> = ({ setTitle }) => {
   const { roomId } = router.query;
 
   const { roomData, setRoomKey } = useRoomData();
-  const { nextSong, prevSong, isLoading } = useFirestoreAction();
+  const { nextSong, prevSong, isLoading, setIsActive } = useFirestoreAction();
   const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
@@ -34,6 +32,7 @@ const player: React.FC<Props> = ({ setTitle }) => {
     if (roomData && !isPlaying) {
       setTitle(roomData.title);
     }
+    setIsActive(roomId, isPlaying);
   }, [roomData, isPlaying]);
 
   return (

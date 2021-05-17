@@ -26,6 +26,7 @@ export function RoomDataProvider({ children }): ReactElement {
   const [playlist, setPlaylist] = useState(null);
   const [roomKey, setRoomKey] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [selected, setSelected] = useState(null);
 
   useEffect(() => {
     if (!roomData && roomKey) {
@@ -48,6 +49,8 @@ export function RoomDataProvider({ children }): ReactElement {
     playlist,
     setRoomKey,
     isLoading,
+    selected,
+    setSelected,
   };
 
   return (
