@@ -67,7 +67,7 @@ export const UserPlaylistContainer = ({
   };
 
   const isFav = (song) => {
-    const hasSong = currentUser.favorites.find(
+    const hasSong = currentUser.favorites?.find(
       (favSong) => favSong.songId === song.songId
     );
     return !!hasSong;

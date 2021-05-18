@@ -67,6 +67,7 @@ export function AuthProvider({ children }): ReactElement {
                   displayName: user.displayName,
                   email: user.email,
                   photoURL: user.photoURL,
+                  uid: user.uid,
                   // uid: user.uid,
                   favorites: [" "],
                 })
