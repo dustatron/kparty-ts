@@ -62,13 +62,13 @@ export function AuthProvider({ children }): ReactElement {
               const thisUser = doc.data();
               setCurrentUser(thisUser);
             } else {
-              usersRef
-                .add({
+              userData
+                .set({
                   displayName: user.displayName,
                   email: user.email,
                   photoURL: user.photoURL,
                   uid: user.uid,
-                  favorites: [" "],
+                  favorites: [],
                 })
                 .then(() => setCurrentUser(user));
             }
