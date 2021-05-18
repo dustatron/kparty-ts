@@ -68,7 +68,6 @@ export function AuthProvider({ children }): ReactElement {
                   email: user.email,
                   photoURL: user.photoURL,
                   uid: user.uid,
-                  // uid: user.uid,
                   favorites: [" "],
                 })
                 .then(() => setCurrentUser(user));
