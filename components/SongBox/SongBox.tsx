@@ -9,28 +9,52 @@ import {
   Stack,
   Button,
 } from "@chakra-ui/react";
-import { FaRegHeart, FaHeart } from "react-icons/fa";
+import { FaRegHeart, FaHeart, FaGalacticSenate } from "react-icons/fa";
+import { useRouter } from "next/router";
 import { HiCog } from "react-icons/hi";
-import { ISong, useRoomData } from "../../utils";
+import { ISong, useRoomData, useAuth, useFirestoreAction } from "../../utils";
+import { SiAddthis } from "react-icons/si";
 
 interface Props {
   songData: ISong;
-  isDragging: () => boolean;
+  isDragging?: () => boolean;
   showModal: () => void;
+  fromFavorites?: boolean;
+  changeTab: (index: number) => void;
 }
 
-function SongBox({ songData, isDragging, showModal }: Props): ReactElement {
+function SongBox({
+  songData,
+  isDragging,
+  showModal,
+  fromFavorites,
+  changeTab,
+}: Props): ReactElement {
+  const router = useRouter();
+  const { roomId } = router.query;
+
   const { songTitle, thumbnail } = songData;
-  const [isFav, setIsFav] = useState(false);
+  const [isFav, setIsFav] = useState(fromFavorites);
   const { setSelected } = useRoomData();
+  const { addFavSong, addSong } = useFirestoreAction();
+  const { currentUser } = useAuth();
 
   const favSong = () => {
     setIsFav(!isFav);
+    if (!isFav) {
+      addFavSong(songData, currentUser);
+      changeTab(2);
+    }
   };
 
   const handleShowModal = () => {
     setSelected(songData);
     showModal();
+  };
+
+  const handleAdd = () => {
+    addSong(songData, roomId);
+    changeTab(0);
   };
 
   return (
@@ -62,6 +86,11 @@ function SongBox({ songData, isDragging, showModal }: Props): ReactElement {
           </Box>
         </Stack>
         <Box h="100%" align="center" w="5%">
+          {fromFavorites && (
+            <Button onClick={handleAdd}>
+              <Icon as={SiAddthis} />
+            </Button>
+          )}
           <Button variant="ghost" marginBottom="5px" onClick={handleShowModal}>
             <Icon as={HiCog} h={4} w={4} />
           </Button>

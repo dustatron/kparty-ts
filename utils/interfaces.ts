@@ -18,7 +18,7 @@ export interface IUser {
   email: string;
   photoURL: string;
   uid: string;
-  isAnonymous: boolean;
+  favorites?: ISong[];
 }
 export interface IAuth {
   currentUser: IUser;

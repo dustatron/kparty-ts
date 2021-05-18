@@ -1,5 +1,4 @@
 import React, { ReactElement } from "react";
-import { useRouter } from "next/router";
 import {
   Modal,
   ModalOverlay,
@@ -10,32 +9,33 @@ import {
   ModalCloseButton,
   Button,
 } from "@chakra-ui/react";
-import { useFirestoreAction, ISong, useRoomData } from "../../utils";
+import { useFirestoreAction, useAuth, useRoomData } from "../../utils";
 
 interface Props {
-  isModalShowing: boolean;
-  hideModal: () => void;
+  isFavModalShowing: boolean;
+  hideFavModal: () => void;
 }
 
-function SongEditModal({ isModalShowing, hideModal }: Props): ReactElement {
-  const router = useRouter();
-  const { roomId } = router.query;
-
-  const { removeSong } = useFirestoreAction();
+function FavSongModal({
+  isFavModalShowing,
+  hideFavModal,
+}: Props): ReactElement {
+  const { removeFavorite } = useFirestoreAction();
+  const { currentUser } = useAuth();
   const { selected } = useRoomData();
 
   const handleDelete = () => {
-    removeSong(selected, roomId);
-    hideModal();
+    removeFavorite(selected, currentUser);
+    hideFavModal();
   };
 
   return (
     <>
-      <Modal isOpen={isModalShowing} onClose={hideModal}>
+      <Modal isOpen={isFavModalShowing} onClose={hideFavModal}>
         <ModalOverlay />
         {selected && (
           <ModalContent>
-            <ModalHeader>Normal : {selected.songTitle}</ModalHeader>
+            <ModalHeader>Favorite : {selected.songTitle}</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
               <div>duration: {selected.duration}</div>
@@ -44,7 +44,7 @@ function SongEditModal({ isModalShowing, hideModal }: Props): ReactElement {
             </ModalBody>
 
             <ModalFooter>
-              <Button colorScheme="blue" mr={3} onClick={hideModal}>
+              <Button colorScheme="blue" mr={3} onClick={hideFavModal}>
                 Close
               </Button>
               <Button colorScheme="red" mr={3} onClick={handleDelete}>
@@ -59,4 +59,4 @@ function SongEditModal({ isModalShowing, hideModal }: Props): ReactElement {
   );
 }
 
-export default SongEditModal;
+export default FavSongModal;

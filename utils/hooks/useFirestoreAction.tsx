@@ -33,11 +33,9 @@ const useFirestoreAction = () => {
 
   const roomsDB = firebase.firestore().collection("rooms");
   const songsDB = firebase.firestore().collection("songs");
+  const userDB = firebase.firestore().collection("users");
 
-  const addSong = (songPayload) => {
-    const { song, roomId } = songPayload;
-    setIsLoading(true);
-
+  const addSong = (song, roomId) => {
     roomsDB
       .doc(roomId)
       .update({
@@ -59,6 +57,12 @@ const useFirestoreAction = () => {
         setIsLoading(false);
       })
       .catch((err) => setError(err));
+  };
+
+  const removeFavorite = (song: ISong, user) => {
+    const { arrayRemove } = firebase.firestore.FieldValue;
+    const userRef = userDB.doc(user.uid);
+    userRef.update({ favorites: arrayRemove(song) });
   };
 
   const nextSong = (roomId) => {
@@ -105,6 +109,13 @@ const useFirestoreAction = () => {
       .catch((err) => setError(err));
   };
 
+  const addFavSong = (song: ISong, currentUser) => {
+    const userRef = userDB.doc(currentUser.uid);
+    userRef.update({
+      favorites: firebase.firestore.FieldValue.arrayUnion(song),
+    });
+  };
+
   return {
     error,
     isLoading,
@@ -114,6 +125,8 @@ const useFirestoreAction = () => {
     removeSong,
     setIsActive,
     playlistUpdate,
+    addFavSong,
+    removeFavorite,
   };
 };
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { ISong, useFirestoreAction } from "../../utils";
+import { ISong, useFirestoreAction, useAuth } from "../../utils";
 import { FaForward, FaBackward } from "react-icons/fa";
 import {
   Stack,
@@ -15,10 +15,12 @@ import {
 } from "@chakra-ui/react";
 import SongBox from "../../components/SongBox";
 import SongSearch from "../SongSearch";
+
 interface Props {
-  showModal: (songId: string) => void;
+  showModal: () => void;
   playlist: ISong[];
   roomId: any;
+  showFavModal: () => void;
 }
 
 // a little function to help us with reordering the result
@@ -34,9 +36,12 @@ export const UserPlaylistContainer = ({
   showModal,
   playlist,
   roomId,
+  showFavModal,
 }: Props) => {
   const { playlistUpdate, nextSong, prevSong } = useFirestoreAction();
   const [songList, setSongList] = useState([]);
+  const [tabIndex, setTabIndex] = useState(0);
+  const { currentUser } = useAuth();
 
   useEffect(() => {
     if (playlist) {
@@ -57,13 +62,30 @@ export const UserPlaylistContainer = ({
     setSongList(reorderedList);
   };
 
+  const handleTabsChange = (index) => {
+    setTabIndex(index);
+  };
+
+  const isFav = (song) => {
+    const hasSong = currentUser.favorites.find(
+      (favSong) => favSong.songId === song.songId
+    );
+    return !!hasSong;
+  };
+
   return (
     <>
-      <Tabs variant="enclosed" isFitted w="100%">
+      <Tabs
+        variant="enclosed"
+        isFitted
+        w="100%"
+        index={tabIndex}
+        onChange={handleTabsChange}
+      >
         <TabList>
           <Tab>Playlist</Tab>
           <Tab>Search</Tab>
-          {/* <Tab>Favorites</Tab> */}
+          <Tab>Favorites</Tab>
           <Tab>Controls</Tab>
         </TabList>
 
@@ -93,7 +115,9 @@ export const UserPlaylistContainer = ({
                               <SongBox
                                 songData={song}
                                 isDragging={snapshot.isDragging}
-                                showModal={() => showModal(song.songId)}
+                                changeTab={handleTabsChange}
+                                showModal={() => showModal()}
+                                fromFavorites={isFav(song)}
                               />
                             </div>
                           )}
@@ -107,9 +131,20 @@ export const UserPlaylistContainer = ({
             </Container>
           </TabPanel>
           <TabPanel>
-            <SongSearch />
+            <SongSearch changeTab={handleTabsChange} />
           </TabPanel>
-          {/* <TabPanel>Favorites</TabPanel> */}
+          <TabPanel>
+            <VStack>
+              {currentUser?.favorites?.map((song) => (
+                <SongBox
+                  songData={song}
+                  showModal={() => showFavModal()}
+                  fromFavorites
+                  changeTab={handleTabsChange}
+                />
+              ))}
+            </VStack>
+          </TabPanel>
           <TabPanel>
             <VStack>
               <Button
@@ -128,7 +163,7 @@ export const UserPlaylistContainer = ({
               >
                 Previous{" "}
               </Button>
-              <Button size="lg" w="90%">
+              <Button size="lg" w="90%" disabled>
                 Clear All Songs
               </Button>
             </VStack>

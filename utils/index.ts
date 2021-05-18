@@ -14,6 +14,7 @@ import { useAuth, AuthProvider } from "./context/AuthContext";
 import { RoomDataProvider, useRoomData } from "./context/RoomDataContext";
 import { auth } from "./firebase";
 import useFirestoreAction from "./hooks/useFirestoreAction";
+import { videoToSong } from "./normalize";
 
 export {
   Rooms,
@@ -25,6 +26,7 @@ export {
   useRoomData,
   useFirestoreAction,
   ActionTypes,
+  videoToSong,
 };
 export type {
   IRoom,

@@ -15,12 +15,13 @@ import SongSearchResultBox from "../SongSearchResultBox";
 import { useFirestoreAction, useAuth } from "../../utils";
 import { useRouter } from "next/router";
 
-interface Props {}
+interface Props {
+  changeTab: (index: number) => void;
+}
 
-export const SongSearch = (props: Props) => {
+export const SongSearch = ({ changeTab }: Props) => {
   const [inputData, setInputData] = useState<string>("");
   const { error, isLoading, runSearch, results }: IUseFetchYT = useFetchYT();
-  const { addSong } = useFirestoreAction();
   const { currentUser } = useAuth();
 
   const router = useRouter();
@@ -62,7 +63,7 @@ export const SongSearch = (props: Props) => {
           return (
             <SongSearchResultBox
               videoData={video}
-              addSong={addSong}
+              changeTab={changeTab}
               authorId={currentUser.uid}
               userName={currentUser.displayName}
               roomId={roomId}

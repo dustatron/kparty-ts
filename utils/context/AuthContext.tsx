@@ -6,7 +6,7 @@ import React, {
   createContext,
 } from "react";
 import firebase from "firebase/app";
-import { auth, IUser, IAuth } from "../index";
+import { auth, IUser, IAuth, ISong } from "../index";
 
 type AuthContext = {
   currentUser: object;
@@ -28,7 +28,7 @@ export function useAuth(): useAuth {
 }
 
 export function AuthProvider({ children }): ReactElement {
-  const [currentUser, setCurrentUser] = useState<IUser>(null);
+  const [currentUser, setCurrentUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   const login = async () => {
@@ -52,7 +52,33 @@ export function AuthProvider({ children }): ReactElement {
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
-      setCurrentUser(user);
+      const usersRef = firebase.firestore().collection("users");
+      if (user?.uid) {
+        const userData = usersRef.doc(user.uid);
+        userData
+          .get()
+          .then((doc) => {
+            if (doc.exists) {
+              const thisUser = doc.data();
+              setCurrentUser(thisUser);
+            } else {
+              usersRef
+                .add({
+                  displayName: user.displayName,
+                  email: user.email,
+                  photoURL: user.photoURL,
+                  // uid: user.uid,
+                  favorites: [" "],
+                })
+                .then(() => setCurrentUser(user));
+            }
+          })
+          .then(() => {
+            setLoading(false);
+          });
+      }
+
+      // setCurrentUser(user);
       setLoading(false);
     });
 

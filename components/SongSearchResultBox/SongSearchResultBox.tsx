@@ -10,54 +10,34 @@ import {
   HStack,
   Spacer,
 } from "@chakra-ui/react";
-import { IVideoData, ISongAction } from "../../utils";
+import { IVideoData, videoToSong, useFirestoreAction } from "../../utils";
 import { SiAddthis } from "react-icons/si";
 import { FaHeart, FaPlay } from "react-icons/fa";
 
 interface Props {
   videoData: IVideoData;
-  addSong: (ISongAction) => void;
   authorId: string;
   userName: string;
   roomId: string | string[];
+  changeTab: (index: number) => void;
 }
 
 const SongSearchResultBox = ({
   videoData,
-  addSong,
-  authorId,
   roomId,
   userName,
+  changeTab,
 }: Props) => {
-  const { title, artist, duration, id, original_title, publishedAt } =
-    videoData;
+  const { title, artist, duration, id, publishedAt } = videoData;
+  const { addSong } = useFirestoreAction();
 
   const thumbnail = `https://i.ytimg.com/vi/${id}/default.jpg`;
   const link = `https://www.youtube.com/watch?v=${id}`;
 
   const handleAdd = () => {
-    const newSongAction: ISongAction = {
-      authorId,
-      authorName: userName,
-      roomId,
-      createdAt: new Date(),
-      type: "ADD_SONG",
-      song: {
-        artist,
-        duration,
-        link,
-        playCount: 0,
-        publishedAt,
-        songId: id,
-        songTitle: title,
-        thumbnail,
-        userRating: 0,
-        videoId: id,
-        singer: userName,
-      },
-    };
-
-    addSong(newSongAction);
+    const songNormalized = videoToSong(videoData, userName);
+    addSong(songNormalized, roomId);
+    changeTab(0);
   };
 
   const getDuration = (seconds) => {

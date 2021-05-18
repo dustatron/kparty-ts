@@ -1,10 +1,11 @@
 import { useEffect, useState, FC } from "react";
 import { useRouter } from "next/router";
+import { Container } from "@chakra-ui/react";
+import { useRoomData } from "../../utils";
+import FavSongModal from "../../components/FavSongModal";
 import UserPlaylistContainer from "../../components/UserPlaylistContainer";
 import SongEditModal from "../../components/SongEditModal";
-import { Container } from "@chakra-ui/react";
 import WithAuth from "../../components/WithAuth";
-import { useRoomData } from "../../utils";
 
 interface Props {
   setTitle: (title: string) => void;
@@ -13,7 +14,7 @@ interface Props {
 const playlist: FC<Props> = ({ setTitle }) => {
   const router = useRouter();
   const { roomId } = router.query;
-  // const [roomData, setRoomData] = useState<IRoom>(null);
+  const [isFavModalShowing, setIsFavModalShowing] = useState<boolean>(false);
   const [isModalShowing, setIsModalShowing] = useState<boolean>(false);
   const { roomData, setRoomKey } = useRoomData();
 
@@ -31,13 +32,18 @@ const playlist: FC<Props> = ({ setTitle }) => {
     }
   }, [roomData]);
 
-  const handleShowModal = (songId) => {
-    console.log(songId);
+  const handleShowModal = () => {
     setIsModalShowing(true);
+  };
+  const handleShowFavModal = () => {
+    setIsFavModalShowing(true);
   };
 
   const handleHideModal = () => {
     setIsModalShowing(false);
+  };
+  const handleHideFavModal = () => {
+    setIsFavModalShowing(false);
   };
 
   return (
@@ -46,12 +52,17 @@ const playlist: FC<Props> = ({ setTitle }) => {
         <UserPlaylistContainer
           playlist={roomData.playlist}
           showModal={handleShowModal}
+          showFavModal={handleShowFavModal}
           roomId={roomId}
         />
       )}
       <SongEditModal
         hideModal={handleHideModal}
         isModalShowing={isModalShowing}
+      />
+      <FavSongModal
+        hideFavModal={handleHideFavModal}
+        isFavModalShowing={isFavModalShowing}
       />
     </Container>
   );
