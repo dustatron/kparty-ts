@@ -30,6 +30,7 @@ export function useAuth(): useAuth {
 export function AuthProvider({ children }): ReactElement {
   const [currentUser, setCurrentUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [isReady, setIsRead] = useState(false);
 
   const login = async () => {
     setLoading(true);
@@ -80,6 +81,7 @@ export function AuthProvider({ children }): ReactElement {
 
       // setCurrentUser(user);
       setLoading(false);
+      setIsRead(true);
     });
 
     return unsubscribe;
@@ -92,5 +94,9 @@ export function AuthProvider({ children }): ReactElement {
     loading,
   };
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={value}>
+      {isReady && children}
+    </AuthContext.Provider>
+  );
 }

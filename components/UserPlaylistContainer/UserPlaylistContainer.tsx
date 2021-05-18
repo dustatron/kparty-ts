@@ -67,9 +67,12 @@ export const UserPlaylistContainer = ({
   };
 
   const isFav = (song) => {
-    // const hasSong = currentUser.favorites?.find(
-    //   (favSong) => favSong.songId === song.songId
-    // );
+    if (currentUser) {
+      const hasSong = currentUser.favorites?.find(
+        (favSong) => favSong.songId === song.songId
+      );
+      return hasSong;
+    }
     return false;
   };
 
