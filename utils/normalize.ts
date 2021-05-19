@@ -1,6 +1,6 @@
-import { ISong } from "./index";
+import { ISong, IUser } from "./index";
 
-export const videoToSong = (videoData, userName) => {
+export const videoToSong = (videoData, user: IUser) => {
   const { title, artist, duration, id, publishedAt } = videoData;
 
   const thumbnail = `https://i.ytimg.com/vi/${id}/default.jpg`;
@@ -17,7 +17,8 @@ export const videoToSong = (videoData, userName) => {
     thumbnail,
     userRating: 0,
     videoId: id,
-    singer: userName,
+    singer: user.displayName,
+    userPhoto: user.photoURL,
   };
 
   return song;

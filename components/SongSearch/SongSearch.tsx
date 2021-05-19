@@ -65,7 +65,7 @@ export const SongSearch = ({ changeTab }: Props) => {
               videoData={video}
               changeTab={changeTab}
               authorId={currentUser.uid}
-              userName={currentUser.displayName}
+              user={currentUser}
               roomId={roomId}
             />
           );

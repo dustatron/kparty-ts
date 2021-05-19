@@ -30,7 +30,6 @@ export function useAuth(): useAuth {
 export function AuthProvider({ children }): ReactElement {
   const [currentUser, setCurrentUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [isReady, setIsRead] = useState(false);
 
   const login = async () => {
     setLoading(true);
@@ -51,37 +50,22 @@ export function AuthProvider({ children }): ReactElement {
     }
   };
 
+  const getUserProfile = (uid) => {
+    const userData = firebase.firestore().collection("users").doc(uid);
+    userData.onSnapshot((doc) => {
+      const data = doc.data();
+      setCurrentUser(data);
+    });
+  };
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
-      const usersRef = firebase.firestore().collection("users");
-      if (user?.uid) {
-        const userData = usersRef.doc(user.uid);
-        userData
-          .get()
-          .then((doc) => {
-            if (doc.exists) {
-              const thisUser = doc.data();
-              setCurrentUser(thisUser);
-            } else {
-              userData
-                .set({
-                  displayName: user.displayName,
-                  email: user.email,
-                  photoURL: user.photoURL,
-                  uid: user.uid,
-                  favorites: [],
-                })
-                .then(() => setCurrentUser(user));
-            }
-          })
-          .then(() => {
-            setLoading(false);
-          });
+      if (user) {
+        getUserProfile(user.uid);
+        setLoading(false);
+      } else {
+        setCurrentUser(user);
       }
-
-      // setCurrentUser(user);
-      setLoading(false);
-      setIsRead(true);
     });
 
     return unsubscribe;
@@ -94,9 +78,5 @@ export function AuthProvider({ children }): ReactElement {
     loading,
   };
 
-  return (
-    <AuthContext.Provider value={value}>
-      {isReady && children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

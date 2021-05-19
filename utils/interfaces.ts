@@ -38,6 +38,7 @@ export interface ISong {
   playCount?: number;
   singer?: string;
   publishedAt?: string;
+  userPhoto?: string;
 }
 export interface IRoom {
   title: string;

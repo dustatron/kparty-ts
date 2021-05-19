@@ -10,24 +10,24 @@ import {
   HStack,
   Spacer,
 } from "@chakra-ui/react";
-import { IVideoData, videoToSong, useFirestoreAction } from "../../utils";
+import {
+  IVideoData,
+  videoToSong,
+  useFirestoreAction,
+  IUser,
+} from "../../utils";
 import { SiAddthis } from "react-icons/si";
 import { FaHeart, FaPlay } from "react-icons/fa";
 
 interface Props {
   videoData: IVideoData;
   authorId: string;
-  userName: string;
+  user: IUser;
   roomId: string | string[];
   changeTab: (index: number) => void;
 }
 
-const SongSearchResultBox = ({
-  videoData,
-  roomId,
-  userName,
-  changeTab,
-}: Props) => {
+const SongSearchResultBox = ({ videoData, roomId, user, changeTab }: Props) => {
   const { title, artist, duration, id, publishedAt } = videoData;
   const { addSong } = useFirestoreAction();
 
@@ -35,7 +35,7 @@ const SongSearchResultBox = ({
   const link = `https://www.youtube.com/watch?v=${id}`;
 
   const handleAdd = () => {
-    const songNormalized = videoToSong(videoData, userName);
+    const songNormalized = videoToSong(videoData, user);
     addSong(songNormalized, roomId);
     changeTab(0);
   };
