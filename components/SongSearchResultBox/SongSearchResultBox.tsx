@@ -7,7 +7,7 @@ import {
   Icon,
   Image,
   Text,
-  HStack,
+  VStack,
   Spacer,
 } from "@chakra-ui/react";
 import {
@@ -25,9 +25,16 @@ interface Props {
   user: IUser;
   roomId: string | string[];
   changeTab: (index: number) => void;
+  clear: () => void;
 }
 
-const SongSearchResultBox = ({ videoData, roomId, user, changeTab }: Props) => {
+const SongSearchResultBox = ({
+  videoData,
+  roomId,
+  user,
+  changeTab,
+  clear,
+}: Props) => {
   const { title, artist, duration, id, publishedAt } = videoData;
   const { addSong } = useFirestoreAction();
 
@@ -38,6 +45,7 @@ const SongSearchResultBox = ({ videoData, roomId, user, changeTab }: Props) => {
     const songNormalized = videoToSong(videoData, user);
     addSong(songNormalized, roomId);
     changeTab(0);
+    clear();
   };
 
   const getDuration = (seconds) => {
@@ -55,39 +63,41 @@ const SongSearchResultBox = ({ videoData, roomId, user, changeTab }: Props) => {
 
   return (
     <Box
-      p="5"
+      p="1"
       margin="5px auto"
       border="1px"
       borderRadius="lg"
       justifyContent="center"
     >
-      <Heading w="100%" textAlign="center" size="sm">
-        {title}
-      </Heading>
-      <Wrap p="3">
-        <Box w="30%">
-          <Image src={thumbnail} alt="thumbnail" borderRadius="lg" />
+      <Wrap p="2">
+        <Box w="20%">
+          <Image src={thumbnail} alt="thumbnail" borderRadius="lg" h="5rem" />
         </Box>
-        <Box w="65%">
+
+        <Box w="60%">
+          <Heading w="100%" textAlign="left" size="sm">
+            {title}
+          </Heading>
           <Text fontSize="xs"> artist: {artist} </Text>
           <Text fontSize="xs"> created on : {getDate(publishedAt)} </Text>
           <Text fontSize="xs"> duration: {getDuration(duration)} </Text>
         </Box>
-      </Wrap>
-      <HStack>
-        <Button onClick={handleAdd}>
-          <Icon as={SiAddthis} />
-        </Button>
-        <a href={link} target="_blank">
-          <Button variant="outline">
-            <Icon as={FaPlay} marginRight="5px" /> Preview
+
+        <VStack w="10%">
+          <Button onClick={handleAdd}>
+            <Icon as={SiAddthis} />
           </Button>
-        </a>
-        <Spacer />
-        <Button variant="ghost">
+          <a href={link} target="_blank">
+            <Button variant="outline">
+              <Icon as={FaPlay} marginRight="5px" />
+            </Button>
+          </a>
+          <Spacer />
+          {/* <Button variant="ghost">
           <Icon as={FaHeart} />
-        </Button>
-      </HStack>
+        </Button> */}
+        </VStack>
+      </Wrap>
     </Box>
   );
 };

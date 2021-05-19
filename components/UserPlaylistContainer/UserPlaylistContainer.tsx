@@ -15,6 +15,7 @@ import {
 } from "@chakra-ui/react";
 import SongBox from "../../components/SongBox";
 import SongSearch from "../SongSearch";
+import styles from "./styles.module.css";
 
 interface Props {
   showModal: () => void;
@@ -94,44 +95,44 @@ export const UserPlaylistContainer = ({
 
         <TabPanels>
           <TabPanel>
-            <Container>
-              <DragDropContext onDragEnd={onDragEnd}>
-                <Droppable droppableId="droppable">
-                  {(provided, snapshot) => (
-                    <Stack
-                      {...provided.droppableProps}
-                      ref={provided.innerRef}
-                      align="center"
-                    >
-                      {songList.map((song: ISong, index) => (
-                        <Draggable
-                          key={song.songId}
-                          draggableId={song.songId}
-                          index={index}
-                        >
-                          {(provided, snapshot) => (
-                            <div
-                              ref={provided.innerRef}
-                              {...provided.draggableProps}
-                              {...provided.dragHandleProps}
-                            >
-                              <SongBox
-                                songData={song}
-                                isDragging={snapshot.isDragging}
-                                changeTab={handleTabsChange}
-                                showModal={() => showModal()}
-                                fromFavorites={isFav(song)}
-                              />
-                            </div>
-                          )}
-                        </Draggable>
-                      ))}
-                      {provided.placeholder}
-                    </Stack>
-                  )}
-                </Droppable>
-              </DragDropContext>
-            </Container>
+            <DragDropContext onDragEnd={onDragEnd}>
+              <Droppable droppableId="droppable">
+                {(provided, snapshot) => (
+                  <VStack
+                    {...provided.droppableProps}
+                    ref={provided.innerRef}
+                    align="center"
+                  >
+                    {songList.map((song: ISong, index) => (
+                      <Draggable
+                        key={song.songId}
+                        draggableId={song.songId}
+                        index={index}
+                      >
+                        {(provided, snapshot) => (
+                          <div
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            className={styles.fit}
+                          >
+                            <SongBox
+                              songData={song}
+                              isDragging={snapshot.isDragging}
+                              changeTab={handleTabsChange}
+                              showModal={() => showModal()}
+                              fromFavorites={isFav(song)}
+                              currentTab={tabIndex}
+                            />
+                          </div>
+                        )}
+                      </Draggable>
+                    ))}
+                    {provided.placeholder}
+                  </VStack>
+                )}
+              </Droppable>
+            </DragDropContext>
           </TabPanel>
           <TabPanel>
             <SongSearch changeTab={handleTabsChange} />
@@ -144,6 +145,7 @@ export const UserPlaylistContainer = ({
                   showModal={() => showFavModal()}
                   fromFavorites
                   changeTab={handleTabsChange}
+                  currentTab={tabIndex}
                 />
               ))}
             </VStack>

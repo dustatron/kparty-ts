@@ -19,5 +19,9 @@ export const useFetchYT = (): IUseFetchYT => {
     }
   };
 
-  return { isLoading, results, error, runSearch };
+  const clearResults = () => {
+    setResults([]);
+  };
+
+  return { isLoading, results, error, runSearch, clearResults };
 };

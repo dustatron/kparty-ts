@@ -12,6 +12,7 @@ export interface IUseFetchYT {
   results: IVideoData[];
   error: string;
   runSearch: (string) => void;
+  clearResults: () => void;
 }
 export interface IUser {
   displayName: string;

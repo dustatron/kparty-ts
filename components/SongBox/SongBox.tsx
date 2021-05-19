@@ -8,6 +8,8 @@ import {
   Image,
   Stack,
   Button,
+  Spacer,
+  VStack,
 } from "@chakra-ui/react";
 import { FaRegHeart, FaHeart, FaGalacticSenate } from "react-icons/fa";
 import { useRouter } from "next/router";
@@ -21,6 +23,7 @@ interface Props {
   showModal: () => void;
   fromFavorites?: boolean;
   changeTab: (index: number) => void;
+  currentTab: number;
 }
 
 function SongBox({
@@ -29,6 +32,7 @@ function SongBox({
   showModal,
   fromFavorites,
   changeTab,
+  currentTab,
 }: Props): ReactElement {
   const router = useRouter();
   const { roomId } = router.query;
@@ -36,14 +40,17 @@ function SongBox({
   const { songTitle, thumbnail } = songData;
   const [isFav, setIsFav] = useState(fromFavorites);
   const { setSelected } = useRoomData();
-  const { addFavSong, addSong } = useFirestoreAction();
+  const { addFavSong, addSong, removeFavorite } = useFirestoreAction();
   const { currentUser } = useAuth();
 
   const favSong = () => {
     setIsFav(!isFav);
     if (!isFav) {
       addFavSong(songData, currentUser);
-      changeTab(2);
+    }
+
+    if (isFav) {
+      removeFavorite(songData, currentUser);
     }
   };
 
@@ -58,48 +65,63 @@ function SongBox({
   };
 
   return (
-    <Box
+    <Wrap
+      spacing="10px"
+      align="center"
       border="1px"
       borderRadius="md"
-      p="2"
-      // w="22rem"
-      bg={isDragging ? "#EBF8FF" : "#F7FAFC"}
+      w="100%"
       alignItems="center"
+      p="2"
+      justify="space-between"
+      bg={isDragging ? "#EBF8FF" : "#F7FAFC"}
     >
-      <Wrap spacing="10px" align="center">
-        <Box w="15%" h="100%" align="center">
-          <Image
-            boxSize="70px"
-            borderRadius="lg"
-            objectFit="cover"
-            src={thumbnail ? thumbnail : "https://picsum.photos/50/50/?blur"}
-            alt="Dan Abramov"
-          />
+      <Box align="center" w="20%">
+        <Image
+          boxSize="6rem"
+          borderRadius="md"
+          objectFit="cover"
+          src={thumbnail ? thumbnail : "https://picsum.photos/50/50/?blur"}
+          alt="Dan Abramov"
+        />
+      </Box>
+
+      <Stack w="50%">
+        <Heading size="xs" w="100%">
+          {songTitle}
+        </Heading>
+        <Box h="2px" w="100%" bg="blackAlpha.400" margin="5px auto" />
+        <Box textAlign="center" w="100%">
+          <Wrap>
+            <strong> Singer: </strong>
+            <Text fontSize="sm"> {songData.singer}</Text>
+            <Spacer />
+            {songData.userPhoto && (
+              <Image
+                src={songData.userPhoto}
+                w="2rem"
+                h="2rem"
+                borderRadius="3xl"
+              />
+            )}
+          </Wrap>
         </Box>
-        <Stack w="20rem">
-          <Heading size="xs" w="100%">
-            {songTitle}
-          </Heading>
-          <Box h="2px" w="100%" bg="blackAlpha.400" margin="5px auto" />
-          <Box textAlign="center" w="100%">
-            <Text fontSize="sm">Singer: {songData.singer}</Text>
-          </Box>
-        </Stack>
-        <Box h="100%" align="center" w="5%">
-          {fromFavorites && (
-            <Button onClick={handleAdd}>
-              <Icon as={SiAddthis} />
-            </Button>
-          )}
-          <Button variant="ghost" marginBottom="5px" onClick={handleShowModal}>
-            <Icon as={HiCog} h={4} w={4} />
+      </Stack>
+
+      <VStack h="100%" align="center">
+        {fromFavorites && currentTab !== 0 && (
+          <Button onClick={handleAdd}>
+            <Icon as={SiAddthis} />
           </Button>
-          <Button variant="ghost" onClick={favSong}>
-            <Icon as={isFav ? FaHeart : FaRegHeart} />
-          </Button>
-        </Box>
-      </Wrap>
-    </Box>
+        )}
+        <Button variant="ghost" marginBottom="5px" onClick={handleShowModal}>
+          <Icon as={HiCog} h={4} w={4} />
+        </Button>
+        <Button variant="ghost" onClick={favSong}>
+          <Icon as={isFav ? FaHeart : FaRegHeart} />
+        </Button>
+      </VStack>
+    </Wrap>
   );
 }
 

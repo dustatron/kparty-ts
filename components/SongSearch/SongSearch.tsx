@@ -7,7 +7,7 @@ import {
   Input,
   Box,
   Icon,
-  Wrap,
+  VStack,
 } from "@chakra-ui/react";
 import { FiSearch } from "react-icons/fi";
 import { useFetchYT, IUseFetchYT } from "../../utils";
@@ -21,7 +21,8 @@ interface Props {
 
 export const SongSearch = ({ changeTab }: Props) => {
   const [inputData, setInputData] = useState<string>("");
-  const { error, isLoading, runSearch, results }: IUseFetchYT = useFetchYT();
+  const { error, isLoading, runSearch, results, clearResults }: IUseFetchYT =
+    useFetchYT();
   const { currentUser } = useAuth();
 
   const router = useRouter();
@@ -32,12 +33,17 @@ export const SongSearch = ({ changeTab }: Props) => {
     runSearch(inputData);
   };
 
+  const clearInput = () => {
+    setInputData("");
+    clearResults();
+  };
+
   return (
     <>
-      <Box border="1px" borderRadius="lg" p="4">
+      <Box border="1px" borderRadius="lg" p="5">
         <form onSubmit={handleSearch}>
-          <Wrap>
-            <Box w="75%">
+          <VStack justify="center">
+            <Box w="100%">
               <FormControl id="first-name" isRequired>
                 <FormLabel>Search for a song</FormLabel>
                 <Input
@@ -50,12 +56,12 @@ export const SongSearch = ({ changeTab }: Props) => {
                 />
               </FormControl>
             </Box>
-            <Box w="20%" paddingTop="1.85rem">
-              <Button type="submit" isLoading={isLoading}>
+            <Box w="100%">
+              <Button type="submit" isLoading={isLoading} size="lg" w="100%">
                 <Icon as={FiSearch} marginRight="5px" /> Search
               </Button>
             </Box>
-          </Wrap>
+          </VStack>
         </form>
       </Box>
       {results &&
@@ -67,6 +73,7 @@ export const SongSearch = ({ changeTab }: Props) => {
               authorId={currentUser.uid}
               user={currentUser}
               roomId={roomId}
+              clear={clearInput}
             />
           );
         })}
