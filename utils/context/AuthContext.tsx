@@ -50,18 +50,33 @@ export function AuthProvider({ children }): ReactElement {
     }
   };
 
-  const getUserProfile = (uid) => {
-    const userData = firebase.firestore().collection("users").doc(uid);
-    userData.onSnapshot((doc) => {
-      const data = doc.data();
-      setCurrentUser(data);
-    });
+  const getUserProfile = (user) => {
+    const userDB = firebase.firestore().collection("users");
+    if (user.uid) {
+      const userData = userDB.doc(user.uid);
+      userData.onSnapshot((snap) => {
+        if (snap.exists) {
+          const data = snap.data();
+          setCurrentUser(data);
+        } else {
+          userData
+            .set({
+              displayName: user.displayName,
+              email: user.email,
+              photoURL: user.photoURL,
+              uid: user.uid,
+              favorites: [],
+            })
+            .then(() => setLoading(false));
+        }
+      });
+    }
   };
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
-        getUserProfile(user.uid);
+        getUserProfile(user);
         setLoading(false);
       } else {
         setCurrentUser(user);
