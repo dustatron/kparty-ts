@@ -143,9 +143,9 @@ export const UserPlaylistContainer = ({
                 <SongBox
                   songData={song}
                   showModal={() => showFavModal()}
-                  fromFavorites
                   changeTab={handleTabsChange}
                   currentTab={tabIndex}
+                  fromFavorites={isFav(song)}
                 />
               ))}
             </VStack>

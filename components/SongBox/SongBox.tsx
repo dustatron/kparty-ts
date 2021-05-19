@@ -20,10 +20,11 @@ import { SiAddthis } from "react-icons/si";
 interface Props {
   songData: ISong;
   isDragging?: () => boolean;
-  showModal: () => void;
+  showModal?: () => void;
   fromFavorites?: boolean;
-  changeTab: (index: number) => void;
-  currentTab: number;
+  changeTab?: (index: number) => void;
+  currentTab?: number;
+  isActive?: boolean;
 }
 
 function SongBox({
@@ -33,6 +34,7 @@ function SongBox({
   fromFavorites,
   changeTab,
   currentTab,
+  isActive,
 }: Props): ReactElement {
   const router = useRouter();
   const { roomId } = router.query;
@@ -74,7 +76,7 @@ function SongBox({
       alignItems="center"
       p="2"
       justify="space-between"
-      bg={isDragging ? "#EBF8FF" : "#F7FAFC"}
+      bg={isDragging || isActive ? "#b3e1f9" : "#F7FAFC"}
     >
       <Box align="center" w="20%">
         <Image
@@ -114,9 +116,11 @@ function SongBox({
             <Icon as={SiAddthis} />
           </Button>
         )}
-        <Button variant="ghost" marginBottom="5px" onClick={handleShowModal}>
-          <Icon as={HiCog} h={4} w={4} />
-        </Button>
+        {showModal && (
+          <Button variant="ghost" marginBottom="5px" onClick={handleShowModal}>
+            <Icon as={HiCog} h={4} w={4} />
+          </Button>
+        )}
         <Button variant="ghost" onClick={favSong}>
           <Icon as={isFav ? FaHeart : FaRegHeart} />
         </Button>

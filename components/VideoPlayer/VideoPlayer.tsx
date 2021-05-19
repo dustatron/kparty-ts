@@ -25,7 +25,7 @@ const VideoPlayer: FC<Props> = ({
 
   return (
     <VStack spacing={0} align="stretch">
-      <Center bg="#4A4A4A" h="33rem">
+      <Center bg="#4A4A4A" h="31rem">
         {playlist[currentSong]?.link && (
           <ReactPlayer
             controls
