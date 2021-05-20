@@ -50,7 +50,6 @@ function SongEditModal({ isModalShowing, hideModal }: Props): ReactElement {
               <Button colorScheme="red" mr={3} onClick={handleDelete}>
                 delete
               </Button>
-              <Button variant="ghost">Save</Button>
             </ModalFooter>
           </ModalContent>
         )}

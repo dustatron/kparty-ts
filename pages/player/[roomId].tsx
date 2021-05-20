@@ -13,7 +13,8 @@ const player: React.FC<Props> = ({ setTitle }) => {
   const { roomId } = router.query;
 
   const { roomData, setRoomKey } = useRoomData();
-  const { nextSong, prevSong, isLoading, setIsActive } = useFirestoreAction();
+  const { nextSong, prevSong, isLoading, setIsActive, resetRoom } =
+    useFirestoreAction();
   const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
@@ -26,7 +27,7 @@ const player: React.FC<Props> = ({ setTitle }) => {
 
   useEffect(() => {
     if (roomData && isPlaying) {
-      const songTitle = roomData.playlist[roomData.currentSong].songTitle;
+      const songTitle = roomData.playlist[roomData.currentSong]?.songTitle;
       setTitle(`playing ${songTitle}`);
     }
     if (roomData && !isPlaying) {
@@ -34,6 +35,10 @@ const player: React.FC<Props> = ({ setTitle }) => {
     }
     setIsActive(roomId, isPlaying);
   }, [roomData, isPlaying]);
+
+  const handelRest = () => {
+    resetRoom(roomId);
+  };
 
   return (
     <>
@@ -55,6 +60,7 @@ const player: React.FC<Props> = ({ setTitle }) => {
             playlist={roomData.playlist}
             currentSong={roomData.currentSong}
             isPlaying={isPlaying}
+            handelRest={handelRest}
           />
         </>
       )}

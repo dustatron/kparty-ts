@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { FaRegHeart, FaHeart, FaGalacticSenate } from "react-icons/fa";
 import { useRouter } from "next/router";
-import { HiCog } from "react-icons/hi";
+import { BsTrashFill } from "react-icons/bs";
 import { ISong, useRoomData, useAuth, useFirestoreAction } from "../../utils";
 import { SiAddthis } from "react-icons/si";
 
@@ -96,7 +96,7 @@ function SongBox({
         <Box textAlign="center" w="100%">
           <Wrap>
             <strong> Singer: </strong>
-            <Text fontSize="sm"> {songData.singer}</Text>
+            <Text fontSize="sm"> {songData.singer.slice(0, 12)}</Text>
             <Spacer />
             {songData.userPhoto && (
               <Image
@@ -116,9 +116,9 @@ function SongBox({
             <Icon as={SiAddthis} />
           </Button>
         )}
-        {showModal && (
+        {showModal && currentTab !== 2 && (
           <Button variant="ghost" marginBottom="5px" onClick={handleShowModal}>
-            <Icon as={HiCog} h={4} w={4} />
+            <Icon as={BsTrashFill} h={4} w={4} />
           </Button>
         )}
         <Button variant="ghost" onClick={favSong}>

@@ -55,6 +55,7 @@ const VideoPlayer: FC<Props> = ({
         <Button
           colorScheme="blackAlpha"
           isLoading={isLoading}
+          disabled={isPlaying}
           onClick={() => {
             setIsPlaying(!isPlaying);
           }}

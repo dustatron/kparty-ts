@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { ISong, useFirestoreAction, useAuth } from "../../utils";
+import { ISong, useFirestoreAction, useAuth, useRoomData } from "../../utils";
 import { FaForward, FaBackward } from "react-icons/fa";
 import {
   Stack,
@@ -22,6 +22,7 @@ interface Props {
   playlist: ISong[];
   roomId: any;
   showFavModal: () => void;
+  currentSong: number;
 }
 
 // a little function to help us with reordering the result
@@ -38,21 +39,24 @@ export const UserPlaylistContainer = ({
   playlist,
   roomId,
   showFavModal,
+  currentSong,
 }: Props) => {
-  const { playlistUpdate, nextSong, prevSong } = useFirestoreAction();
+  const { playlistUpdate, nextSong, prevSong, resetRoom } =
+    useFirestoreAction();
+
   const [songList, setSongList] = useState([]);
   const [tabIndex, setTabIndex] = useState(0);
   const { currentUser } = useAuth();
 
   useEffect(() => {
     if (playlist) {
-      setSongList(playlist);
+      setSongList(playlist.slice(currentSong));
+      console.log(currentSong);
     }
-  }, [playlist]);
+  }, [playlist, currentSong]);
 
   const onDragEnd = (result) => {
     if (!result.destination) return;
-    // const { source, destination } = result;
 
     const reorderedList = reorder(
       songList,
@@ -158,7 +162,7 @@ export const UserPlaylistContainer = ({
                 size="lg"
                 w="90%"
               >
-                Next{" "}
+                Next
               </Button>
               <Button
                 leftIcon={<FaBackward />}
@@ -166,10 +170,10 @@ export const UserPlaylistContainer = ({
                 size="lg"
                 w="90%"
               >
-                Previous{" "}
+                Previous
               </Button>
-              <Button size="lg" w="90%" disabled>
-                Clear All Songs
+              <Button onClick={() => resetRoom(roomId)} size="lg" w="90%">
+                Restart
               </Button>
             </VStack>
           </TabPanel>

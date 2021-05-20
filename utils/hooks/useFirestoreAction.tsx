@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import firebase from "firebase/app";
 import "firebase/firestore";
-import { ISongAction, ISong, ActionTypes, IRoom } from "../../utils";
+import { ISongAction, ISong, ActionTypes, IRoom, IUser } from "../../utils";
 
 const useFirestoreAction = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -109,11 +109,26 @@ const useFirestoreAction = () => {
       .catch((err) => setError(err));
   };
 
-  const addFavSong = (song: ISong, currentUser) => {
+  const addFavSong = (song: ISong, currentUser: IUser) => {
     const userRef = userDB.doc(currentUser.uid);
+    const newSong: ISong = {
+      ...song,
+      singer: currentUser.displayName,
+      userPhoto: currentUser.photoURL,
+    };
     userRef.update({
-      favorites: firebase.firestore.FieldValue.arrayUnion(song),
+      favorites: firebase.firestore.FieldValue.arrayUnion(newSong),
     });
+  };
+
+  const resetRoom = (roomId) => {
+    const roomDoc = roomsDB.doc(roomId);
+    roomDoc
+      .update({ currentSong: 0 })
+      .then(() => {
+        setIsLoading(false);
+      })
+      .catch((err) => setError(err));
   };
 
   return {
@@ -127,6 +142,7 @@ const useFirestoreAction = () => {
     playlistUpdate,
     addFavSong,
     removeFavorite,
+    resetRoom,
   };
 };
 
