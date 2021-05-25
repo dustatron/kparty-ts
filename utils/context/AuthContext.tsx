@@ -12,6 +12,7 @@ type AuthContext = {
   currentUser: object;
   login: () => void;
   logout: () => void;
+  error?: string;
 };
 
 interface useAuth {
@@ -30,23 +31,28 @@ export function useAuth(): useAuth {
 export function AuthProvider({ children }): ReactElement {
   const [currentUser, setCurrentUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState();
 
   const login = async () => {
+    setError(undefined);
     setLoading(true);
     const provider = new firebase.auth.GoogleAuthProvider();
     auth.useDeviceLanguage();
     try {
       await auth.signInWithPopup(provider);
     } catch (error) {
-      console.log(error.message);
+      setError(error);
     }
+    setLoading(false);
   };
 
   const logout = async () => {
     try {
       await auth.signOut();
+      setCurrentUser(undefined);
     } catch (error) {
-      console.log(error.message);
+      setError(error);
+      console.error(error.message);
     }
   };
 
@@ -77,12 +83,9 @@ export function AuthProvider({ children }): ReactElement {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
         getUserProfile(user);
-        setLoading(false);
-      } else {
-        setCurrentUser(user);
       }
     });
-
+    setLoading(false);
     return unsubscribe;
   }, []);
 
@@ -90,6 +93,7 @@ export function AuthProvider({ children }): ReactElement {
     currentUser,
     login,
     logout,
+    error,
     loading,
   };
 

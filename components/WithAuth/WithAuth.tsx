@@ -10,15 +10,11 @@ const WithAuth = (WrappedComponent) => {
   return (props) => {
     const { currentUser, loading }: IAuth = useAuth();
 
-    if (!loading && !currentUser) {
-      return <SignIn />;
-    }
-
     if (!loading && currentUser) {
       return <WrappedComponent {...props} />;
     }
 
-    return null;
+    return <SignIn />;
   };
 };
 

@@ -1,3 +1,4 @@
+import { FirebaseError } from "firebase/firebase-auth";
 export interface IVideoData {
   artist: string;
   duration: number;
@@ -25,6 +26,7 @@ export interface IAuth {
   currentUser: IUser;
   login: () => void;
   logout: () => void;
+  error?: FirebaseError;
   loading: boolean;
 }
 export interface ISong {

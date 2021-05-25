@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useState, useEffect } from "react";
 import Link from "next/link";
 import {
   Container,
@@ -10,13 +10,23 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { IAuth, useAuth } from "../../utils";
+import Error from "./Error";
 
 type Props = {
   heading: string;
 };
 
 const Navbar: FC<Props> = ({ heading }) => {
-  const { login, logout, currentUser, loading }: IAuth = useAuth();
+  const { login, logout, currentUser, loading, error }: IAuth = useAuth();
+  const [isShowingError, setIsShowingError] = useState(false);
+
+  useEffect(() => {
+    setIsShowingError(!!error);
+  }, [error]);
+
+  const handleHideMessage = () => {
+    setIsShowingError(false);
+  };
   return (
     <>
       <Box>
@@ -52,6 +62,9 @@ const Navbar: FC<Props> = ({ heading }) => {
           {heading}
         </Center>
       </Box>
+      {isShowingError && (
+        <Error error={error} hideMessage={handleHideMessage} />
+      )}
     </>
   );
 };
