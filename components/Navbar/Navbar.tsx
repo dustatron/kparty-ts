@@ -49,9 +49,13 @@ const Navbar: FC<Props> = ({ heading }) => {
                 </Button>
               )}
               {!currentUser && (
-                <Button variant="ghost" onClick={login} isLoading={loading}>
-                  Sign In
-                </Button>
+                <Link href="/signIn">
+                  <a>
+                    <Button variant="ghost" isLoading={loading}>
+                      Sign In
+                    </Button>
+                  </a>
+                </Link>
               )}
             </Box>
           </Flex>

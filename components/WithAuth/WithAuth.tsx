@@ -1,6 +1,6 @@
 import React from "react";
 import { useAuth, IAuth } from "../../utils";
-import SignIn from "./SignIng";
+import { SignInBox } from "../SignInBox";
 
 interface Props {
   WrappedComponent: React.ReactNode;
@@ -14,7 +14,7 @@ const WithAuth = (WrappedComponent) => {
       return <WrappedComponent {...props} />;
     }
 
-    return <SignIn />;
+    return <SignInBox />;
   };
 };
 

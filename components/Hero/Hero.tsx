@@ -14,58 +14,20 @@ import {
 } from "@chakra-ui/react";
 import { IAuth, Rooms } from "../../utils";
 import { useAuth } from "../../utils";
+import { RoomList } from "../RoomList";
 
 export default function CallToActionWithAnnotation({ setTitle }) {
   useEffect(() => {
     setTitle("Living room karaoke parties just got easier");
   }, []);
 
-  const { login, currentUser }: IAuth = useAuth();
+  const { currentUser }: IAuth = useAuth();
 
   return (
     <>
       <Container maxW={"4xl"}>
         <SimpleGrid columns={[1, null, 2]} spacing={6} p="10">
-          <Box bg="#333" height="80px" p="5" minH="30rem">
-            <Heading
-              as="h3"
-              color="white"
-              textAlign="center"
-              marginBottom="20px"
-            >
-              Public Rooms
-            </Heading>
-            {Rooms.map((room) => (
-              <Box
-                bg="white"
-                borderRadius="md"
-                h="87px"
-                p="3"
-                marginBottom="1rem"
-                key={room.id}
-              >
-                <Flex>
-                  <Box w="90%">
-                    <Heading as="h4" size="md">
-                      {room.title}
-                    </Heading>
-                    <Divider p="1" />
-                    <Wrap p="2">
-                      <Text fontSize="sm">{room.people} People</Text>
-                      <Text fontSize="sm">{room.playlist.length} songs</Text>
-                    </Wrap>
-                  </Box>
-                  <Box p="3">
-                    <Link href={`/room/${room.id}`}>
-                      <a>
-                        <Button colorScheme="blue">Join</Button>
-                      </a>
-                    </Link>
-                  </Box>
-                </Flex>
-              </Box>
-            ))}
-          </Box>
+          <RoomList />
           <Box height="80px">
             <Heading as="h2" size="2xl" marginBottom="2rem">
               Where Karaoke Happens
@@ -84,9 +46,11 @@ export default function CallToActionWithAnnotation({ setTitle }) {
             </Text>
             <Box textAlign="right">
               {!currentUser && (
-                <Button colorScheme="blue" onClick={login}>
-                  Sign In
-                </Button>
+                <Link href="/signIn">
+                  <a>
+                    <Button colorScheme="blue">Sign In</Button>
+                  </a>
+                </Link>
               )}
             </Box>
           </Box>
