@@ -20,6 +20,8 @@ interface useAuth {
   login: () => void;
   logout: () => void;
   loading: boolean;
+  loginWithFacebook: () => void;
+  loginWithGithub: () => void;
 }
 
 const AuthContext = createContext(null);
@@ -33,10 +35,38 @@ export function AuthProvider({ children }): ReactElement {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
 
-  const login = async () => {
+  const resetStates = () => {
     setError(undefined);
     setLoading(true);
+  };
+
+  const login = async () => {
+    resetStates();
     const provider = new firebase.auth.GoogleAuthProvider();
+    auth.useDeviceLanguage();
+    try {
+      await auth.signInWithPopup(provider);
+    } catch (error) {
+      setError(error);
+    }
+    setLoading(false);
+  };
+
+  const loginWithFacebook = async () => {
+    resetStates();
+    const provider = new firebase.auth.FacebookAuthProvider();
+    auth.useDeviceLanguage();
+    try {
+      await auth.signInWithPopup(provider);
+    } catch (error) {
+      setError(error);
+    }
+    setLoading(false);
+  };
+
+  const loginWithGithub = async () => {
+    resetStates();
+    const provider = new firebase.auth.GithubAuthProvider();
     auth.useDeviceLanguage();
     try {
       await auth.signInWithPopup(provider);
@@ -92,6 +122,8 @@ export function AuthProvider({ children }): ReactElement {
   const value: IAuth = {
     currentUser,
     login,
+    loginWithFacebook,
+    loginWithGithub,
     logout,
     error,
     loading,

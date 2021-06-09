@@ -25,6 +25,8 @@ export interface IUser {
 export interface IAuth {
   currentUser: IUser;
   login: () => void;
+  loginWithFacebook: () => void;
+  loginWithGithub: () => void;
   logout: () => void;
   error?: FirebaseError;
   loading: boolean;

@@ -9,12 +9,14 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { GrGoogle } from "react-icons/gr";
-import { FaFacebook, FaTwitter } from "react-icons/fa";
+import { FaFacebook } from "react-icons/fa";
+import { SiGithub } from "react-icons/si";
 import { useAuth, IAuth } from "../../utils";
 import { RoomList } from "../RoomList";
 
 export const SignInBox = (): ReactElement => {
-  const { login, currentUser }: IAuth = useAuth();
+  const { login, currentUser, loginWithFacebook, loginWithGithub }: IAuth =
+    useAuth();
   return (
     <>
       <Center py={6}>
@@ -51,11 +53,12 @@ export const SignInBox = (): ReactElement => {
                 >
                   With Google
                 </Button>
-                {/* <Button
+                <Button
                   colorScheme="facebook"
                   size="lg"
                   w="100%"
                   leftIcon={<FaFacebook />}
+                  onClick={loginWithFacebook}
                 >
                   With Facebook
                 </Button>
@@ -63,10 +66,11 @@ export const SignInBox = (): ReactElement => {
                   colorScheme="twitter"
                   size="lg"
                   w="100%"
-                  leftIcon={<FaTwitter />}
+                  leftIcon={<SiGithub />}
+                  onClick={loginWithGithub}
                 >
-                  With Twitter
-                </Button> */}
+                  With Github
+                </Button>
               </>
             )}
           </VStack>
