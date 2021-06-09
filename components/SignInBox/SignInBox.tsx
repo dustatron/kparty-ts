@@ -53,7 +53,7 @@ export const SignInBox = (): ReactElement => {
                 >
                   With Google
                 </Button>
-                <Button
+                {/* <Button
                   colorScheme="facebook"
                   size="lg"
                   w="100%"
@@ -61,7 +61,7 @@ export const SignInBox = (): ReactElement => {
                   onClick={loginWithFacebook}
                 >
                   With Facebook
-                </Button>
+                </Button> */}
                 <Button
                   colorScheme="twitter"
                   size="lg"
