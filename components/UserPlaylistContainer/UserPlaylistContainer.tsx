@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { ISong, useFirestoreAction, useAuth, useRoomData } from "../../utils";
-import { FaForward, FaBackward } from "react-icons/fa";
+import React, { useEffect, useState } from "react"
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd"
+import { ISong, useFirestoreAction, useAuth, useRoomData } from "../../utils"
+import { FaForward, FaBackward } from "react-icons/fa"
 import {
-  Stack,
+  Box,
   Tabs,
   Tab,
   TabList,
@@ -12,27 +12,27 @@ import {
   Container,
   Button,
   VStack,
-} from "@chakra-ui/react";
-import SongBox from "../../components/SongBox";
-import SongSearch from "../SongSearch";
-import styles from "./styles.module.css";
+} from "@chakra-ui/react"
+import SongBox from "../../components/SongBox"
+import SongSearch from "../SongSearch"
+import styles from "./styles.module.css"
 
 interface Props {
-  showModal: () => void;
-  playlist: ISong[];
-  roomId: any;
-  showFavModal: () => void;
-  currentSong: number;
+  showModal: () => void
+  playlist: ISong[]
+  roomId: any
+  showFavModal: () => void
+  currentSong: number
 }
 
 // a little function to help us with reordering the result
 const reorder = (list, startIndex, endIndex) => {
-  const result: ISong[] = Array.from(list);
-  const [removed] = result.splice(startIndex, 1);
-  result.splice(endIndex, 0, removed);
+  const result: ISong[] = Array.from(list)
+  const [removed] = result.splice(startIndex, 1)
+  result.splice(endIndex, 0, removed)
 
-  return result;
-};
+  return result
+}
 
 export const UserPlaylistContainer = ({
   showModal,
@@ -41,45 +41,67 @@ export const UserPlaylistContainer = ({
   showFavModal,
   currentSong,
 }: Props) => {
-  const { playlistUpdate, nextSong, prevSong, resetRoom } =
-    useFirestoreAction();
+  const { playlistUpdate, nextSong, prevSong, resetRoom } = useFirestoreAction()
 
-  const [songList, setSongList] = useState([]);
-  const [tabIndex, setTabIndex] = useState(0);
-  const { currentUser } = useAuth();
+  const [songList, setSongList] = useState([])
+  const [tabIndex, setTabIndex] = useState(0)
+  const [isNextDisabled, setNextDisabled] = useState(false)
+  const [isPrevDisabled, setPrevDisabled] = useState(false)
+  const { currentUser } = useAuth()
 
   useEffect(() => {
     if (playlist) {
-      setSongList(playlist.slice(currentSong));
-      console.log(currentSong);
+      setSongList(playlist.slice(currentSong))
     }
-  }, [playlist, currentSong]);
+    //Next Btn
+    if (playlist.length <= currentSong) {
+      setNextDisabled(true)
+    } else {
+      setNextDisabled(false)
+    }
+    //Prev Btn
+    if (currentSong <= 0) {
+      setPrevDisabled(true)
+    } else {
+      setPrevDisabled(false)
+    }
+  }, [playlist, currentSong])
 
   const onDragEnd = (result) => {
-    if (!result.destination) return;
+    if (!result.destination) return
 
     const reorderedList = reorder(
       songList,
       result.source.index,
       result.destination.index
-    );
-    playlistUpdate(roomId, reorderedList);
-    setSongList(reorderedList);
-  };
+    )
+    playlistUpdate(roomId, reorderedList)
+    setSongList(reorderedList)
+  }
 
   const handleTabsChange = (index) => {
-    setTabIndex(index);
-  };
+    setTabIndex(index)
+  }
+
+  const handleNextSong = () => {
+    nextSong(roomId)
+  }
+
+  const handlePreviousSong = () => {
+    if (currentSong > 0) {
+      prevSong(roomId)
+    }
+  }
 
   const isFav = (song) => {
     if (currentUser) {
       const hasSong = currentUser.favorites?.find(
         (favSong) => favSong.songId === song.songId
-      );
-      return hasSong;
+      )
+      return hasSong
     }
-    return false;
-  };
+    return false
+  }
 
   return (
     <>
@@ -137,6 +159,17 @@ export const UserPlaylistContainer = ({
                 )}
               </Droppable>
             </DragDropContext>
+            {playlist.length <= currentSong && (
+              <Box w="100" textAlign="center">
+                <Button
+                  onClick={() => resetRoom(roomId)}
+                  size="lg"
+                  variant="outline"
+                >
+                  Restart
+                </Button>
+              </Box>
+            )}
           </TabPanel>
           <TabPanel>
             <SongSearch changeTab={handleTabsChange} />
@@ -158,7 +191,8 @@ export const UserPlaylistContainer = ({
             <VStack>
               <Button
                 leftIcon={<FaForward />}
-                onClick={() => nextSong(roomId)}
+                onClick={handleNextSong}
+                disabled={isNextDisabled}
                 size="lg"
                 w="90%"
               >
@@ -166,7 +200,8 @@ export const UserPlaylistContainer = ({
               </Button>
               <Button
                 leftIcon={<FaBackward />}
-                onClick={() => prevSong(roomId)}
+                onClick={handlePreviousSong}
+                disabled={isPrevDisabled}
                 size="lg"
                 w="90%"
               >
@@ -180,7 +215,7 @@ export const UserPlaylistContainer = ({
         </TabPanels>
       </Tabs>
     </>
-  );
-};
+  )
+}
 
-export default UserPlaylistContainer;
+export default UserPlaylistContainer
