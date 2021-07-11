@@ -1,5 +1,5 @@
-import React, { ReactElement } from "react";
-import { useRouter } from "next/router";
+import React, { ReactElement } from "react"
+import { useRouter } from "next/router"
 import {
   Modal,
   ModalOverlay,
@@ -9,25 +9,25 @@ import {
   ModalBody,
   ModalCloseButton,
   Button,
-} from "@chakra-ui/react";
-import { useFirestoreAction, ISong, useRoomData } from "../../utils";
+} from "@chakra-ui/react"
+import { useFirestoreAction, ISong, useRoomData } from "../../utils"
 
 interface Props {
-  isModalShowing: boolean;
-  hideModal: () => void;
+  isModalShowing: boolean
+  hideModal: () => void
 }
 
 function SongEditModal({ isModalShowing, hideModal }: Props): ReactElement {
-  const router = useRouter();
-  const { roomId } = router.query;
+  const router = useRouter()
+  const { roomId } = router.query
 
-  const { removeSong } = useFirestoreAction();
-  const { selected } = useRoomData();
+  const { removeSong } = useFirestoreAction()
+  const { selected } = useRoomData()
 
   const handleDelete = () => {
-    removeSong(selected, roomId);
-    hideModal();
-  };
+    removeSong(selected, roomId)
+    hideModal()
+  }
 
   return (
     <>
@@ -38,7 +38,13 @@ function SongEditModal({ isModalShowing, hideModal }: Props): ReactElement {
             <ModalHeader>Normal : {selected.songTitle}</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-              <div>duration: {selected.duration}</div>
+              <div>
+                duration:{" "}
+                {(selected.duration / 60)
+                  .toFixed(2)
+                  .toString()
+                  .replace(".", ":")}
+              </div>
               <div>artist: {selected.artist}</div>
               <div>singer: {selected.singer}</div>
             </ModalBody>
@@ -55,7 +61,7 @@ function SongEditModal({ isModalShowing, hideModal }: Props): ReactElement {
         )}
       </Modal>
     </>
-  );
+  )
 }
 
-export default SongEditModal;
+export default SongEditModal
