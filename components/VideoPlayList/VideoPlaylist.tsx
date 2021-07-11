@@ -1,13 +1,13 @@
-import React, { ReactElement, useState, useEffect } from "react";
-import { Wrap, Button, Box } from "@chakra-ui/react";
-import { ISong, useFirestoreAction } from "../../utils";
-import SongBox from "../SongBox";
+import React, { ReactElement, useState, useEffect } from "react"
+import { Wrap, Button, Box } from "@chakra-ui/react"
+import { ISong, useFirestoreAction } from "../../utils"
+import SongBox from "../SongBox"
 
 interface Props {
-  playlist: ISong[];
-  currentSong: number;
-  isPlaying: boolean;
-  handelRest: () => void;
+  playlist: ISong[]
+  currentSong: number
+  isPlaying: boolean
+  handelRest: () => void
 }
 
 function VideoPlaylist({
@@ -16,12 +16,12 @@ function VideoPlaylist({
   isPlaying,
   handelRest,
 }: Props): ReactElement {
-  const [upcomingSongs, setUpcomingSongs] = useState([]);
-  const { resetRoom } = useFirestoreAction();
+  const [upcomingSongs, setUpcomingSongs] = useState([])
+  const { resetRoom } = useFirestoreAction()
 
   useEffect(() => {
-    setUpcomingSongs(playlist.slice(currentSong));
-  }, [playlist, currentSong]);
+    setUpcomingSongs(playlist.slice(currentSong))
+  }, [playlist, currentSong])
   return (
     <>
       <Wrap p="2" justify="center">
@@ -39,7 +39,7 @@ function VideoPlaylist({
         )}
       </Wrap>
     </>
-  );
+  )
 }
 
-export default VideoPlaylist;
+export default VideoPlaylist
