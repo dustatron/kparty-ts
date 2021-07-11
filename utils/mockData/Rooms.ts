@@ -1,10 +1,10 @@
-import { IRoom } from "../index";
+import { IRoom } from "../index"
 
 const Rooms: IRoom[] = [
   {
-    title: "Happy Hour",
+    title: "Krystal's Party",
     people: 3,
-    id: "happyHour",
+    id: "krystal",
     isActive: false,
     currentSong: 0,
     playlist: [
@@ -66,6 +66,6 @@ const Rooms: IRoom[] = [
     currentSong: 0,
     playlist: [],
   },
-];
+]
 
-export default Rooms;
+export default Rooms
