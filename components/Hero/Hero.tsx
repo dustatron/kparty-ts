@@ -1,5 +1,5 @@
-import Link from "next/link";
-import { useEffect } from "react";
+import Link from "next/link"
+import { useEffect } from "react"
 import {
   Box,
   Heading,
@@ -11,17 +11,17 @@ import {
   Divider,
   SimpleGrid,
   Wrap,
-} from "@chakra-ui/react";
-import { IAuth, Rooms } from "../../utils";
-import { useAuth } from "../../utils";
-import { RoomList } from "../RoomList";
+} from "@chakra-ui/react"
+import { IAuth, Rooms } from "../../utils"
+import { useAuth } from "../../utils"
+import { RoomList } from "../RoomList"
 
 export default function CallToActionWithAnnotation({ setTitle }) {
   useEffect(() => {
-    setTitle("Living room karaoke parties just got easier");
-  }, []);
+    setTitle("Living room karaoke parties just got easier")
+  }, [])
 
-  const { currentUser }: IAuth = useAuth();
+  const { currentUser }: IAuth = useAuth()
 
   return (
     <>
@@ -57,7 +57,7 @@ export default function CallToActionWithAnnotation({ setTitle }) {
         </SimpleGrid>
       </Container>
     </>
-  );
+  )
 }
 
 const Arrow = createIcon({
@@ -71,4 +71,4 @@ const Arrow = createIcon({
       fill="currentColor"
     />
   ),
-});
+})

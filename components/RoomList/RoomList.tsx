@@ -1,5 +1,5 @@
-import React from "react";
-import Link from "next/link";
+import React from "react"
+import Link from "next/link"
 import {
   Box,
   Heading,
@@ -11,8 +11,8 @@ import {
   Divider,
   SimpleGrid,
   Wrap,
-} from "@chakra-ui/react";
-import { Rooms } from "../../utils";
+} from "@chakra-ui/react"
+import { Rooms } from "../../utils"
 
 interface Props {}
 
@@ -20,7 +20,7 @@ export const RoomList = (props: Props) => {
   return (
     <Box bg="#333" height="80px" p="5" minH="30rem" width="100%">
       <Heading as="h3" color="white" textAlign="center" marginBottom="20px">
-        Public Rooms
+        Join the Party
       </Heading>
       {Rooms.map((room) => (
         <Box
@@ -53,5 +53,5 @@ export const RoomList = (props: Props) => {
         </Box>
       ))}
     </Box>
-  );
-};
+  )
+}
