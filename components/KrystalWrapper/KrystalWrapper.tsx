@@ -1,6 +1,6 @@
 import Link from "next/link"
 import { useEffect } from "react"
-import { LinkBox } from "./"
+import { LinkBox, KrystalCopy } from "./"
 import {
   Box,
   Heading,
@@ -23,7 +23,7 @@ interface Props {
 
 const KrystalWrapper = ({ setTitle }: Props) => {
   useEffect(() => {
-    setTitle("Krystal's Party")
+    setTitle("Collaborative Karaoke Party")
   }, [])
 
   const { currentUser }: IAuth = useAuth()
@@ -59,7 +59,7 @@ const KrystalWrapper = ({ setTitle }: Props) => {
               Where Karaoke Happens
             </Heading>
             <Text marginBottom="2rem">
-              Some important facts about Krystal maybe
+              <KrystalCopy />
             </Text>
             <Box textAlign="right">
               {!currentUser && (

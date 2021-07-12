@@ -1,50 +1,50 @@
-import { useEffect, useState, FC } from "react";
-import { useRouter } from "next/router";
-import { Container } from "@chakra-ui/react";
-import { useRoomData } from "../../utils";
-import FavSongModal from "../../components/FavSongModal";
-import UserPlaylistContainer from "../../components/UserPlaylistContainer";
-import SongEditModal from "../../components/SongEditModal";
-import WithAuth from "../../components/WithAuth";
+import { useEffect, useState, FC } from "react"
+import { useRouter } from "next/router"
+import { Container } from "@chakra-ui/react"
+import { useRoomData } from "../../utils"
+import FavSongModal from "../../components/FavSongModal"
+import UserPlaylistContainer from "../../components/UserPlaylistContainer"
+import SongEditModal from "../../components/SongEditModal"
+import WithAuth from "../../components/WithAuth"
 
 interface Props {
-  setTitle: (title: string) => void;
+  setTitle: (title: string) => void
 }
 
 const playlist: FC<Props> = ({ setTitle }) => {
-  const router = useRouter();
-  const { roomId } = router.query;
-  const [isFavModalShowing, setIsFavModalShowing] = useState<boolean>(false);
-  const [isModalShowing, setIsModalShowing] = useState<boolean>(false);
-  const { roomData, setRoomKey } = useRoomData();
+  const router = useRouter()
+  const { roomId } = router.query
+  const [isFavModalShowing, setIsFavModalShowing] = useState<boolean>(false)
+  const [isModalShowing, setIsModalShowing] = useState<boolean>(false)
+  const { roomData, setRoomKey } = useRoomData()
 
   useEffect(() => {
-    setRoomKey(roomId);
+    setRoomKey(roomId)
 
     return () => {
-      setRoomKey(null);
-    };
-  }, [roomId]);
+      setRoomKey(null)
+    }
+  }, [roomId])
 
   useEffect(() => {
     if (roomData) {
-      setTitle(`${roomData.title} Room`);
+      setTitle(`${roomData.title} Playlist`)
     }
-  }, [roomData]);
+  }, [roomData])
 
   const handleShowModal = () => {
-    setIsModalShowing(true);
-  };
+    setIsModalShowing(true)
+  }
   const handleShowFavModal = () => {
-    setIsFavModalShowing(true);
-  };
+    setIsFavModalShowing(true)
+  }
 
   const handleHideModal = () => {
-    setIsModalShowing(false);
-  };
+    setIsModalShowing(false)
+  }
   const handleHideFavModal = () => {
-    setIsFavModalShowing(false);
-  };
+    setIsFavModalShowing(false)
+  }
 
   return (
     <Container maxW="xl" centerContent p="5">
@@ -66,7 +66,7 @@ const playlist: FC<Props> = ({ setTitle }) => {
         isFavModalShowing={isFavModalShowing}
       />
     </Container>
-  );
-};
+  )
+}
 
-export default WithAuth(playlist);
+export default WithAuth(playlist)
