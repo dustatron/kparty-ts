@@ -1,4 +1,5 @@
-import React, { ReactElement } from "react"
+import React, { ReactElement, useState } from "react"
+import Link from "next/link"
 import { useRouter } from "next/router"
 import {
   Modal,
@@ -9,8 +10,17 @@ import {
   ModalBody,
   ModalCloseButton,
   Button,
+  Link as CaLink,
+  Spacer,
+  Table,
+  Tbody,
+  Tr,
+  Td,
+  Box,
+  Heading,
+  Text,
 } from "@chakra-ui/react"
-import { useFirestoreAction, ISong, useRoomData } from "../../utils"
+import { useFirestoreAction, useRoomData } from "../../utils"
 
 interface Props {
   isModalShowing: boolean
@@ -20,6 +30,7 @@ interface Props {
 function SongEditModal({ isModalShowing, hideModal }: Props): ReactElement {
   const router = useRouter()
   const { roomId } = router.query
+  const [isShowingConfirm, setIsShowingConfirm] = useState(false)
 
   const { removeSong } = useFirestoreAction()
   const { selected } = useRoomData()
@@ -27,34 +38,91 @@ function SongEditModal({ isModalShowing, hideModal }: Props): ReactElement {
   const handleDelete = () => {
     removeSong(selected, roomId)
     hideModal()
+    setIsShowingConfirm(false)
+  }
+
+  const handleHideModal = () => {
+    hideModal()
+    setIsShowingConfirm(false)
   }
 
   return (
     <>
-      <Modal isOpen={isModalShowing} onClose={hideModal}>
+      <Modal isOpen={isModalShowing} onClose={handleHideModal}>
         <ModalOverlay />
         {selected && (
           <ModalContent>
-            <ModalHeader>Normal : {selected.songTitle}</ModalHeader>
+            <ModalHeader> Song Details </ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-              <div>
-                duration:{" "}
-                {(selected.duration / 60)
-                  .toFixed(2)
-                  .toString()
-                  .replace(".", ":")}
-              </div>
-              <div>artist: {selected.artist}</div>
-              <div>singer: {selected.singer}</div>
+              {!isShowingConfirm && (
+                <Table size="sm" variant="striped" colorScheme="blue">
+                  <Tbody>
+                    <Tr>
+                      <Td>Title</Td>
+                      <Td>{selected.songTitle}</Td>
+                    </Tr>
+                    <Tr>
+                      <Td>artist:</Td>
+                      <Td>{selected.artist}</Td>
+                    </Tr>
+                    <Tr>
+                      <Td>duration:</Td>
+                      <Td>
+                        {(selected.duration / 60)
+                          .toFixed(2)
+                          .toString()
+                          .replace(".", ":")}
+                      </Td>
+                    </Tr>
+
+                    <Tr>
+                      <Td>Video Link:</Td>
+                      <Td>
+                        <Link href={selected.link}>
+                          <a target="_blank">
+                            <CaLink color="blue.600"> YouTube link </CaLink>
+                          </a>
+                        </Link>
+                      </Td>
+                    </Tr>
+                    <Tr>
+                      <Td>Singer:</Td>
+                      <Td>{selected.singer}</Td>
+                    </Tr>
+                  </Tbody>
+                </Table>
+              )}
+              {isShowingConfirm && (
+                <Box>
+                  <Heading as="h2" size="lg">
+                    Deleting...
+                  </Heading>
+                  <Heading as="h3" size="md">
+                    {selected.songTitle}
+                  </Heading>
+                </Box>
+              )}
             </ModalBody>
 
             <ModalFooter>
-              <Button colorScheme="blue" mr={3} onClick={hideModal}>
+              {!isShowingConfirm && (
+                <Button
+                  colorScheme="red"
+                  mr={3}
+                  onClick={() => setIsShowingConfirm(true)}
+                >
+                  Delete
+                </Button>
+              )}
+              {isShowingConfirm && (
+                <Button colorScheme="red" mr={3} onClick={handleDelete}>
+                  Confirm
+                </Button>
+              )}
+              <Spacer />
+              <Button colorScheme="blue" mr={3} onClick={handleHideModal}>
                 Close
-              </Button>
-              <Button colorScheme="red" mr={3} onClick={handleDelete}>
-                delete
               </Button>
             </ModalFooter>
           </ModalContent>

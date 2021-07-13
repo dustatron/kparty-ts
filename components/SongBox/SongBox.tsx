@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement, useState } from "react"
 import {
   Box,
   Wrap,
@@ -10,21 +10,21 @@ import {
   Button,
   Spacer,
   VStack,
-} from "@chakra-ui/react";
-import { FaRegHeart, FaHeart, FaGalacticSenate } from "react-icons/fa";
-import { useRouter } from "next/router";
-import { BsTrashFill } from "react-icons/bs";
-import { ISong, useRoomData, useAuth, useFirestoreAction } from "../../utils";
-import { SiAddthis } from "react-icons/si";
+} from "@chakra-ui/react"
+import { FaRegHeart, FaHeart, FaGalacticSenate } from "react-icons/fa"
+import { useRouter } from "next/router"
+import { HiOutlineCog } from "react-icons/hi"
+import { ISong, useRoomData, useAuth, useFirestoreAction } from "../../utils"
+import { SiAddthis } from "react-icons/si"
 
 interface Props {
-  songData: ISong;
-  isDragging?: () => boolean;
-  showModal?: () => void;
-  fromFavorites?: boolean;
-  changeTab?: (index: number) => void;
-  currentTab?: number;
-  isActive?: boolean;
+  songData: ISong
+  isDragging?: () => boolean
+  showModal?: () => void
+  fromFavorites?: boolean
+  changeTab?: (index: number) => void
+  currentTab?: number
+  isActive?: boolean
 }
 
 function SongBox({
@@ -36,35 +36,35 @@ function SongBox({
   currentTab,
   isActive,
 }: Props): ReactElement {
-  const router = useRouter();
-  const { roomId } = router.query;
+  const router = useRouter()
+  const { roomId } = router.query
 
-  const { songTitle, thumbnail } = songData;
-  const [isFav, setIsFav] = useState(fromFavorites);
-  const { setSelected } = useRoomData();
-  const { addFavSong, addSong, removeFavorite } = useFirestoreAction();
-  const { currentUser } = useAuth();
+  const { songTitle, thumbnail } = songData
+  const [isFav, setIsFav] = useState(fromFavorites)
+  const { setSelected } = useRoomData()
+  const { addFavSong, addSong, removeFavorite } = useFirestoreAction()
+  const { currentUser } = useAuth()
 
   const favSong = () => {
-    setIsFav(!isFav);
+    setIsFav(!isFav)
     if (!isFav) {
-      addFavSong(songData, currentUser);
+      addFavSong(songData, currentUser)
     }
 
     if (isFav) {
-      removeFavorite(songData, currentUser);
+      removeFavorite(songData, currentUser)
     }
-  };
+  }
 
   const handleShowModal = () => {
-    setSelected(songData);
-    showModal();
-  };
+    setSelected(songData)
+    showModal()
+  }
 
   const handleAdd = () => {
-    addSong(songData, roomId);
-    changeTab(0);
-  };
+    addSong(songData, roomId)
+    changeTab(0)
+  }
 
   return (
     <Wrap
@@ -89,7 +89,7 @@ function SongBox({
       </Box>
 
       <Stack w="50%">
-        <Heading size="xs" w="100%">
+        <Heading size="xs" w="100%" onClick={handleShowModal}>
           {songTitle}
         </Heading>
         <Box h="2px" w="100%" bg="blackAlpha.400" margin="5px auto" />
@@ -118,7 +118,7 @@ function SongBox({
         )}
         {showModal && currentTab !== 2 && (
           <Button variant="ghost" marginBottom="5px" onClick={handleShowModal}>
-            <Icon as={BsTrashFill} h={4} w={4} />
+            <Icon as={HiOutlineCog} h={6} w={6} />
           </Button>
         )}
         <Button variant="ghost" onClick={favSong}>
@@ -126,7 +126,7 @@ function SongBox({
         </Button>
       </VStack>
     </Wrap>
-  );
+  )
 }
 
-export default SongBox;
+export default SongBox

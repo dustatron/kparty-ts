@@ -1,5 +1,6 @@
-import Rooms from "./mockData/Rooms";
+import Rooms from "./mockData/Rooms"
 import {
+  RoomDataHook,
   IRoom,
   ISong,
   IVideoData,
@@ -8,13 +9,13 @@ import {
   IUseFetchYT,
   ISongAction,
   ActionTypes,
-} from "./interfaces";
-import { useFetchYT } from "./useFetchYT";
-import { useAuth, AuthProvider } from "./context/AuthContext";
-import { RoomDataProvider, useRoomData } from "./context/RoomDataContext";
-import { auth } from "./firebase";
-import useFirestoreAction from "./hooks/useFirestoreAction";
-import { videoToSong } from "./normalize";
+} from "./interfaces"
+import { useFetchYT } from "./useFetchYT"
+import { useAuth, AuthProvider } from "./context/AuthContext"
+import { RoomDataProvider, useRoomData } from "./context/RoomDataContext"
+import { auth } from "./firebase"
+import useFirestoreAction from "./hooks/useFirestoreAction"
+import { videoToSong } from "./normalize"
 
 export {
   Rooms,
@@ -27,7 +28,7 @@ export {
   useFirestoreAction,
   ActionTypes,
   videoToSong,
-};
+}
 export type {
   IRoom,
   ISong,
@@ -36,4 +37,5 @@ export type {
   IAuth,
   IUseFetchYT,
   ISongAction,
-};
+  RoomDataHook,
+}

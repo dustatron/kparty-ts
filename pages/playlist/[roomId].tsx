@@ -32,16 +32,17 @@ const playlist: FC<Props> = ({ setTitle }) => {
     }
   }, [roomData])
 
-  const handleShowModal = () => {
-    setIsModalShowing(true)
+  const handleShowModal = (hide?: boolean) => {
+    if (hide) {
+      setIsModalShowing(false)
+    } else {
+      setIsModalShowing(true)
+    }
   }
   const handleShowFavModal = () => {
     setIsFavModalShowing(true)
   }
 
-  const handleHideModal = () => {
-    setIsModalShowing(false)
-  }
   const handleHideFavModal = () => {
     setIsFavModalShowing(false)
   }
@@ -58,7 +59,7 @@ const playlist: FC<Props> = ({ setTitle }) => {
         />
       )}
       <SongEditModal
-        hideModal={handleHideModal}
+        hideModal={() => handleShowModal(true)}
         isModalShowing={isModalShowing}
       />
       <FavSongModal
