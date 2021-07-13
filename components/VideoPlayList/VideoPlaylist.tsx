@@ -27,7 +27,11 @@ function VideoPlaylist({
       <Wrap p="2" justify="center">
         {upcomingSongs.map((song: ISong, index) => (
           <Box w={[null, "100%", "30%"]}>
-            <SongBox songData={song} isActive={index === 0} />
+            <SongBox
+              songData={song}
+              isActive={index === 0}
+              showModal={() => {}}
+            />
           </Box>
         ))}
         {currentSong >= playlist.length && (

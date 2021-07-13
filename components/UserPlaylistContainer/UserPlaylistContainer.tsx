@@ -44,9 +44,9 @@ export const UserPlaylistContainer = ({
   const { playlistUpdate, nextSong, prevSong, resetRoom } = useFirestoreAction()
 
   const [songList, setSongList] = useState([])
-  const [tabIndex, setTabIndex] = useState(0)
-  const [isNextDisabled, setNextDisabled] = useState(false)
-  const [isPrevDisabled, setPrevDisabled] = useState(false)
+  const [tabIndex, setTabIndex] = useState<number>(0)
+  const [isNextDisabled, setNextDisabled] = useState<boolean>(false)
+  const [isPrevDisabled, setPrevDisabled] = useState<boolean>(false)
   const { currentUser } = useAuth()
 
   useEffect(() => {
@@ -91,6 +91,20 @@ export const UserPlaylistContainer = ({
     if (currentSong > 0) {
       prevSong(roomId)
     }
+  }
+
+  const getDuration = (songList) => {
+    const totalSeconds = songList.reduce((accumulator, song: ISong) => {
+      return accumulator + song.duration
+    }, 0)
+
+    const hours = Math.floor(totalSeconds / 60 / 60)
+    const minutes = Math.floor(totalSeconds / 60) - hours * 60
+    const seconds = totalSeconds % 60
+
+    return ` ${hours < 10 ? "0" + hours : hours}:${
+      minutes < 10 ? "0" + minutes : minutes
+    }:${seconds < 10 ? "0" + seconds : seconds}`
   }
 
   const isFav = (song) => {
@@ -189,6 +203,16 @@ export const UserPlaylistContainer = ({
           </TabPanel>
           <TabPanel>
             <VStack>
+              <Box
+                padding="2"
+                border="1px"
+                borderRadius="sm"
+                w="90%"
+                textAlign="center"
+              >
+                Duration:
+                {getDuration(songList)}
+              </Box>
               <Button
                 leftIcon={<FaForward />}
                 onClick={handleNextSong}
