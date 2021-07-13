@@ -1,6 +1,7 @@
 import React, { ReactElement, useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/router"
+import { secondsToHours } from "../../utils"
 import {
   Modal,
   ModalOverlay,
@@ -68,12 +69,7 @@ function SongEditModal({ isModalShowing, hideModal }: Props): ReactElement {
                     </Tr>
                     <Tr>
                       <Td>duration:</Td>
-                      <Td>
-                        {(selected.duration / 60)
-                          .toFixed(2)
-                          .toString()
-                          .replace(".", ":")}
-                      </Td>
+                      <Td>{secondsToHours(selected.duration)}</Td>
                     </Tr>
 
                     <Tr>

@@ -44,13 +44,13 @@ const KrystalWrapper = ({ setTitle }: Props) => {
             <LinkBox
               title="Playlist"
               subTitle="Add music to the list"
-              btnCopy="Add"
+              img="playlist"
               btnLink="/playlist/krystal"
             />
             <LinkBox
               title="Video Player"
               subTitle="Play the videos"
-              btnCopy="Play"
+              img="Player"
               btnLink="/player/krystal"
             />
           </Box>

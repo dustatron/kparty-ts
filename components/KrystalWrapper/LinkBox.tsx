@@ -1,5 +1,7 @@
 import Link from "next/link"
+import Image from "next/image"
 import {
+  VStack,
   Box,
   Heading,
   Container,
@@ -15,30 +17,34 @@ import {
 interface Props {
   title: string
   subTitle: string
-  btnCopy: string
+  img: string
   btnLink: string
 }
 
-const LinkBox = ({ title, subTitle, btnCopy, btnLink }: Props) => {
+const LinkBox = ({ title, subTitle, img, btnLink }: Props) => {
   return (
-    <Box bg="white" borderRadius="md" h="87px" p="3" marginBottom="1rem">
-      <Flex>
-        <Box w="90%">
+    <Link href={btnLink}>
+      <a>
+        <VStack
+          background="white"
+          borderWidth="1px"
+          borderRadius="lg"
+          p="3"
+          marginBottom="3"
+        >
+          <Image
+            src={`/${img}.png`}
+            alt="Picture of the author"
+            width={70}
+            height={70}
+          />
           <Heading as="h4" size="md">
             {title}
           </Heading>
-          <Divider p="1" />
-          <Wrap p="2">{subTitle}</Wrap>
-        </Box>
-        <Box p="3">
-          <Link href={btnLink}>
-            <a>
-              <Button colorScheme="blue">{btnCopy}</Button>
-            </a>
-          </Link>
-        </Box>
-      </Flex>
-    </Box>
+          <Text align="center">{subTitle}</Text>
+        </VStack>
+      </a>
+    </Link>
   )
 }
 

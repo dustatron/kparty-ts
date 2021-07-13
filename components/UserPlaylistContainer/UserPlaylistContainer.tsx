@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd"
-import { ISong, useFirestoreAction, useAuth, useRoomData } from "../../utils"
+import { ISong, useFirestoreAction, useAuth, secondsToHours } from "../../utils"
 import { FaForward, FaBackward } from "react-icons/fa"
 import {
   Box,
@@ -97,14 +97,7 @@ export const UserPlaylistContainer = ({
     const totalSeconds = songList.reduce((accumulator, song: ISong) => {
       return accumulator + song.duration
     }, 0)
-
-    const hours = Math.floor(totalSeconds / 60 / 60)
-    const minutes = Math.floor(totalSeconds / 60) - hours * 60
-    const seconds = totalSeconds % 60
-
-    return ` ${hours < 10 ? "0" + hours : hours}:${
-      minutes < 10 ? "0" + minutes : minutes
-    }:${seconds < 10 ? "0" + seconds : seconds}`
+    return secondsToHours(totalSeconds)
   }
 
   const isFav = (song) => {
