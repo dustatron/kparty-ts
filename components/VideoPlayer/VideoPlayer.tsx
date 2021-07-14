@@ -1,17 +1,17 @@
-import React, { FC } from "react";
-import { FaPause, FaPlay, FaForward, FaBackward } from "react-icons/fa";
-import { IRoom } from "../../utils";
-import ReactPlayer from "react-player";
-import { VStack, HStack, Button, Center, Icon } from "@chakra-ui/react";
+import React, { FC } from "react"
+import { FaPause, FaPlay, FaForward, FaBackward } from "react-icons/fa"
+import { IRoom } from "../../utils"
+import ReactPlayer from "react-player"
+import { VStack, HStack, Button, Center, Icon } from "@chakra-ui/react"
 
 type Props = {
-  roomData: IRoom;
-  isPlaying: boolean;
-  setIsPlaying: (bool) => void;
-  nextSong: () => void;
-  previousSong: () => void;
-  isLoading: boolean;
-};
+  roomData: IRoom
+  isPlaying: boolean
+  setIsPlaying: (bool) => void
+  nextSong: () => void
+  previousSong: () => void
+  isLoading: boolean
+}
 
 const VideoPlayer: FC<Props> = ({
   roomData,
@@ -21,7 +21,7 @@ const VideoPlayer: FC<Props> = ({
   previousSong,
   isLoading,
 }) => {
-  const { currentSong, playlist } = roomData;
+  const { currentSong, playlist } = roomData
 
   return (
     <VStack spacing={0} align="stretch">
@@ -35,10 +35,10 @@ const VideoPlayer: FC<Props> = ({
             width="1000%"
             onEnded={nextSong}
             onPlay={() => {
-              setIsPlaying(true);
+              setIsPlaying(true)
             }}
             onPause={() => {
-              setIsPlaying(false);
+              setIsPlaying(false)
             }}
           />
         )}
@@ -57,7 +57,7 @@ const VideoPlayer: FC<Props> = ({
           isLoading={isLoading}
           disabled={isPlaying}
           onClick={() => {
-            setIsPlaying(!isPlaying);
+            setIsPlaying(!isPlaying)
           }}
           p={0}
         >
@@ -68,7 +68,7 @@ const VideoPlayer: FC<Props> = ({
           disabled={!isPlaying}
           isLoading={isLoading}
           onClick={() => {
-            setIsPlaying(false);
+            setIsPlaying(false)
           }}
         >
           <Icon as={FaPause} h={5} w={5} />
@@ -83,7 +83,7 @@ const VideoPlayer: FC<Props> = ({
         </Button>
       </HStack>
     </VStack>
-  );
-};
+  )
+}
 
-export default VideoPlayer;
+export default VideoPlayer

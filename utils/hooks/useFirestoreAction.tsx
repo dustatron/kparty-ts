@@ -1,39 +1,24 @@
-import React, { useState } from "react";
-import firebase from "firebase/app";
-import "firebase/firestore";
-import { ISongAction, ISong, ActionTypes, IRoom, IUser } from "../../utils";
+import React, { useState } from "react"
+import firebase from "firebase/app"
+import "firebase/firestore"
+import { ISongAction, ISong, ActionTypes, IRoom, IUser } from "../../utils"
 
 const useFirestoreAction = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   // Creates doc for cloud function
   const createAction = (payload: ISongAction) => {
-    setIsLoading(true);
-    const actionRef = firebase.firestore().collection("actions");
+    setIsLoading(true)
+    const actionRef = firebase.firestore().collection("actions")
     actionRef.add(payload).then(() => {
-      setIsLoading(false);
-    });
-  };
+      setIsLoading(false)
+    })
+  }
 
-  /*  example function for action creator
-
-  const playlistUpdate = (roomId: string, playlist: ISong[]) => {
-    const playlistPayload: ISongAction = {
-      type: ActionTypes.PlaylistUpdate,
-      roomId,
-      playlist,
-    };
-
-    createAction(playlistPayload);
-  };
-  
-  
-  */
-
-  const roomsDB = firebase.firestore().collection("rooms");
-  const songsDB = firebase.firestore().collection("songs");
-  const userDB = firebase.firestore().collection("users");
+  const roomsDB = firebase.firestore().collection("rooms")
+  const songsDB = firebase.firestore().collection("songs")
+  const userDB = firebase.firestore().collection("users")
 
   const addSong = (song, roomId) => {
     roomsDB
@@ -42,94 +27,94 @@ const useFirestoreAction = () => {
         playlist: firebase.firestore.FieldValue.arrayUnion(song),
       })
       .then(() => {
-        setIsLoading(true);
+        setIsLoading(true)
       })
-      .catch((err) => setError(err));
-  };
+      .catch((err) => setError(err))
+  }
 
   const removeSong = (song: ISong, roomId: any) => {
-    setIsLoading(true);
-    const { arrayRemove } = firebase.firestore.FieldValue;
+    setIsLoading(true)
+    const { arrayRemove } = firebase.firestore.FieldValue
     roomsDB
       .doc(roomId)
       .update({ playlist: arrayRemove(song) })
       .then(() => {
-        setIsLoading(false);
+        setIsLoading(false)
       })
-      .catch((err) => setError(err));
-  };
+      .catch((err) => setError(err))
+  }
 
   const removeFavorite = (song: ISong, user) => {
-    const { arrayRemove } = firebase.firestore.FieldValue;
-    const userRef = userDB.doc(user.uid);
-    userRef.update({ favorites: arrayRemove(song) });
-  };
+    const { arrayRemove } = firebase.firestore.FieldValue
+    const userRef = userDB.doc(user.uid)
+    userRef.update({ favorites: arrayRemove(song) })
+  }
 
   const nextSong = (roomId) => {
-    setIsLoading(true);
-    const { increment } = firebase.firestore.FieldValue;
+    setIsLoading(true)
+    const { increment } = firebase.firestore.FieldValue
     roomsDB
       .doc(roomId)
       .update({ currentSong: increment(1) })
       .then(() => {
-        setIsLoading(false);
+        setIsLoading(false)
       })
-      .catch((err) => setError(err));
-  };
+      .catch((err) => setError(err))
+  }
 
   const prevSong = (roomId) => {
-    setIsLoading(true);
-    const { increment } = firebase.firestore.FieldValue;
+    setIsLoading(true)
+    const { increment } = firebase.firestore.FieldValue
     roomsDB
       .doc(roomId)
       .update({ currentSong: increment(-1) })
       .then(() => {
-        setIsLoading(false);
+        setIsLoading(false)
       })
-      .catch((err) => setError(err));
-  };
+      .catch((err) => setError(err))
+  }
 
   const setIsActive = (roomId, isPlaying) => {
     roomsDB
       .doc(roomId)
       .update({ isActive: isPlaying })
       .then(() => {
-        setIsLoading(false);
+        setIsLoading(false)
       })
-      .catch((err) => setError(err));
-  };
+      .catch((err) => setError(err))
+  }
 
   const playlistUpdate = (roomId: string, playlistUpdated: ISong[]) => {
-    const roomDoc = roomsDB.doc(roomId);
+    const roomDoc = roomsDB.doc(roomId)
     roomDoc
       .update({ playlist: playlistUpdated })
       .then(() => {
-        setIsLoading(false);
+        setIsLoading(false)
       })
-      .catch((err) => setError(err));
-  };
+      .catch((err) => setError(err))
+  }
 
   const addFavSong = (song: ISong, currentUser: IUser) => {
-    const userRef = userDB.doc(currentUser.uid);
+    const userRef = userDB.doc(currentUser.uid)
     const newSong: ISong = {
       ...song,
       singer: currentUser.displayName,
       userPhoto: currentUser.photoURL,
-    };
+    }
     userRef.update({
       favorites: firebase.firestore.FieldValue.arrayUnion(newSong),
-    });
-  };
+    })
+  }
 
   const resetRoom = (roomId) => {
-    const roomDoc = roomsDB.doc(roomId);
+    const roomDoc = roomsDB.doc(roomId)
     roomDoc
       .update({ currentSong: 0 })
       .then(() => {
-        setIsLoading(false);
+        setIsLoading(false)
       })
-      .catch((err) => setError(err));
-  };
+      .catch((err) => setError(err))
+  }
 
   return {
     error,
@@ -143,7 +128,7 @@ const useFirestoreAction = () => {
     addFavSong,
     removeFavorite,
     resetRoom,
-  };
-};
+  }
+}
 
-export default useFirestoreAction;
+export default useFirestoreAction

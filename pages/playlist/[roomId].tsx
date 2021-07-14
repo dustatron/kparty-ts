@@ -56,6 +56,7 @@ const playlist: FC<Props> = ({ setTitle }) => {
           showFavModal={handleShowFavModal}
           roomId={roomId}
           currentSong={roomData.currentSong}
+          isActive={roomData.isActive}
         />
       )}
       <SongEditModal

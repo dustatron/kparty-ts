@@ -10,12 +10,14 @@ import {
   Button,
   Spacer,
   VStack,
+  Link,
 } from "@chakra-ui/react"
 import { FaRegHeart, FaHeart, FaGalacticSenate } from "react-icons/fa"
 import { useRouter } from "next/router"
 import { HiOutlineCog } from "react-icons/hi"
 import { ISong, useRoomData, useAuth, useFirestoreAction } from "../../utils"
 import { SiAddthis } from "react-icons/si"
+import { MdOpenInNew } from "react-icons/md"
 
 interface Props {
   songData: ISong
@@ -25,6 +27,7 @@ interface Props {
   changeTab?: (index: number) => void
   currentTab?: number
   isActive?: boolean
+  isPlayer?: boolean
 }
 
 function SongBox({
@@ -35,6 +38,7 @@ function SongBox({
   changeTab,
   currentTab,
   isActive,
+  isPlayer,
 }: Props): ReactElement {
   const router = useRouter()
   const { roomId } = router.query
@@ -57,6 +61,9 @@ function SongBox({
   }
 
   const handleShowModal = () => {
+    if (isPlayer) {
+      return window.open(songData.link, "_blank")
+    }
     setSelected(songData)
     showModal()
   }
@@ -90,7 +97,7 @@ function SongBox({
 
       <Stack w="50%">
         <Heading size="xs" w="100%" onClick={handleShowModal}>
-          {songTitle}
+          <Link>{songTitle}</Link>
         </Heading>
         <Box h="2px" w="100%" bg="blackAlpha.400" margin="5px auto" />
         <Box textAlign="center" w="100%">
@@ -116,13 +123,18 @@ function SongBox({
             <Icon as={SiAddthis} />
           </Button>
         )}
-        {showModal && currentTab !== 2 && (
+        {!isPlayer && (
           <Button variant="ghost" marginBottom="5px" onClick={handleShowModal}>
             <Icon as={HiOutlineCog} h={6} w={6} />
           </Button>
         )}
+        {isPlayer && (
+          <Button variant="ghost" marginBottom="5px" onClick={handleShowModal}>
+            <Icon as={MdOpenInNew} h={6} w={6} />
+          </Button>
+        )}
         <Button variant="ghost" onClick={favSong}>
-          <Icon as={isFav ? FaHeart : FaRegHeart} />
+          <Icon as={isFav ? FaHeart : FaRegHeart} h="5" w="5" />
         </Button>
       </VStack>
     </Wrap>

@@ -32,7 +32,6 @@ const player: React.FC<Props> = ({ setTitle }) => {
     }
     if (roomData && !isPlaying) {
       setTitle(roomData.title)
-      setIsActive(roomId, isPlaying)
     }
     setIsActive(roomId, isPlaying)
   }, [roomData, isPlaying])

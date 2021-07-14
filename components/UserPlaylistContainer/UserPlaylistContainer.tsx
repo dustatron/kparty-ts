@@ -23,6 +23,7 @@ interface Props {
   roomId: any
   showFavModal: () => void
   currentSong: number
+  isActive: boolean
 }
 
 // a little function to help us with reordering the result
@@ -40,6 +41,7 @@ export const UserPlaylistContainer = ({
   roomId,
   showFavModal,
   currentSong,
+  isActive,
 }: Props) => {
   const { playlistUpdate, nextSong, prevSong, resetRoom } = useFirestoreAction()
 
@@ -156,6 +158,7 @@ export const UserPlaylistContainer = ({
                               showModal={() => showModal()}
                               fromFavorites={isFav(song)}
                               currentTab={tabIndex}
+                              isActive={isActive && index === 0}
                             />
                           </div>
                         )}

@@ -31,6 +31,7 @@ function VideoPlaylist({
               songData={song}
               isActive={index === 0}
               showModal={() => {}}
+              isPlayer
             />
           </Box>
         ))}

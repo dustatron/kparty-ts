@@ -33,7 +33,14 @@ const KrystalWrapper = ({ setTitle }: Props) => {
     <>
       <Container maxW={"4xl"}>
         <SimpleGrid columns={[1, null, 2]} spacing={6} p="10">
-          <Box bg="#333" height="80px" p="5" minH="30rem" width="100%">
+          <Box
+            bg="#333"
+            height="80px"
+            p="5"
+            minH="30rem"
+            width="100%"
+            borderRadius="md"
+          >
             <Heading
               as="h3"
               color="white"
