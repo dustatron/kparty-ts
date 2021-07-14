@@ -8,6 +8,7 @@ import {
   Text,
   Button,
   createIcon,
+  Icon,
   Flex,
   Divider,
   SimpleGrid,

@@ -8,11 +8,14 @@ import {
   Text,
   Button,
   createIcon,
+  Icon,
   Flex,
   Divider,
   SimpleGrid,
   Wrap,
 } from "@chakra-ui/react"
+import { CgPlayListAdd } from "react-icons/cg"
+import { MdOndemandVideo } from "react-icons/md"
 
 interface Props {
   title: string
@@ -32,12 +35,8 @@ const LinkBox = ({ title, subTitle, img, btnLink }: Props) => {
           p="3"
           marginBottom="3"
         >
-          <Image
-            src={`/${img}.png`}
-            alt="Picture of the author"
-            width={70}
-            height={70}
-          />
+          {img === "playlist" && <Icon as={CgPlayListAdd} h={50} w={50} />}
+          {img === "Player" && <Icon as={MdOndemandVideo} h={50} w={50} />}
           <Heading as="h4" size="md">
             {title}
           </Heading>
