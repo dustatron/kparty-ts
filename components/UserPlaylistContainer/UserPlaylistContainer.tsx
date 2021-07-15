@@ -24,6 +24,7 @@ interface Props {
   showFavModal: () => void
   currentSong: number
   isActive: boolean
+  handleShowPreview: (link, title, handleSave) => void
 }
 
 // a little function to help us with reordering the result
@@ -42,6 +43,7 @@ export const UserPlaylistContainer = ({
   showFavModal,
   currentSong,
   isActive,
+  handleShowPreview,
 }: Props) => {
   const { playlistUpdate, nextSong, prevSong, resetRoom } = useFirestoreAction()
 
@@ -182,7 +184,10 @@ export const UserPlaylistContainer = ({
             )}
           </TabPanel>
           <TabPanel>
-            <SongSearch changeTab={handleTabsChange} />
+            <SongSearch
+              changeTab={handleTabsChange}
+              handleShowPreview={handleShowPreview}
+            />
           </TabPanel>
           <TabPanel>
             <VStack>

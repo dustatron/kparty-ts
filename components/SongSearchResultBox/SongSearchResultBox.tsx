@@ -1,4 +1,4 @@
-import React from "react";
+import React from "react"
 import {
   Box,
   Wrap,
@@ -9,23 +9,19 @@ import {
   Text,
   VStack,
   Spacer,
-} from "@chakra-ui/react";
-import {
-  IVideoData,
-  videoToSong,
-  useFirestoreAction,
-  IUser,
-} from "../../utils";
-import { SiAddthis } from "react-icons/si";
-import { FaHeart, FaPlay } from "react-icons/fa";
+} from "@chakra-ui/react"
+import { IVideoData, videoToSong, useFirestoreAction, IUser } from "../../utils"
+import { SiAddthis } from "react-icons/si"
+import { FaHeart, FaPlay } from "react-icons/fa"
 
 interface Props {
-  videoData: IVideoData;
-  authorId: string;
-  user: IUser;
-  roomId: string | string[];
-  changeTab: (index: number) => void;
-  clear: () => void;
+  videoData: IVideoData
+  authorId: string
+  user: IUser
+  roomId: string | string[]
+  changeTab: (index: number) => void
+  clear: () => void
+  handleShowPreview: (link, title, handleAdd) => void
 }
 
 const SongSearchResultBox = ({
@@ -34,32 +30,33 @@ const SongSearchResultBox = ({
   user,
   changeTab,
   clear,
+  handleShowPreview,
 }: Props) => {
-  const { title, artist, duration, id, publishedAt } = videoData;
-  const { addSong } = useFirestoreAction();
+  const { title, artist, duration, id, publishedAt } = videoData
+  const { addSong } = useFirestoreAction()
 
-  const thumbnail = `https://i.ytimg.com/vi/${id}/default.jpg`;
-  const link = `https://www.youtube.com/watch?v=${id}`;
+  const thumbnail = `https://i.ytimg.com/vi/${id}/default.jpg`
+  const link = `https://www.youtube.com/watch?v=${id}`
 
   const handleAdd = () => {
-    const songNormalized = videoToSong(videoData, user);
-    addSong(songNormalized, roomId);
-    changeTab(0);
-    clear();
-  };
+    const songNormalized = videoToSong(videoData, user)
+    addSong(songNormalized, roomId)
+    changeTab(0)
+    clear()
+  }
 
   const getDuration = (seconds) => {
-    const toMinutes = seconds / 60;
-    const time = toMinutes.toFixed(2);
-    return time.toString().replace(".", ":");
-  };
+    const toMinutes = seconds / 60
+    const time = toMinutes.toFixed(2)
+    return time.toString().replace(".", ":")
+  }
 
   const getDate = (date) => {
-    const dateObj = new Date(date);
-    const month = dateObj.getMonth();
-    const year = dateObj.getFullYear();
-    return `${month} / ${year}`;
-  };
+    const dateObj = new Date(date)
+    const month = dateObj.getMonth()
+    const year = dateObj.getFullYear()
+    return `${month} / ${year}`
+  }
 
   return (
     <Box
@@ -84,22 +81,26 @@ const SongSearchResultBox = ({
         </Box>
 
         <VStack w="10%">
-          <Button onClick={handleAdd}>
-            <Icon as={SiAddthis} />
-          </Button>
-          <a href={link} target="_blank">
-            <Button variant="outline">
+          <a /*href={link} target="_blank"*/>
+            <Button
+              variant="outline"
+              onClick={() => handleShowPreview(link, title, handleAdd)}
+            >
               <Icon as={FaPlay} marginRight="5px" />
             </Button>
           </a>
-          <Spacer />
+
+          <Button onClick={handleAdd}>
+            <Icon as={SiAddthis} />
+          </Button>
+
           {/* <Button variant="ghost">
           <Icon as={FaHeart} />
         </Button> */}
         </VStack>
       </Wrap>
     </Box>
-  );
-};
+  )
+}
 
-export default SongSearchResultBox;
+export default SongSearchResultBox

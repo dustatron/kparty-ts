@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from "react"
 import {
   Button,
   Heading,
@@ -8,35 +8,36 @@ import {
   Box,
   Icon,
   VStack,
-} from "@chakra-ui/react";
-import { FiSearch } from "react-icons/fi";
-import { useFetchYT, IUseFetchYT } from "../../utils";
-import SongSearchResultBox from "../SongSearchResultBox";
-import { useFirestoreAction, useAuth } from "../../utils";
-import { useRouter } from "next/router";
+} from "@chakra-ui/react"
+import { FiSearch } from "react-icons/fi"
+import { useFetchYT, IUseFetchYT } from "../../utils"
+import SongSearchResultBox from "../SongSearchResultBox"
+import { useFirestoreAction, useAuth } from "../../utils"
+import { useRouter } from "next/router"
 
 interface Props {
-  changeTab: (index: number) => void;
+  changeTab: (index: number) => void
+  handleShowPreview: (link, title, handleSave) => void
 }
 
-export const SongSearch = ({ changeTab }: Props) => {
-  const [inputData, setInputData] = useState<string>("");
+export const SongSearch = ({ changeTab, handleShowPreview }: Props) => {
+  const [inputData, setInputData] = useState<string>("")
   const { error, isLoading, runSearch, results, clearResults }: IUseFetchYT =
-    useFetchYT();
-  const { currentUser } = useAuth();
+    useFetchYT()
+  const { currentUser } = useAuth()
 
-  const router = useRouter();
-  const { roomId } = router.query;
+  const router = useRouter()
+  const { roomId } = router.query
 
   const handleSearch = (e) => {
-    e.preventDefault();
-    runSearch(inputData);
-  };
+    e.preventDefault()
+    runSearch(inputData)
+  }
 
   const clearInput = () => {
-    setInputData("");
-    clearResults();
-  };
+    setInputData("")
+    clearResults()
+  }
 
   return (
     <>
@@ -51,7 +52,7 @@ export const SongSearch = ({ changeTab }: Props) => {
                   disabled={isLoading}
                   value={inputData}
                   onChange={(e) => {
-                    setInputData(e.target.value);
+                    setInputData(e.target.value)
                   }}
                 />
               </FormControl>
@@ -74,8 +75,9 @@ export const SongSearch = ({ changeTab }: Props) => {
               user={currentUser}
               roomId={roomId}
               clear={clearInput}
+              handleShowPreview={handleShowPreview}
             />
-          );
+          )
         })}
       {results?.length === 0 && !isLoading && (
         <Heading w="100%" textAlign="center" p="5" size="sm">
@@ -85,7 +87,7 @@ export const SongSearch = ({ changeTab }: Props) => {
 
       {error && <Heading>Error: {error}</Heading>}
     </>
-  );
-};
+  )
+}
 
-export default SongSearch;
+export default SongSearch

@@ -10,17 +10,10 @@ const SimplePlayer = ({ link }: Props) => {
     <>
       <ReactPlayer
         controls
-        // playing={}
+        volume={0.2}
         url={link}
-        height="100%"
-        width="1000%"
-        // onEnded={nextSong}
-        // onPlay={() => {
-        //   setIsPlaying(true)
-        // }}
-        // onPause={() => {
-        //   setIsPlaying(false)
-        // }}
+        height="50vh"
+        width="100%"
       />
     </>
   )

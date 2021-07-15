@@ -6,6 +6,7 @@ import FavSongModal from "../../components/FavSongModal"
 import UserPlaylistContainer from "../../components/UserPlaylistContainer"
 import SongEditModal from "../../components/SongEditModal"
 import WithAuth from "../../components/WithAuth"
+import VideoPreviewModal from "../../components/VideoPreviewModal"
 
 interface Props {
   setTitle: (title: string) => void
@@ -14,8 +15,15 @@ interface Props {
 const playlist: FC<Props> = ({ setTitle }) => {
   const router = useRouter()
   const { roomId } = router.query
-  const [isFavModalShowing, setIsFavModalShowing] = useState<boolean>(false)
   const [isModalShowing, setIsModalShowing] = useState<boolean>(false)
+  const [isFavModalShowing, setIsFavModalShowing] = useState<boolean>(false)
+  const [isPreviewModalShowing, setIsPreviewModalShowing] =
+    useState<boolean>(false)
+  const [previewData, setPreviewData] = useState({
+    title: "",
+    link: "",
+    handleAdd: () => {},
+  })
   const { roomData, setRoomKey } = useRoomData()
 
   useEffect(() => {
@@ -43,8 +51,17 @@ const playlist: FC<Props> = ({ setTitle }) => {
     setIsFavModalShowing(true)
   }
 
+  const handleShowPreview = (link, title, handleAdd) => {
+    setPreviewData({ link, title, handleAdd })
+    setIsPreviewModalShowing(true)
+  }
+
   const handleHideFavModal = () => {
     setIsFavModalShowing(false)
+  }
+
+  const handleHidePreviewModal = () => {
+    setIsPreviewModalShowing(false)
   }
 
   return (
@@ -57,6 +74,7 @@ const playlist: FC<Props> = ({ setTitle }) => {
           roomId={roomId}
           currentSong={roomData.currentSong}
           isActive={roomData.isActive}
+          handleShowPreview={handleShowPreview}
         />
       )}
       <SongEditModal
@@ -66,6 +84,11 @@ const playlist: FC<Props> = ({ setTitle }) => {
       <FavSongModal
         hideFavModal={handleHideFavModal}
         isFavModalShowing={isFavModalShowing}
+      />
+      <VideoPreviewModal
+        previewData={previewData}
+        isShowing={isPreviewModalShowing}
+        hideModal={handleHidePreviewModal}
       />
     </Container>
   )
