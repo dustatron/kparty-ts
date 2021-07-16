@@ -66,9 +66,10 @@ export const SongSearch = ({ changeTab, handleShowPreview }: Props) => {
         </form>
       </Box>
       {results &&
-        results.map((video) => {
+        results.map((video, index) => {
           return (
             <SongSearchResultBox
+              key={`${index}-${video.title}`}
               videoData={video}
               changeTab={changeTab}
               authorId={currentUser.uid}

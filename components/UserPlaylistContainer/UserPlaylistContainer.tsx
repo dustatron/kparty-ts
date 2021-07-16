@@ -79,7 +79,11 @@ export const UserPlaylistContainer = ({
       result.source.index,
       result.destination.index
     )
-    playlistUpdate(roomId, reorderedList)
+    const startOfList = playlist.slice(0, currentSong)
+    const updatedList =
+      currentSong === 0 ? reorderedList : [...startOfList, ...reorderedList]
+
+    playlistUpdate(roomId, updatedList)
     setSongList(reorderedList)
   }
 
@@ -191,8 +195,9 @@ export const UserPlaylistContainer = ({
           </TabPanel>
           <TabPanel>
             <VStack>
-              {currentUser?.favorites?.map((song) => (
+              {currentUser?.favorites?.map((song: ISong, index) => (
                 <SongBox
+                  key={`${index}-${song.songTitle}`}
                   songData={song}
                   showModal={() => showFavModal()}
                   changeTab={handleTabsChange}
