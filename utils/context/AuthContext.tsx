@@ -45,19 +45,7 @@ export function AuthProvider({ children }): ReactElement {
     const provider = new firebase.auth.GoogleAuthProvider()
     auth.useDeviceLanguage()
     try {
-      await auth.signInWithPopup(provider)
-    } catch (error) {
-      setError(error)
-    }
-    setLoading(false)
-  }
-
-  const loginWithFacebook = async () => {
-    resetStates()
-    const provider = new firebase.auth.FacebookAuthProvider()
-    auth.useDeviceLanguage()
-    try {
-      await auth.signInWithPopup(provider)
+      await auth.signInWithRedirect(provider)
     } catch (error) {
       setError(error)
     }
@@ -114,6 +102,7 @@ export function AuthProvider({ children }): ReactElement {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
         localStorage.setItem("kparty.expectSignIn", "1")
+        console.log("user", user)
         getUserProfile(user)
       } else {
         localStorage.removeItem("kparty.expectSignIn")
@@ -126,7 +115,6 @@ export function AuthProvider({ children }): ReactElement {
   const value: IAuth = {
     currentUser,
     login,
-    loginWithFacebook,
     loginWithGithub,
     logout,
     error,
