@@ -101,7 +101,6 @@ export function AuthProvider({ children }): ReactElement {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
         localStorage.setItem("kparty.expectSignIn", "1")
-        console.log("user", user)
         getUserProfile(user)
       } else {
         localStorage.removeItem("kparty.expectSignIn")

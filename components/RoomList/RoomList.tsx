@@ -1,28 +1,32 @@
-import React from "react"
+import React, { useEffect } from "react"
 import Link from "next/link"
 import {
   Box,
   Heading,
-  Container,
   Text,
   Button,
-  createIcon,
   Flex,
   Divider,
-  SimpleGrid,
   Wrap,
 } from "@chakra-ui/react"
-import { Rooms } from "../../utils"
+import { Rooms, useFirestoreAction } from "../../utils"
 
 interface Props {}
 
 export const RoomList = (props: Props) => {
+  const { getAllRooms, roomsList } = useFirestoreAction()
+
+  useEffect(() => {
+    getAllRooms()
+    console.log("rooms", roomsList)
+  }, [])
+
   return (
-    <Box bg="#333" height="80px" p="5" minH="30rem" width="100%">
+    <Box bg="#333" p="5" minH="30rem" width="100%">
       <Heading as="h3" color="white" textAlign="center" marginBottom="20px">
         Join the Party
       </Heading>
-      {Rooms.map((room) => (
+      {roomsList?.map((room) => (
         <Box
           bg="white"
           borderRadius="md"
@@ -39,11 +43,11 @@ export const RoomList = (props: Props) => {
               <Divider p="1" />
               <Wrap p="2">
                 <Text fontSize="sm">{room.people} People</Text>
-                <Text fontSize="sm">{room.playlist.length} songs</Text>
+                <Text fontSize="sm">{room.playlist?.length} songs</Text>
               </Wrap>
             </Box>
             <Box p="3">
-              <Link href={`/room/${room.id}`}>
+              <Link href={`/playlist/${room.id}`}>
                 <a>
                   <Button colorScheme="blue">Join</Button>
                 </a>
