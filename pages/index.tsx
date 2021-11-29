@@ -6,8 +6,8 @@ import styles from "../styles/Home.module.css"
 export default function Home({ setTitle }) {
   return (
     <>
-      {/* <Hero setTitle={setTitle} /> */}
-      <KrystalWrapper setTitle={setTitle} />
+      <Hero setTitle={setTitle} />
+      {/* <KrystalWrapper setTitle={setTitle} /> */}
     </>
   )
 }

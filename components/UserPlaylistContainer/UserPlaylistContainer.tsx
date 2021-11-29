@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react"
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd"
 import { ISong, useFirestoreAction, useAuth, secondsToHours } from "../../utils"
-import { FaForward, FaBackward } from "react-icons/fa"
+import { Playlist, Favorites, Controls, Search } from "./"
 import {
   Box,
   Tabs,
@@ -9,13 +8,10 @@ import {
   TabList,
   TabPanels,
   TabPanel,
-  Container,
+  Center,
+  Text,
   Button,
-  VStack,
 } from "@chakra-ui/react"
-import SongBox from "../../components/SongBox"
-import SongSearch from "../SongSearch"
-import styles from "./styles.module.css"
 
 interface Props {
   showModal: () => void
@@ -27,15 +23,6 @@ interface Props {
   handleShowPreview: (link, title, handleSave) => void
 }
 
-// a little function to help us with reordering the result
-const reorder = (list, startIndex, endIndex) => {
-  const result: ISong[] = Array.from(list)
-  const [removed] = result.splice(startIndex, 1)
-  result.splice(endIndex, 0, removed)
-
-  return result
-}
-
 export const UserPlaylistContainer = ({
   showModal,
   playlist,
@@ -45,7 +32,8 @@ export const UserPlaylistContainer = ({
   isActive,
   handleShowPreview,
 }: Props) => {
-  const { playlistUpdate, nextSong, prevSong, resetRoom } = useFirestoreAction()
+  const { nextSong, prevSong, resetRoom, createPlaylist, deletePlaylist } =
+    useFirestoreAction(roomId)
 
   const [songList, setSongList] = useState([])
   const [tabIndex, setTabIndex] = useState<number>(0)
@@ -55,10 +43,14 @@ export const UserPlaylistContainer = ({
 
   useEffect(() => {
     if (playlist) {
-      setSongList(playlist.slice(currentSong))
+      setSongList(playlist?.slice(currentSong))
+    } else {
+    }
+    if (!playlist || playlist.length === 0) {
+      createPlaylist()
     }
     //Next Btn
-    if (playlist.length <= currentSong) {
+    if (playlist?.length <= currentSong) {
       setNextDisabled(true)
     } else {
       setNextDisabled(false)
@@ -70,22 +62,6 @@ export const UserPlaylistContainer = ({
       setPrevDisabled(false)
     }
   }, [playlist, currentSong])
-
-  const onDragEnd = (result) => {
-    if (!result.destination) return
-
-    const reorderedList = reorder(
-      songList,
-      result.source.index,
-      result.destination.index
-    )
-    const startOfList = playlist.slice(0, currentSong)
-    const updatedList =
-      currentSong === 0 ? reorderedList : [...startOfList, ...reorderedList]
-
-    playlistUpdate(roomId, updatedList)
-    setSongList(reorderedList)
-  }
 
   const handleTabsChange = (index) => {
     setTabIndex(index)
@@ -136,111 +112,61 @@ export const UserPlaylistContainer = ({
 
         <TabPanels>
           <TabPanel>
-            <DragDropContext onDragEnd={onDragEnd}>
-              <Droppable droppableId="droppable">
-                {(provided, snapshot) => (
-                  <VStack
-                    {...provided.droppableProps}
-                    ref={provided.innerRef}
-                    align="center"
-                  >
-                    {songList.map((song: ISong, index) => (
-                      <Draggable
-                        key={song.songId}
-                        draggableId={song.songId}
-                        index={index}
-                      >
-                        {(provided, snapshot) => (
-                          <div
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                            className={styles.fit}
-                          >
-                            <SongBox
-                              songData={song}
-                              isDragging={snapshot.isDragging}
-                              changeTab={handleTabsChange}
-                              showModal={() => showModal()}
-                              fromFavorites={isFav(song)}
-                              currentTab={tabIndex}
-                              isActive={isActive && index === 0}
-                            />
-                          </div>
-                        )}
-                      </Draggable>
-                    ))}
-                    {provided.placeholder}
-                  </VStack>
-                )}
-              </Droppable>
-            </DragDropContext>
-            {playlist.length <= currentSong && (
+            {playlist && (
+              <Playlist
+                songList={songList}
+                currentSong={currentSong}
+                playlist={playlist}
+                roomId={roomId}
+                handleTabsChange={handleTabsChange}
+                isActive={isActive}
+                isFav={isFav}
+                setSongList={setSongList}
+                showModal={showModal}
+                tabIndex={tabIndex}
+              />
+            )}
+
+            {playlist?.length === 0 && (
+              <Center>
+                <Text as="h3" fontSize="2xl">
+                  Playlist is empty
+                </Text>
+              </Center>
+            )}
+            {playlist?.length !== 0 && playlist?.length <= currentSong && (
               <Box w="100" textAlign="center">
-                <Button
-                  onClick={() => resetRoom(roomId)}
-                  size="lg"
-                  variant="outline"
-                >
+                <Button onClick={() => resetRoom()} size="lg" variant="outline">
                   Restart
                 </Button>
               </Box>
             )}
           </TabPanel>
           <TabPanel>
-            <SongSearch
-              changeTab={handleTabsChange}
+            <Search
+              handleTabsChange={handleTabsChange}
               handleShowPreview={handleShowPreview}
             />
           </TabPanel>
           <TabPanel>
-            <VStack>
-              {currentUser?.favorites?.map((song: ISong, index) => (
-                <SongBox
-                  key={`${index}-${song.songTitle}`}
-                  songData={song}
-                  showModal={() => showFavModal()}
-                  changeTab={handleTabsChange}
-                  currentTab={tabIndex}
-                  fromFavorites={isFav(song)}
-                />
-              ))}
-            </VStack>
+            <Favorites
+              favorites={currentUser.favorites}
+              showFavModal={showFavModal}
+              handleTabsChange={handleTabsChange}
+              tabIndex={tabIndex}
+              isFav={isFav}
+            />
           </TabPanel>
           <TabPanel>
-            <VStack>
-              <Box
-                padding="2"
-                border="1px"
-                borderRadius="sm"
-                w="90%"
-                textAlign="center"
-              >
-                Duration:
-                {getDuration(songList)}
-              </Box>
-              <Button
-                leftIcon={<FaForward />}
-                onClick={handleNextSong}
-                disabled={isNextDisabled}
-                size="lg"
-                w="90%"
-              >
-                Next
-              </Button>
-              <Button
-                leftIcon={<FaBackward />}
-                onClick={handlePreviousSong}
-                disabled={isPrevDisabled}
-                size="lg"
-                w="90%"
-              >
-                Previous
-              </Button>
-              <Button onClick={() => resetRoom(roomId)} size="lg" w="90%">
-                Restart
-              </Button>
-            </VStack>
+            <Controls
+              getDuration={() => getDuration(songList)}
+              handleNextSong={handleNextSong}
+              isNextDisabled={isNextDisabled}
+              handlePreviousSong={handlePreviousSong}
+              isPrevDisabled={isPrevDisabled}
+              resetRoom={() => resetRoom()}
+              deletePlaylist={deletePlaylist}
+            />
           </TabPanel>
         </TabPanels>
       </Tabs>

@@ -46,7 +46,9 @@ function SongBox({
   const { songTitle, thumbnail } = songData
   const [isFav, setIsFav] = useState(fromFavorites)
   const { setSelected } = useRoomData()
-  const { addFavSong, addSong, removeFavorite } = useFirestoreAction()
+  const { addFavSong, addSong, removeFavorite } = useFirestoreAction(
+    roomId as string
+  )
   const { currentUser } = useAuth()
 
   const favSong = () => {
@@ -69,7 +71,7 @@ function SongBox({
   }
 
   const handleAdd = () => {
-    addSong(songData, roomId)
+    addSong(songData)
     changeTab(0)
   }
 

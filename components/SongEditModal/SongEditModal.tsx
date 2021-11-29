@@ -33,11 +33,11 @@ function SongEditModal({ isModalShowing, hideModal }: Props): ReactElement {
   const { roomId } = router.query
   const [isShowingConfirm, setIsShowingConfirm] = useState(false)
 
-  const { removeSong } = useFirestoreAction()
+  const { removeSong } = useFirestoreAction(roomId as string)
   const { selected } = useRoomData()
 
   const handleDelete = () => {
-    removeSong(selected, roomId)
+    removeSong(selected)
     hideModal()
     setIsShowingConfirm(false)
   }
