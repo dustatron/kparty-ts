@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement } from "react"
 import {
   VStack,
   Heading,
@@ -7,16 +7,15 @@ import {
   Button,
   Divider,
   Text,
-} from "@chakra-ui/react";
-import { GrGoogle } from "react-icons/gr";
-import { FaFacebook } from "react-icons/fa";
-import { SiGithub } from "react-icons/si";
-import { useAuth, IAuth } from "../../utils";
-import { RoomList } from "../RoomList";
+} from "@chakra-ui/react"
+import { GrGoogle } from "react-icons/gr"
+import { FaFacebook } from "react-icons/fa"
+import { SiGithub } from "react-icons/si"
+import { useAuth, IAuth } from "../../utils"
+import { RoomList } from "../RoomList"
 
 export const SignInBox = (): ReactElement => {
-  const { login, currentUser, loginWithFacebook, loginWithGithub }: IAuth =
-    useAuth();
+  const { login, currentUser, loginWithGithub }: IAuth = useAuth()
   return (
     <>
       <Center py={6}>
@@ -53,15 +52,7 @@ export const SignInBox = (): ReactElement => {
                 >
                   With Google
                 </Button>
-                {/* <Button
-                  colorScheme="facebook"
-                  size="lg"
-                  w="100%"
-                  leftIcon={<FaFacebook />}
-                  onClick={loginWithFacebook}
-                >
-                  With Facebook
-                </Button> */}
+
                 <Button
                   colorScheme="twitter"
                   size="lg"
@@ -77,5 +68,5 @@ export const SignInBox = (): ReactElement => {
         </Box>
       </Center>
     </>
-  );
-};
+  )
+}
