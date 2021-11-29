@@ -51,10 +51,22 @@ export const Controls = ({
       >
         Previous
       </Button>
-      <Button onClick={resetRoom} size="lg" w="90%">
+      <Button
+        onClick={resetRoom}
+        size="lg"
+        w="90%"
+        variant="outline"
+        colorScheme="telegram"
+      >
         Restart
       </Button>
-      <Button onClick={deletePlaylist} size="lg" w="90%">
+      <Button
+        onClick={deletePlaylist}
+        size="lg"
+        w="90%"
+        variant="outline"
+        colorScheme="red"
+      >
         Delete All Songs
       </Button>
     </VStack>
