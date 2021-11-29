@@ -20,7 +20,6 @@ interface useAuth {
   login: () => void
   logout: () => void
   loading: boolean
-  loginWithFacebook: () => void
   loginWithGithub: () => void
 }
 
