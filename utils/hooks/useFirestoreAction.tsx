@@ -1,9 +1,9 @@
-import React, { useState } from "react"
+import { useState } from "react"
 import firebase from "firebase/app"
 import "firebase/firestore"
 import { ISongAction, ISong, ActionTypes, IRoom, IUser } from "../../utils"
 
-const useFirestoreAction = () => {
+const useFirestoreAction = (roomId?: string) => {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -17,10 +17,10 @@ const useFirestoreAction = () => {
   }
 
   const roomsDB = firebase.firestore().collection("rooms")
-  const songsDB = firebase.firestore().collection("songs")
+  // const songsDB = firebase.firestore().collection("songs")
   const userDB = firebase.firestore().collection("users")
 
-  const addSong = (song, roomId) => {
+  const addSong = (song) => {
     roomsDB
       .doc(roomId)
       .update({
@@ -32,7 +32,7 @@ const useFirestoreAction = () => {
       .catch((err) => setError(err))
   }
 
-  const removeSong = (song: ISong, roomId: any) => {
+  const removeSong = (song: ISong) => {
     setIsLoading(true)
     const { arrayRemove } = firebase.firestore.FieldValue
     roomsDB
@@ -84,7 +84,24 @@ const useFirestoreAction = () => {
       .catch((err) => setError(err))
   }
 
-  const playlistUpdate = (roomId: string, playlistUpdated: ISong[]) => {
+  const initialSong: ISong = {
+    songId: "Gvzu8TNCpmo",
+    videoId: "Gvzu8TNCpmo",
+    artist: "kparty.club",
+    duration: 330,
+    link: "https://www.youtube.com/watch?v=Gvzu8TNCpmo",
+    thumbnail: "https://i.ytimg.com/vi/Gvzu8TNCpmo/default.jpg",
+    playCount: 0,
+    songTitle: "Start Your Karaoke Party",
+    singer: "none",
+  }
+
+  const createPlaylist = () => {
+    const roomDoc = roomsDB.doc(roomId)
+    roomDoc.update({ playlist: [initialSong] })
+  }
+
+  const playlistUpdate = (playlistUpdated: ISong[]) => {
     const roomDoc = roomsDB.doc(roomId)
     roomDoc
       .update({ playlist: playlistUpdated })
@@ -92,6 +109,11 @@ const useFirestoreAction = () => {
         setIsLoading(false)
       })
       .catch((err) => setError(err))
+  }
+
+  const deletePlaylist = () => {
+    const roomDoc = roomsDB.doc(roomId)
+    roomDoc.update({ playlist: firebase.firestore.FieldValue.delete() })
   }
 
   const addFavSong = (song: ISong, currentUser: IUser) => {
@@ -106,7 +128,7 @@ const useFirestoreAction = () => {
     })
   }
 
-  const resetRoom = (roomId) => {
+  const resetRoom = () => {
     const roomDoc = roomsDB.doc(roomId)
     roomDoc
       .update({ currentSong: 0 })
@@ -128,6 +150,8 @@ const useFirestoreAction = () => {
     addFavSong,
     removeFavorite,
     resetRoom,
+    createPlaylist,
+    deletePlaylist,
   }
 }
 

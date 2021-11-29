@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement } from "react"
 import {
   Modal,
   ModalOverlay,
@@ -8,26 +8,27 @@ import {
   ModalBody,
   ModalCloseButton,
   Button,
-} from "@chakra-ui/react";
-import { useFirestoreAction, useAuth, useRoomData } from "../../utils";
+} from "@chakra-ui/react"
+import { useFirestoreAction, useAuth, useRoomData } from "../../utils"
+import RoomId from "../../pages/player/[roomId]"
 
 interface Props {
-  isFavModalShowing: boolean;
-  hideFavModal: () => void;
+  isFavModalShowing: boolean
+  hideFavModal: () => void
 }
 
 function FavSongModal({
   isFavModalShowing,
   hideFavModal,
 }: Props): ReactElement {
-  const { removeFavorite } = useFirestoreAction();
-  const { currentUser } = useAuth();
-  const { selected } = useRoomData();
+  const { removeFavorite } = useFirestoreAction()
+  const { currentUser } = useAuth()
+  const { selected } = useRoomData()
 
   const handleDelete = () => {
-    removeFavorite(selected, currentUser);
-    hideFavModal();
-  };
+    removeFavorite(selected, currentUser)
+    hideFavModal()
+  }
 
   return (
     <>
@@ -56,7 +57,7 @@ function FavSongModal({
         )}
       </Modal>
     </>
-  );
+  )
 }
 
-export default FavSongModal;
+export default FavSongModal

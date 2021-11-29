@@ -14,7 +14,7 @@ const player: React.FC<Props> = ({ setTitle }) => {
 
   const { roomData, setRoomKey } = useRoomData()
   const { nextSong, prevSong, isLoading, setIsActive, resetRoom } =
-    useFirestoreAction()
+    useFirestoreAction(roomId as string)
   const [isPlaying, setIsPlaying] = useState(false)
 
   useEffect(() => {
@@ -37,7 +37,7 @@ const player: React.FC<Props> = ({ setTitle }) => {
   }, [roomData, isPlaying])
 
   const handelRest = () => {
-    resetRoom(roomId)
+    resetRoom()
   }
 
   return (
