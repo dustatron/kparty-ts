@@ -32,7 +32,8 @@ export const UserPlaylistContainer = ({
   isActive,
   handleShowPreview,
 }: Props) => {
-  const { nextSong, prevSong, resetRoom } = useFirestoreAction()
+  const { nextSong, prevSong, resetRoom, createPlaylist, deletePlaylist } =
+    useFirestoreAction(roomId)
 
   const [songList, setSongList] = useState([])
   const [tabIndex, setTabIndex] = useState<number>(0)
@@ -42,10 +43,14 @@ export const UserPlaylistContainer = ({
 
   useEffect(() => {
     if (playlist) {
-      setSongList(playlist.slice(currentSong))
+      setSongList(playlist?.slice(currentSong))
+    } else {
+    }
+    if (!playlist || playlist.length === 0) {
+      createPlaylist()
     }
     //Next Btn
-    if (playlist.length <= currentSong) {
+    if (playlist?.length <= currentSong) {
       setNextDisabled(true)
     } else {
       setNextDisabled(false)
@@ -107,32 +112,31 @@ export const UserPlaylistContainer = ({
 
         <TabPanels>
           <TabPanel>
-            <Playlist
-              songList={songList}
-              currentSong={currentSong}
-              playlist={playlist}
-              roomId={roomId}
-              handleTabsChange={handleTabsChange}
-              isActive={isActive}
-              isFav={isFav}
-              setSongList={setSongList}
-              showModal={showModal}
-              tabIndex={tabIndex}
-            />
-            {playlist.length === 0 && (
+            {playlist && (
+              <Playlist
+                songList={songList}
+                currentSong={currentSong}
+                playlist={playlist}
+                roomId={roomId}
+                handleTabsChange={handleTabsChange}
+                isActive={isActive}
+                isFav={isFav}
+                setSongList={setSongList}
+                showModal={showModal}
+                tabIndex={tabIndex}
+              />
+            )}
+
+            {playlist?.length === 0 && (
               <Center>
                 <Text as="h3" fontSize="2xl">
                   Playlist is empty
                 </Text>
               </Center>
             )}
-            {playlist.length !== 0 && playlist.length <= currentSong && (
+            {playlist?.length !== 0 && playlist?.length <= currentSong && (
               <Box w="100" textAlign="center">
-                <Button
-                  onClick={() => resetRoom(roomId)}
-                  size="lg"
-                  variant="outline"
-                >
+                <Button onClick={() => resetRoom()} size="lg" variant="outline">
                   Restart
                 </Button>
               </Box>
@@ -160,7 +164,8 @@ export const UserPlaylistContainer = ({
               isNextDisabled={isNextDisabled}
               handlePreviousSong={handlePreviousSong}
               isPrevDisabled={isPrevDisabled}
-              resetRoom={() => resetRoom(roomId)}
+              resetRoom={() => resetRoom()}
+              deletePlaylist={deletePlaylist}
             />
           </TabPanel>
         </TabPanels>

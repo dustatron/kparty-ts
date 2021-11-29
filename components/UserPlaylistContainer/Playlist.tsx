@@ -30,7 +30,8 @@ export const Playlist = ({
   isFav,
   isActive,
 }: Props) => {
-  const { playlistUpdate, nextSong, prevSong, resetRoom } = useFirestoreAction()
+  const { playlistUpdate, nextSong, prevSong, resetRoom } =
+    useFirestoreAction(roomId)
   // a little function to help us with reordering the result
   const reorder = (list, startIndex, endIndex) => {
     const result: ISong[] = Array.from(list)
@@ -51,7 +52,7 @@ export const Playlist = ({
     const updatedList =
       currentSong === 0 ? reorderedList : [...startOfList, ...reorderedList]
 
-    playlistUpdate(roomId, updatedList)
+    playlistUpdate(updatedList)
     setSongList(reorderedList)
   }
 

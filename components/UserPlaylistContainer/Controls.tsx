@@ -9,6 +9,7 @@ interface Props {
   handlePreviousSong: () => void
   isPrevDisabled: boolean
   resetRoom: () => void
+  deletePlaylist: () => void
 }
 
 export const Controls = ({
@@ -18,6 +19,7 @@ export const Controls = ({
   handlePreviousSong,
   isPrevDisabled,
   resetRoom,
+  deletePlaylist,
 }: Props) => {
   const totalDuration = getDuration()
   return (
@@ -51,6 +53,9 @@ export const Controls = ({
       </Button>
       <Button onClick={resetRoom} size="lg" w="90%">
         Restart
+      </Button>
+      <Button onClick={deletePlaylist} size="lg" w="90%">
+        Delete All Songs
       </Button>
     </VStack>
   )

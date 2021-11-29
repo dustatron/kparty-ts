@@ -18,7 +18,7 @@ interface Props {
   videoData: IVideoData
   authorId: string
   user: IUser
-  roomId: string | string[]
+  roomId: string
   changeTab: (index: number) => void
   clear: () => void
   handleShowPreview: (link, title, handleAdd) => void
@@ -33,14 +33,14 @@ const SongSearchResultBox = ({
   handleShowPreview,
 }: Props) => {
   const { title, artist, duration, id, publishedAt } = videoData
-  const { addSong } = useFirestoreAction()
+  const { addSong } = useFirestoreAction(roomId)
 
   const thumbnail = `https://i.ytimg.com/vi/${id}/default.jpg`
   const link = `https://www.youtube.com/watch?v=${id}`
 
   const handleAdd = () => {
     const songNormalized = videoToSong(videoData, user)
-    addSong(songNormalized, roomId)
+    addSong(songNormalized)
     changeTab(0)
     clear()
   }

@@ -12,7 +12,7 @@ import {
 import { FiSearch } from "react-icons/fi"
 import { useFetchYT, IUseFetchYT } from "../../utils"
 import SongSearchResultBox from "../SongSearchResultBox"
-import { useFirestoreAction, useAuth } from "../../utils"
+import { useAuth } from "../../utils"
 import { useRouter } from "next/router"
 
 interface Props {
@@ -74,7 +74,7 @@ export const SongSearch = ({ changeTab, handleShowPreview }: Props) => {
               changeTab={changeTab}
               authorId={currentUser.uid}
               user={currentUser}
-              roomId={roomId}
+              roomId={roomId as string}
               clear={clearInput}
               handleShowPreview={handleShowPreview}
             />
