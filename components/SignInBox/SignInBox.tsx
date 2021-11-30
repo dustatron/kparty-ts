@@ -1,4 +1,5 @@
 import React, { ReactElement } from "react"
+import Link from "next/link"
 import {
   VStack,
   Heading,
@@ -9,10 +10,8 @@ import {
   Text,
 } from "@chakra-ui/react"
 import { GrGoogle } from "react-icons/gr"
-import { FaFacebook } from "react-icons/fa"
 import { SiGithub } from "react-icons/si"
 import { useAuth, IAuth } from "../../utils"
-import { RoomList } from "../RoomList"
 
 export const SignInBox = (): ReactElement => {
   const { login, currentUser, loginWithGithub }: IAuth = useAuth()
@@ -39,7 +38,15 @@ export const SignInBox = (): ReactElement => {
               </>
             )}
             <Divider />
-            {currentUser && <RoomList />}
+            {currentUser && (
+              <Box>
+                <Link href="/">
+                  <a>
+                    <Button fontSize="24px">See the list of Parties</Button>
+                  </a>
+                </Link>
+              </Box>
+            )}
 
             {!currentUser && (
               <>

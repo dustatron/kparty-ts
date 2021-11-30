@@ -6,6 +6,7 @@ import { ISongAction, ISong, ActionTypes, IRoom, IUser } from "../../utils"
 const useFirestoreAction = (roomId?: string) => {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [roomsList, setRoomsList] = useState<IRoom[]>(null)
 
   // Creates doc for cloud function
   const createAction = (payload: ISongAction) => {
@@ -138,6 +139,23 @@ const useFirestoreAction = (roomId?: string) => {
       .catch((err) => setError(err))
   }
 
+  const getAllRooms = () => {
+    return roomsDB
+      .get()
+      .then((querySnapshot) => {
+        let roomList = []
+        querySnapshot.forEach((doc) => {
+          // doc.data() is never undefined for query doc snapshots
+          // console.log(doc.id, " => ", doc.data())
+          roomList.push(doc.data())
+        })
+        setRoomsList(roomList)
+      })
+      .catch((error) => {
+        console.log("Error getting documents: ", error)
+      })
+  }
+
   return {
     error,
     isLoading,
@@ -152,6 +170,8 @@ const useFirestoreAction = (roomId?: string) => {
     resetRoom,
     createPlaylist,
     deletePlaylist,
+    getAllRooms,
+    roomsList,
   }
 }
 

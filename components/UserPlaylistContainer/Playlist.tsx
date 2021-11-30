@@ -59,7 +59,7 @@ export const Playlist = ({
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <Droppable droppableId="droppable">
-        {(provided, snapshot) => (
+        {(provided) => (
           <VStack
             {...provided.droppableProps}
             ref={provided.innerRef}

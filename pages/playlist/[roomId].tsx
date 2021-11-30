@@ -1,4 +1,4 @@
-import { useEffect, useState, FC } from "react"
+import React, { useEffect, useState, FC } from "react"
 import { useRouter } from "next/router"
 import { Container } from "@chakra-ui/react"
 import { useRoomData } from "../../utils"
@@ -7,6 +7,7 @@ import UserPlaylistContainer from "../../components/UserPlaylistContainer"
 import SongEditModal from "../../components/SongEditModal"
 import WithAuth from "../../components/WithAuth"
 import VideoPreviewModal from "../../components/VideoPreviewModal"
+import { Stack, Skeleton } from "@chakra-ui/react"
 
 interface Props {
   setTitle: (title: string) => void
@@ -76,6 +77,13 @@ const playlist: FC<Props> = ({ setTitle }) => {
           isActive={roomData.isActive}
           handleShowPreview={handleShowPreview}
         />
+      )}
+      {!roomData && (
+        <Stack>
+          <Skeleton height="20px" />
+          <Skeleton height="20px" />
+          <Skeleton height="20px" />
+        </Stack>
       )}
       <SongEditModal
         hideModal={() => handleShowModal(true)}
