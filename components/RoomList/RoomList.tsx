@@ -1,23 +1,35 @@
 import React, { useEffect } from "react"
 import Link from "next/link"
-import { Box, Heading, Button, Flex, Divider, Wrap } from "@chakra-ui/react"
+import {
+  Box,
+  Heading,
+  Button,
+  Flex,
+  Divider,
+  Wrap,
+  Text,
+} from "@chakra-ui/react"
 import { ImPlay } from "react-icons/im"
 import { IoMdAdd } from "react-icons/io"
-import { useFirestoreAction } from "../../utils"
+import { GrPause } from "react-icons/gr"
+import { RiPlayCircleLine } from "react-icons/ri"
+import { IRoom } from "../../utils"
 
-interface Props {}
+interface Props {
+  roomsList: IRoom[]
+}
 
-export const RoomList = (props: Props) => {
-  const { getAllRooms, roomsList } = useFirestoreAction()
-
-  useEffect(() => {
-    getAllRooms()
-  }, [])
-
+export const RoomList = ({ roomsList }: Props) => {
   const publicRoomList = roomsList?.filter((room) => room.isPublic)
 
   return (
-    <Box bg="#333" p="5" minH="30rem" width="100%" borderRadius="sm">
+    <Box
+      bg="#333"
+      p={["2", null, "5"]}
+      minH="30rem"
+      width="100%"
+      borderRadius="sm"
+    >
       <Heading as="h3" color="white" textAlign="center" marginBottom="20px">
         Party List
       </Heading>
@@ -53,13 +65,14 @@ export const RoomList = (props: Props) => {
                 <Button
                   size="sm"
                   variant="solid"
-                  colorScheme={room.isActive ? "red" : "teal"}
+                  colorScheme={room.isActive ? "red" : "yellow"}
+                  rightIcon={room.isActive ? <RiPlayCircleLine /> : <GrPause />}
                 >
-                  {room.isActive ? "Active" : "Empty"}
+                  {room.isActive ? "Active" : "Paused"}
                 </Button>
               </Wrap>
             </Box>
-            <Box p="3" width="20%">
+            <Box p="3" width="35%">
               <Link href={`/playlist/${room.id}`}>
                 <a>
                   <Button
@@ -71,9 +84,9 @@ export const RoomList = (props: Props) => {
                   </Button>
                 </a>
               </Link>
-              <Button size="sm" variant="ghost">
+              <Text fontSize="xs" textAlign="center" color="gray.500">
                 Songs: {room.playlist ? room.playlist?.length : 0}
-              </Button>
+              </Text>
             </Box>
           </Flex>
         </Box>
