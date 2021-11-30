@@ -16,7 +16,7 @@ import { RiPlayCircleLine } from "react-icons/ri"
 import { IRoom } from "../../utils"
 
 interface Props {
-  roomsList: IRoom[]
+  roomsList?: IRoom[]
 }
 
 export const RoomList = ({ roomsList }: Props) => {
