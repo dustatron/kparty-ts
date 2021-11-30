@@ -30,9 +30,19 @@ export default function CallToActionWithAnnotation({ setTitle }) {
           <RoomList />
           <Box height="80px">
             <Heading as="h2" size="2xl" marginBottom="2rem">
-              Where Karaoke Happens
+              Karaoke Party
             </Heading>
-            <Text marginBottom="2rem">Pick a room.</Text>
+            <Text marginBottom="2rem">
+              Click on the <strong>+ Sing</strong> button to join a party and
+              add songs to the karaoke playlist.
+            </Text>
+            <Text marginBottom="2rem">
+              Click on the <strong>Player</strong> button to see and play the
+              karaoke videos for that party.
+            </Text>
+            <Text marginBottom="2rem">
+              Feel free to pick any <strong>Party</strong> is not active.
+            </Text>
             <Box textAlign="right">
               {!currentUser && (
                 <Link href="/signIn">

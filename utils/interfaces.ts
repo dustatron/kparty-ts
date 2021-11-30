@@ -51,6 +51,7 @@ export interface IRoom {
   isActive: boolean
   currentSong: number
   playlist: Array<ISong>
+  isPublic?: boolean
 }
 
 export interface ISongAction {
