@@ -1,9 +1,9 @@
-import React, { useEffect, useState, FC } from "react"
+import React, { useEffect, useState } from "react"
 import { useRouter } from "next/router"
 import VideoPlayer from "../../components/VideoPlayer"
-import VideoPlaylist from "../../components/VideoPlayList"
 import WithAuth from "../../components/WithAuth"
 import { useRoomData, useFirestoreAction } from "../../utils"
+import PlayerTag from "../../components/PlayerTag"
 interface Props {
   setTitle: Function
 }
@@ -36,10 +36,6 @@ const player: React.FC<Props> = ({ setTitle }) => {
     setIsActive(roomId, isPlaying)
   }, [roomData, isPlaying])
 
-  const handelRest = () => {
-    resetRoom()
-  }
-
   return (
     <>
       {roomData && (
@@ -56,12 +52,7 @@ const player: React.FC<Props> = ({ setTitle }) => {
             }}
             isLoading={isLoading}
           />
-          <VideoPlaylist
-            playlist={roomData.playlist}
-            currentSong={roomData.currentSong}
-            isPlaying={isPlaying}
-            handelRest={handelRest}
-          />
+          <PlayerTag roomId={roomData.id} />
         </>
       )}
     </>
