@@ -24,8 +24,8 @@ const VideoPlayer: FC<Props> = ({
   const { currentSong, playlist } = roomData
 
   return (
-    <VStack spacing={0} align="stretch">
-      <Center bg="#4A4A4A" h="31rem">
+    <VStack spacing={0} align="stretch" w="100%">
+      <Center bg="#4A4A4A" h="30rem">
         {playlist[currentSong]?.link && (
           <ReactPlayer
             controls
