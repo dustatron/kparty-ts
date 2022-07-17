@@ -1,6 +1,7 @@
-import React, { ReactElement, useState, useEffect } from "react"
-import { Wrap, Button, Box } from "@chakra-ui/react"
+import { Box, Button, Wrap } from "@chakra-ui/react"
 import { ISong, useFirestoreAction } from "../../utils"
+import React, { ReactElement, useEffect, useState } from "react"
+
 import SongBox from "../SongBox"
 
 interface Props {
@@ -8,6 +9,7 @@ interface Props {
   currentSong: number
   isPlaying: boolean
   handelRest: () => void
+  roomId: string
 }
 
 function VideoPlaylist({
@@ -15,6 +17,7 @@ function VideoPlaylist({
   currentSong,
   isPlaying,
   handelRest,
+  roomId,
 }: Props): ReactElement {
   const [upcomingSongs, setUpcomingSongs] = useState([])
   const { resetRoom } = useFirestoreAction()
@@ -32,6 +35,7 @@ function VideoPlaylist({
               isActive={index === 0}
               showModal={() => {}}
               isPlayer
+              roomId={roomId}
             />
           </Box>
         ))}
