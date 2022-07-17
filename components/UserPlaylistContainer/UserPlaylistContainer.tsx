@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from "react"
-import { ISong, useFirestoreAction, useAuth, secondsToHours } from "../../utils"
-import { Playlist, Favorites, Controls, Search } from "./"
 import {
   Box,
-  Tabs,
+  Button,
+  Center,
   Tab,
   TabList,
-  TabPanels,
   TabPanel,
-  Center,
+  TabPanels,
+  Tabs,
   Text,
-  Button,
 } from "@chakra-ui/react"
+import { Controls, Favorites, Playlist, Search } from "./"
+import { ISong, secondsToHours, useAuth, useFirestoreAction } from "../../utils"
+import React, { useEffect, useState } from "react"
 
 interface Props {
   showModal: () => void
@@ -21,6 +21,7 @@ interface Props {
   currentSong: number
   isActive: boolean
   handleShowPreview: (link, title, handleSave) => void
+  isKJ?: boolean
 }
 
 export const UserPlaylistContainer = ({
@@ -31,6 +32,7 @@ export const UserPlaylistContainer = ({
   currentSong,
   isActive,
   handleShowPreview,
+  isKJ,
 }: Props) => {
   const { nextSong, prevSong, resetRoom, createPlaylist, deletePlaylist } =
     useFirestoreAction(roomId)
@@ -146,6 +148,8 @@ export const UserPlaylistContainer = ({
             <Search
               handleTabsChange={handleTabsChange}
               handleShowPreview={handleShowPreview}
+              roomId={roomId}
+              isKJ={isKJ}
             />
           </TabPanel>
           <TabPanel>
@@ -155,6 +159,7 @@ export const UserPlaylistContainer = ({
               handleTabsChange={handleTabsChange}
               tabIndex={tabIndex}
               isFav={isFav}
+              roomId={roomId}
             />
           </TabPanel>
           <TabPanel>

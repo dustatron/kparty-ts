@@ -1,8 +1,9 @@
-import { VStack } from "@chakra-ui/react"
-import React from "react"
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd"
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd"
 import { ISong, useFirestoreAction } from "../../utils"
+
+import React from "react"
 import SongBox from "../SongBox"
+import { VStack } from "@chakra-ui/react"
 import styles from "./styles.module.css"
 
 interface Props {
@@ -86,6 +87,7 @@ export const Playlist = ({
                       fromFavorites={isFav(song)}
                       currentTab={tabIndex}
                       isActive={isActive && index === 0}
+                      roomId={roomId}
                     />
                   </div>
                 )}

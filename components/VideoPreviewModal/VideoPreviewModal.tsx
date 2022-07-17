@@ -1,21 +1,21 @@
-import React from "react"
 import {
+  Button,
   Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
   ModalBody,
   ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
   Spacer,
-  Button,
 } from "@chakra-ui/react"
+
+import React from "react"
 import SimplePlayer from "../SimplePlayer"
 
 interface previewData {
   link: string
   title: string
-  handleAdd: () => void
 }
 
 interface Props {
@@ -26,7 +26,6 @@ interface Props {
 
 const VideoPreviewModal = ({ previewData, isShowing, hideModal }: Props) => {
   const handleSave = () => {
-    previewData.handleAdd()
     hideModal()
   }
   return (
@@ -38,9 +37,6 @@ const VideoPreviewModal = ({ previewData, isShowing, hideModal }: Props) => {
             <SimplePlayer link={previewData.link} />
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={handleSave}>
-              Add
-            </Button>
             <Spacer />
             <Button colorScheme="blue" mr={3} onClick={hideModal}>
               Close

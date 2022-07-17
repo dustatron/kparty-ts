@@ -1,23 +1,24 @@
-import React, { ReactElement, useState } from "react"
 import {
   Box,
-  Wrap,
-  Icon,
-  Heading,
-  Text,
-  Image,
-  Stack,
   Button,
-  Spacer,
-  VStack,
+  Heading,
+  Icon,
+  Image,
   Link,
+  Spacer,
+  Stack,
+  Text,
+  VStack,
+  Wrap,
 } from "@chakra-ui/react"
-import { FaRegHeart, FaHeart, FaGalacticSenate } from "react-icons/fa"
-import { useRouter } from "next/router"
+import { FaGalacticSenate, FaHeart, FaRegHeart } from "react-icons/fa"
+import { ISong, useAuth, useFirestoreAction, useRoomData } from "../../utils"
+import React, { ReactElement, useState } from "react"
+
 import { HiOutlineCog } from "react-icons/hi"
-import { ISong, useRoomData, useAuth, useFirestoreAction } from "../../utils"
-import { SiAddthis } from "react-icons/si"
 import { MdOpenInNew } from "react-icons/md"
+import { SiAddthis } from "react-icons/si"
+import { useRouter } from "next/router"
 
 interface Props {
   songData: ISong
@@ -28,6 +29,7 @@ interface Props {
   currentTab?: number
   isActive?: boolean
   isPlayer?: boolean
+  roomId: string
 }
 
 function SongBox({
@@ -39,10 +41,8 @@ function SongBox({
   currentTab,
   isActive,
   isPlayer,
+  roomId,
 }: Props): ReactElement {
-  const router = useRouter()
-  const { roomId } = router.query
-
   const { songTitle, thumbnail } = songData
   const [isFav, setIsFav] = useState(fromFavorites)
   const { setSelected } = useRoomData()

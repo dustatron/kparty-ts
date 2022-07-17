@@ -1,33 +1,37 @@
-import React, { useState } from "react"
 import {
+  Box,
   Button,
-  Heading,
   FormControl,
   FormLabel,
-  Input,
-  Box,
+  Heading,
   Icon,
+  Input,
   VStack,
 } from "@chakra-ui/react"
+import { IUseFetchYT, useFetchYT } from "../../utils"
+import React, { useState } from "react"
+
 import { FiSearch } from "react-icons/fi"
-import { useFetchYT, IUseFetchYT } from "../../utils"
 import SongSearchResultBox from "../SongSearchResultBox"
 import { useAuth } from "../../utils"
-import { useRouter } from "next/router"
 
 interface Props {
   changeTab: (index: number) => void
   handleShowPreview: (link, title, handleSave) => void
+  roomId: string
+  isKJ: boolean
 }
 
-export const SongSearch = ({ changeTab, handleShowPreview }: Props) => {
+export const SongSearch = ({
+  changeTab,
+  handleShowPreview,
+  roomId,
+  isKJ,
+}: Props) => {
   const [inputData, setInputData] = useState<string>("")
   const { error, isLoading, runSearch, results, clearResults }: IUseFetchYT =
     useFetchYT()
   const { currentUser } = useAuth()
-
-  const router = useRouter()
-  const { roomId } = router.query
 
   const handleSearch = (e) => {
     e.preventDefault()
@@ -77,6 +81,7 @@ export const SongSearch = ({ changeTab, handleShowPreview }: Props) => {
               roomId={roomId as string}
               clear={clearInput}
               handleShowPreview={handleShowPreview}
+              isKJ={isKJ}
             />
           )
         })}

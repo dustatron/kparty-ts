@@ -1,7 +1,7 @@
-import { VStack } from "@chakra-ui/react"
-import React from "react"
 import { ISong } from "../../utils"
+import React from "react"
 import SongBox from "../SongBox"
+import { VStack } from "@chakra-ui/react"
 
 interface Props {
   favorites: ISong[]
@@ -9,6 +9,7 @@ interface Props {
   handleTabsChange: (index: number) => void
   tabIndex: number
   isFav: (song: ISong) => boolean
+  roomId: string
 }
 
 export const Favorites = ({
@@ -17,6 +18,7 @@ export const Favorites = ({
   handleTabsChange,
   tabIndex,
   isFav,
+  roomId,
 }: Props) => {
   return (
     <VStack>
@@ -28,6 +30,7 @@ export const Favorites = ({
           changeTab={handleTabsChange}
           currentTab={tabIndex}
           fromFavorites={isFav(song)}
+          roomId={roomId}
         />
       ))}
     </VStack>

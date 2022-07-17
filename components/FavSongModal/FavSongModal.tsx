@@ -1,16 +1,15 @@
-import React, { ReactElement } from "react"
 import {
+  Button,
   Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
   ModalBody,
   ModalCloseButton,
-  Button,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
 } from "@chakra-ui/react"
-import { useFirestoreAction, useAuth, useRoomData } from "../../utils"
-import RoomId from "../../pages/player/[roomId]"
+import React, { ReactElement } from "react"
+import { useAuth, useFirestoreAction, useRoomData } from "../../utils"
 
 interface Props {
   isFavModalShowing: boolean

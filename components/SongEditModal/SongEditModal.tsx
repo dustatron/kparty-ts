@@ -1,36 +1,38 @@
-import React, { ReactElement, useState } from "react"
-import Link from "next/link"
-import { useRouter } from "next/router"
-import { secondsToHours } from "../../utils"
 import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
+  Box,
   Button,
   Link as CaLink,
+  Heading,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
   Spacer,
   Table,
   Tbody,
-  Tr,
   Td,
-  Box,
-  Heading,
-  Text,
+  Tr,
 } from "@chakra-ui/react"
+import React, { ReactElement, useState } from "react"
 import { useFirestoreAction, useRoomData } from "../../utils"
+
+import Link from "next/link"
+import { secondsToHours } from "../../utils"
 
 interface Props {
   isModalShowing: boolean
   hideModal: () => void
+  roomId: string | string[]
 }
 
-function SongEditModal({ isModalShowing, hideModal }: Props): ReactElement {
-  const router = useRouter()
-  const { roomId } = router.query
+function SongEditModal({
+  isModalShowing,
+  hideModal,
+  roomId,
+}: Props): ReactElement {
   const [isShowingConfirm, setIsShowingConfirm] = useState(false)
 
   const { removeSong } = useFirestoreAction(roomId as string)

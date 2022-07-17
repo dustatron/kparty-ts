@@ -1,6 +1,7 @@
-import React from "react"
 import { Box, Button, VStack } from "@chakra-ui/react"
-import { FaForward, FaBackward } from "react-icons/fa"
+import { FaBackward, FaForward } from "react-icons/fa"
+
+import React from "react"
 
 interface Props {
   getDuration: () => string
