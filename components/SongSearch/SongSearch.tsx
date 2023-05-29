@@ -8,12 +8,12 @@ import {
   Input,
   VStack,
 } from "@chakra-ui/react";
-import { IUseFetchYT, useFetchYT } from "../../utils";
 import React, { useState } from "react";
 
 import { FiSearch } from "react-icons/fi";
 import SongSearchResultBox from "../SongSearchResultBox";
 import { useAuth } from "../../utils";
+import { useFetchYT } from "../../utils/useFetchYT";
 
 interface Props {
   changeTab: (index: number) => void;
@@ -29,18 +29,16 @@ export const SongSearch = ({
   isKJ,
 }: Props) => {
   const [inputData, setInputData] = useState<string>("");
-  const { error, isLoading, runSearch, results, clearResults }: IUseFetchYT =
-    useFetchYT();
+  const { data: results, isLoading, error, refetch } = useFetchYT(inputData);
   const { currentUser } = useAuth();
 
   const handleSearch = (e) => {
     e.preventDefault();
-    runSearch(inputData);
+    refetch();
   };
 
   const clearInput = () => {
     setInputData("");
-    clearResults();
   };
 
   return (
@@ -99,7 +97,11 @@ export const SongSearch = ({
         </Heading>
       )}
 
-      {error && <Heading>Error: {error}</Heading>}
+      {error && (
+        <Heading>
+          <>Error: {error}</>
+        </Heading>
+      )}
     </>
   );
 };

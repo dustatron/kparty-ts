@@ -8,13 +8,7 @@ export interface IVideoData {
   title: string
 }
 
-export interface IUseFetchYT {
-  isLoading: boolean
-  results: IVideoData[]
-  error: string
-  runSearch: (string) => void
-  clearResults: () => void
-}
+
 export interface IUser {
   displayName: string
   email: string
