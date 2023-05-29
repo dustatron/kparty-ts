@@ -43,9 +43,15 @@ export const SongSearch = ({
 
   return (
     <>
-      <Box border="1px" borderRadius="lg" p="5">
+      <Box
+        border={{ base: "none", sm: "none", md: "1px" }}
+        borderRadius={{ base: "none", sm: "none", md: "sm" }}
+        borderBottom="1px"
+        p="1"
+        borderColor={{ base: "none", sm: "black", md: "gray.300" }}
+      >
         <form onSubmit={handleSearch}>
-          <VStack justify="center">
+          <VStack justify="center" p="2">
             <Box w="100%">
               <FormControl id="first-name" isRequired>
                 <FormLabel>Search for a song</FormLabel>
@@ -67,22 +73,24 @@ export const SongSearch = ({
           </VStack>
         </form>
       </Box>
-      {results &&
-        results.map((video, index) => {
-          return (
-            <SongSearchResultBox
-              key={`${index}-${video.title}`}
-              videoData={video}
-              changeTab={changeTab}
-              authorId={currentUser.uid}
-              user={currentUser}
-              roomId={roomId as string}
-              clear={clearInput}
-              handleShowPreview={handleShowPreview}
-              isKJ={isKJ}
-            />
-          );
-        })}
+      <Box p={{ base: "1", sm: "2", md: "0" }} bgColor="gray.50">
+        {results &&
+          results.map((video, index) => {
+            return (
+              <SongSearchResultBox
+                key={`${index}-${video.title}`}
+                videoData={video}
+                changeTab={changeTab}
+                authorId={currentUser.uid}
+                user={currentUser}
+                roomId={roomId as string}
+                clear={clearInput}
+                handleShowPreview={handleShowPreview}
+                isKJ={isKJ}
+              />
+            );
+          })}
+      </Box>
       {results?.length === 0 && !isLoading && (
         <Heading w="100%" textAlign="center" p="5" size="sm">
           No Search Results

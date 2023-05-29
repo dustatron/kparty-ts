@@ -8,20 +8,26 @@ import {
   TabPanels,
   Tabs,
   Text,
-} from "@chakra-ui/react"
-import { Controls, Favorites, Playlist, Search } from "./"
-import { ISong, secondsToHours, useAuth, useFirestoreAction } from "../../utils"
-import React, { useEffect, useState } from "react"
+} from "@chakra-ui/react";
+import { Controls, Favorites, Playlist, Search } from "./";
+import {
+  ISong,
+  secondsToHours,
+  useAuth,
+  useFirestoreAction,
+} from "../../utils";
+import React, { useEffect, useState } from "react";
+import SongSearch from "../SongSearch";
 
 interface Props {
-  showModal: () => void
-  playlist: ISong[]
-  roomId: any
-  showFavModal: () => void
-  currentSong: number
-  isActive: boolean
-  handleShowPreview: (link, title, handleSave) => void
-  isKJ?: boolean
+  showModal: () => void;
+  playlist: ISong[];
+  roomId: any;
+  showFavModal: () => void;
+  currentSong: number;
+  isActive: boolean;
+  handleShowPreview: (link, title, handleSave) => void;
+  isKJ?: boolean;
 }
 
 export const UserPlaylistContainer = ({
@@ -35,71 +41,71 @@ export const UserPlaylistContainer = ({
   isKJ,
 }: Props) => {
   const { nextSong, prevSong, resetRoom, createPlaylist, deletePlaylist } =
-    useFirestoreAction(roomId)
+    useFirestoreAction(roomId);
 
-  const [songList, setSongList] = useState([])
-  const [tabIndex, setTabIndex] = useState<number>(0)
-  const [isNextDisabled, setNextDisabled] = useState<boolean>(false)
-  const [isPrevDisabled, setPrevDisabled] = useState<boolean>(false)
-  const { currentUser } = useAuth()
+  const [songList, setSongList] = useState([]);
+  const [tabIndex, setTabIndex] = useState<number>(0);
+  const [isNextDisabled, setNextDisabled] = useState<boolean>(false);
+  const [isPrevDisabled, setPrevDisabled] = useState<boolean>(false);
+  const { currentUser } = useAuth();
 
   useEffect(() => {
     if (playlist) {
-      setSongList(playlist?.slice(currentSong))
+      setSongList(playlist?.slice(currentSong));
     } else {
     }
     if (!playlist || playlist.length === 0) {
-      createPlaylist()
+      createPlaylist();
     }
     //Next Btn
     if (playlist?.length <= currentSong) {
-      setNextDisabled(true)
+      setNextDisabled(true);
     } else {
-      setNextDisabled(false)
+      setNextDisabled(false);
     }
     //Prev Btn
     if (currentSong <= 0) {
-      setPrevDisabled(true)
+      setPrevDisabled(true);
     } else {
-      setPrevDisabled(false)
+      setPrevDisabled(false);
     }
-  }, [playlist, currentSong])
+  }, [playlist, currentSong]);
 
   const handleTabsChange = (index) => {
-    setTabIndex(index)
-  }
+    setTabIndex(index);
+  };
 
   const handleNextSong = () => {
-    nextSong(roomId)
-  }
+    nextSong(roomId);
+  };
 
   const handlePreviousSong = () => {
     if (currentSong > 0) {
-      prevSong(roomId)
+      prevSong(roomId);
     }
-  }
+  };
 
   const getDuration = (songList) => {
     const totalSeconds = songList.reduce((accumulator, song: ISong) => {
-      return accumulator + song.duration
-    }, 0)
-    return secondsToHours(totalSeconds)
-  }
+      return accumulator + song.duration;
+    }, 0);
+    return secondsToHours(totalSeconds);
+  };
 
   const isFav = (song) => {
     if (currentUser) {
       const hasSong = currentUser.favorites?.find(
         (favSong) => favSong.songId === song.songId
-      )
-      return hasSong
+      );
+      return hasSong;
     }
-    return false
-  }
+    return false;
+  };
 
   return (
     <>
       <Tabs
-        variant="enclosed"
+        variant="line"
         isFitted
         w="100%"
         index={tabIndex}
@@ -113,7 +119,7 @@ export const UserPlaylistContainer = ({
         </TabList>
 
         <TabPanels>
-          <TabPanel>
+          <TabPanel p={{ base: "2", sm: "2", md: "4" }}>
             {playlist && (
               <Playlist
                 songList={songList}
@@ -144,15 +150,15 @@ export const UserPlaylistContainer = ({
               </Box>
             )}
           </TabPanel>
-          <TabPanel>
-            <Search
-              handleTabsChange={handleTabsChange}
+          <TabPanel p={{ base: "0", sm: "0", md: "4" }}>
+            <SongSearch
+              changeTab={handleTabsChange}
               handleShowPreview={handleShowPreview}
               roomId={roomId}
               isKJ={isKJ}
             />
           </TabPanel>
-          <TabPanel>
+          <TabPanel p={{ base: "2", sm: "2", md: "4" }}>
             <Favorites
               favorites={currentUser.favorites}
               showFavModal={showFavModal}
@@ -162,7 +168,7 @@ export const UserPlaylistContainer = ({
               roomId={roomId}
             />
           </TabPanel>
-          <TabPanel>
+          <TabPanel p={{ base: "2", sm: "2", md: "4" }}>
             <Controls
               getDuration={() => getDuration(songList)}
               handleNextSong={handleNextSong}
@@ -176,7 +182,7 @@ export const UserPlaylistContainer = ({
         </TabPanels>
       </Tabs>
     </>
-  )
-}
+  );
+};
 
-export default UserPlaylistContainer
+export default UserPlaylistContainer;

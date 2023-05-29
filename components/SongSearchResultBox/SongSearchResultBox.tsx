@@ -8,23 +8,28 @@ import {
   Text,
   VStack,
   Wrap,
-} from "@chakra-ui/react"
-import { FaHeart, FaPlay } from "react-icons/fa"
-import { IUser, IVideoData, useFirestoreAction, videoToSong } from "../../utils"
+} from "@chakra-ui/react";
+import { FaHeart, FaPlay } from "react-icons/fa";
+import {
+  IUser,
+  IVideoData,
+  useFirestoreAction,
+  videoToSong,
+} from "../../utils";
 
-import React from "react"
-import { SiAddthis } from "react-icons/si"
-import { useState } from "react"
+import React from "react";
+import { SiAddthis } from "react-icons/si";
+import { useState } from "react";
 
 interface Props {
-  videoData: IVideoData
-  authorId: string
-  user: IUser
-  roomId: string
-  changeTab: (index: number) => void
-  clear: () => void
-  handleShowPreview: (link, title, handleAdd) => void
-  isKJ: boolean
+  videoData: IVideoData;
+  authorId: string;
+  user: IUser;
+  roomId: string;
+  changeTab: (index: number) => void;
+  clear: () => void;
+  handleShowPreview: (link, title, handleAdd) => void;
+  isKJ: boolean;
 }
 
 const SongSearchResultBox = ({
@@ -36,23 +41,23 @@ const SongSearchResultBox = ({
   handleShowPreview,
   isKJ,
 }: Props) => {
-  const [isShowingUserInput, setIsShowingCustomUser] = useState(false)
-  const [customUserName, setCustomUserName] = useState("")
-  const { title, artist, duration, id, publishedAt } = videoData
-  const { addSong } = useFirestoreAction(roomId)
-  const thumbnail = `https://i.ytimg.com/vi/${id}/default.jpg`
-  const link = `https://www.youtube.com/watch?v=${id}`
+  const [isShowingUserInput, setIsShowingCustomUser] = useState(false);
+  const [customUserName, setCustomUserName] = useState("");
+  const { title, artist, duration, id, publishedAt } = videoData;
+  const { addSong } = useFirestoreAction(roomId);
+  const thumbnail = `https://i.ytimg.com/vi/${id}/default.jpg`;
+  const link = `https://www.youtube.com/watch?v=${id}`;
 
   const handleAdd = () => {
     if (isKJ) {
-      setIsShowingCustomUser(true)
+      setIsShowingCustomUser(true);
     } else {
-      const songNormalized = videoToSong(videoData, user)
-      addSong(songNormalized)
-      changeTab(0)
-      clear()
+      const songNormalized = videoToSong(videoData, user);
+      addSong(songNormalized);
+      changeTab(0);
+      clear();
     }
-  }
+  };
 
   const handleAddCustomUserName = () => {
     const customUser: IUser = {
@@ -60,33 +65,35 @@ const SongSearchResultBox = ({
       email: "",
       photoURL: "",
       uid: "custom-user",
-    }
-    const songNormalized = videoToSong(videoData, customUser)
-    addSong(songNormalized)
-    changeTab(0)
-    clear()
-  }
+    };
+    const songNormalized = videoToSong(videoData, customUser);
+    addSong(songNormalized);
+    changeTab(0);
+    clear();
+  };
 
   const getDuration = (seconds) => {
-    const toMinutes = seconds / 60
-    const time = toMinutes.toFixed(2)
-    return time.toString().replace(".", ":")
-  }
+    const toMinutes = seconds / 60;
+    const time = toMinutes.toFixed(2);
+    return time.toString().replace(".", ":");
+  };
 
   const getDate = (date) => {
-    const dateObj = new Date(date)
-    const month = dateObj.getMonth()
-    const year = dateObj.getFullYear()
-    return `${month} / ${year}`
-  }
+    const dateObj = new Date(date);
+    const month = dateObj.getMonth();
+    const year = dateObj.getFullYear();
+    return `${month} / ${year}`;
+  };
 
   return (
     <Box
-      p="1"
+      p={{ sm: "2", md: "2" }}
       margin="5px auto"
       border="1px"
       borderRadius="lg"
+      borderColor="gray.400"
       justifyContent="center"
+      backgroundColor="white"
     >
       <Wrap p="2">
         <Box w="20%">
@@ -116,14 +123,12 @@ const SongSearchResultBox = ({
         )}
 
         <VStack w="10%">
-          <a /*href={link} target="_blank"*/>
-            <Button
-              variant="outline"
-              onClick={() => handleShowPreview(link, title, handleAdd)}
-            >
-              <Icon as={FaPlay} marginRight="5px" />
-            </Button>
-          </a>
+          <Button
+            variant="outline"
+            onClick={() => handleShowPreview(link, title, handleAdd)}
+          >
+            <Icon as={FaPlay} marginRight="5px" />
+          </Button>
           {!isShowingUserInput && (
             <Button onClick={handleAdd}>
               <Icon as={SiAddthis} />
@@ -145,7 +150,7 @@ const SongSearchResultBox = ({
         </VStack>
       </Wrap>
     </Box>
-  )
-}
+  );
+};
 
-export default SongSearchResultBox
+export default SongSearchResultBox;

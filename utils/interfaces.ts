@@ -22,7 +22,7 @@ export interface IAuth {
   loginWithGithub: () => void
   logout: () => void
   error?: FirebaseError
-  loading: boolean
+  isLoading: boolean
 }
 export interface ISong {
   videoId: string

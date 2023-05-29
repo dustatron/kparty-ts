@@ -10,26 +10,25 @@ import {
   Text,
   VStack,
   Wrap,
-} from "@chakra-ui/react"
-import { FaGalacticSenate, FaHeart, FaRegHeart } from "react-icons/fa"
-import { ISong, useAuth, useFirestoreAction, useRoomData } from "../../utils"
-import React, { ReactElement, useState } from "react"
+} from "@chakra-ui/react";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { ISong, useAuth, useFirestoreAction, useRoomData } from "../../utils";
+import React, { ReactElement, useState } from "react";
 
-import { HiOutlineCog } from "react-icons/hi"
-import { MdOpenInNew } from "react-icons/md"
-import { SiAddthis } from "react-icons/si"
-import { useRouter } from "next/router"
+import { HiOutlineCog } from "react-icons/hi";
+import { MdOpenInNew } from "react-icons/md";
+import { SiAddthis } from "react-icons/si";
 
 interface Props {
-  songData: ISong
-  isDragging?: () => boolean
-  showModal?: () => void
-  fromFavorites?: boolean
-  changeTab?: (index: number) => void
-  currentTab?: number
-  isActive?: boolean
-  isPlayer?: boolean
-  roomId: string
+  songData: ISong;
+  isDragging?: () => boolean;
+  showModal?: () => void;
+  fromFavorites?: boolean;
+  changeTab?: (index: number) => void;
+  currentTab?: number;
+  isActive?: boolean;
+  isPlayer?: boolean;
+  roomId: string;
 }
 
 function SongBox({
@@ -43,70 +42,65 @@ function SongBox({
   isPlayer,
   roomId,
 }: Props): ReactElement {
-  const { songTitle, thumbnail } = songData
-  const [isFav, setIsFav] = useState(fromFavorites)
-  const { setSelected } = useRoomData()
+  const { songTitle, thumbnail } = songData;
+  const [isFav, setIsFav] = useState(fromFavorites);
+  const { setSelected } = useRoomData();
   const { addFavSong, addSong, removeFavorite } = useFirestoreAction(
     roomId as string
-  )
-  const { currentUser } = useAuth()
+  );
+  const { currentUser } = useAuth();
 
   const favSong = () => {
-    setIsFav(!isFav)
+    setIsFav(!isFav);
     if (!isFav) {
-      addFavSong(songData, currentUser)
+      addFavSong(songData, currentUser);
     }
 
     if (isFav) {
-      removeFavorite(songData, currentUser)
+      removeFavorite(songData, currentUser);
     }
-  }
+  };
 
   const handleShowModal = () => {
     if (isPlayer) {
-      return window.open(songData.link, "_blank")
+      return window.open(songData.link, "_blank");
     }
-    setSelected(songData)
-    showModal()
-  }
+    setSelected(songData);
+    showModal();
+  };
 
   const handleAdd = () => {
-    addSong(songData)
-    changeTab(0)
-  }
+    addSong(songData);
+    changeTab(0);
+  };
 
   return (
-    <Wrap
-      spacing="10px"
-      align="center"
+    <Stack
+      direction="row"
       border="1px"
-      borderRadius="md"
+      borderRadius="sm"
       w="100%"
-      alignItems="center"
-      p="2"
-      justify="space-between"
+      borderColor="gray.300"
+      p="1"
       bg={isDragging || isActive ? "#b3e1f9" : "#F7FAFC"}
+      justifyContent="space-between"
+      alignItems="center"
     >
-      <Box align="center" w="20%">
-        <Image
-          boxSize="6rem"
-          borderRadius="md"
-          objectFit="cover"
-          src={thumbnail ? thumbnail : "https://picsum.photos/50/50/?blur"}
-          alt="Dan Abramov"
-        />
-      </Box>
+      <Image
+        w="30%"
+        h="100%"
+        boxSize="9rem"
+        objectFit="fill"
+        src={thumbnail ? thumbnail : "https://picsum.photos/50/50/?blur"}
+      />
 
-      <Stack w="50%">
+      <Stack w="50%" h="100%">
         <Heading size="xs" w="100%" onClick={handleShowModal}>
           <Link>{songTitle}</Link>
         </Heading>
         <Box h="2px" w="100%" bg="blackAlpha.400" margin="5px auto" />
         <Box textAlign="center" w="100%">
           <Wrap>
-            <strong> Singer: </strong>
-            <Text fontSize="sm"> {songData.singer.slice(0, 12)}</Text>
-            <Spacer />
             {songData.userPhoto && (
               <Image
                 src={songData.userPhoto}
@@ -115,6 +109,9 @@ function SongBox({
                 borderRadius="3xl"
               />
             )}
+            <strong> Singer: </strong>
+            <Text fontSize="sm"> {songData.singer.slice(0, 12)}</Text>
+            <Spacer />
           </Wrap>
         </Box>
       </Stack>
@@ -139,8 +136,8 @@ function SongBox({
           <Icon as={isFav ? FaHeart : FaRegHeart} h="5" w="5" />
         </Button>
       </VStack>
-    </Wrap>
-  )
+    </Stack>
+  );
 }
 
-export default SongBox
+export default SongBox;

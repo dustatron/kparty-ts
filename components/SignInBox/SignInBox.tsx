@@ -1,5 +1,5 @@
-import React, { ReactElement } from "react"
-import Link from "next/link"
+import React, { ReactElement } from "react";
+import Link from "next/link";
 import {
   VStack,
   Heading,
@@ -8,13 +8,13 @@ import {
   Button,
   Divider,
   Text,
-} from "@chakra-ui/react"
-import { GrGoogle } from "react-icons/gr"
-import { SiGithub } from "react-icons/si"
-import { useAuth, IAuth } from "../../utils"
+} from "@chakra-ui/react";
+import { GrGoogle } from "react-icons/gr";
+import { SiGithub } from "react-icons/si";
+import { useAuth, IAuth } from "../../utils";
 
 export const SignInBox = (): ReactElement => {
-  const { login, currentUser, loginWithGithub }: IAuth = useAuth()
+  const { login, currentUser, loginWithGithub }: IAuth = useAuth();
   return (
     <>
       <Center py={6}>
@@ -27,7 +27,7 @@ export const SignInBox = (): ReactElement => {
           p="6"
           textAlign="center"
         >
-          <VStack columns={2} spacing={6} p="4">
+          <VStack spacing={6}>
             {!currentUser && <Heading as="h2">Sign In</Heading>}
             {currentUser && (
               <>
@@ -75,5 +75,5 @@ export const SignInBox = (): ReactElement => {
         </Box>
       </Center>
     </>
-  )
-}
+  );
+};

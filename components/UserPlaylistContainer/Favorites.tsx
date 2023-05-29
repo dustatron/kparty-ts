@@ -1,15 +1,15 @@
-import { ISong } from "../../utils"
-import React from "react"
-import SongBox from "../SongBox"
-import { VStack } from "@chakra-ui/react"
+import { ISong } from "../../utils";
+import React from "react";
+import SongBox from "../SongBox";
+import { VStack } from "@chakra-ui/react";
 
 interface Props {
-  favorites: ISong[]
-  showFavModal: () => void
-  handleTabsChange: (index: number) => void
-  tabIndex: number
-  isFav: (song: ISong) => boolean
-  roomId: string
+  favorites: ISong[];
+  showFavModal: () => void;
+  handleTabsChange: (index: number) => void;
+  tabIndex: number;
+  isFav: (song: ISong) => boolean;
+  roomId: string;
 }
 
 export const Favorites = ({
@@ -34,5 +34,5 @@ export const Favorites = ({
         />
       ))}
     </VStack>
-  )
-}
+  );
+};

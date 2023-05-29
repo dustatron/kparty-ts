@@ -1,70 +1,70 @@
-import React, { FC, useEffect, useState } from "react"
-import { Skeleton, Stack } from "@chakra-ui/react"
-import { useFirestoreAction, useRoomData } from "../../utils"
+import React, { FC, useEffect, useState } from "react";
+import { Skeleton, Stack } from "@chakra-ui/react";
+import { useFirestoreAction, useRoomData } from "../../utils";
 
-import { Container } from "@chakra-ui/react"
-import FavSongModal from "../FavSongModal"
-import SongEditModal from "../SongEditModal"
-import UserPlaylistContainer from "../UserPlaylistContainer"
-import VideoPreviewModal from "../VideoPreviewModal"
+import { Container } from "@chakra-ui/react";
+import FavSongModal from "../FavSongModal";
+import SongEditModal from "../SongEditModal";
+import UserPlaylistContainer from "../UserPlaylistContainer";
+import VideoPreviewModal from "../VideoPreviewModal";
 
 interface Props {
-  setTitle: (title: string) => void
-  roomId: string | string[]
-  isKJ?: boolean
+  setTitle: (title: string) => void;
+  roomId: string | string[];
+  isKJ?: boolean;
 }
 
 const playlistWrapper: FC<Props> = ({ setTitle, roomId, isKJ }) => {
-  const [isModalShowing, setIsModalShowing] = useState<boolean>(false)
-  const [isFavModalShowing, setIsFavModalShowing] = useState<boolean>(false)
+  const [isModalShowing, setIsModalShowing] = useState<boolean>(false);
+  const [isFavModalShowing, setIsFavModalShowing] = useState<boolean>(false);
   const [isPreviewModalShowing, setIsPreviewModalShowing] =
-    useState<boolean>(false)
+    useState<boolean>(false);
   const [previewData, setPreviewData] = useState({
     title: "",
     link: "",
-  })
-  const { roomData, setRoomKey } = useRoomData()
+  });
+  const { roomData, setRoomKey } = useRoomData();
 
   useEffect(() => {
-    setRoomKey(roomId)
+    setRoomKey(roomId);
 
     return () => {
-      setRoomKey(null)
-    }
-  }, [roomId])
+      setRoomKey(null);
+    };
+  }, [roomId]);
 
   useEffect(() => {
     if (roomData) {
-      setTitle(`${roomData.title} Playlist`)
+      setTitle(`${roomData.title} Playlist`);
     }
-  }, [roomData])
+  }, [roomData]);
 
   const handleShowModal = (hide?: boolean) => {
     if (hide) {
-      setIsModalShowing(false)
+      setIsModalShowing(false);
     } else {
-      setIsModalShowing(true)
+      setIsModalShowing(true);
     }
-  }
+  };
   const handleShowFavModal = () => {
-    setIsFavModalShowing(true)
-  }
+    setIsFavModalShowing(true);
+  };
 
   const handleShowPreview = (link, title) => {
-    setPreviewData({ link, title })
-    setIsPreviewModalShowing(true)
-  }
+    setPreviewData({ link, title });
+    setIsPreviewModalShowing(true);
+  };
 
   const handleHideFavModal = () => {
-    setIsFavModalShowing(false)
-  }
+    setIsFavModalShowing(false);
+  };
 
   const handleHidePreviewModal = () => {
-    setIsPreviewModalShowing(false)
-  }
+    setIsPreviewModalShowing(false);
+  };
 
   return (
-    <Container maxW="xl" centerContent p="5">
+    <Container centerContent p={{ base: "0", sm: "0", md: "5" }}>
       {roomData && (
         <UserPlaylistContainer
           playlist={roomData.playlist}
@@ -99,7 +99,7 @@ const playlistWrapper: FC<Props> = ({ setTitle, roomId, isKJ }) => {
         hideModal={handleHidePreviewModal}
       />
     </Container>
-  )
-}
+  );
+};
 
-export default playlistWrapper
+export default playlistWrapper;
