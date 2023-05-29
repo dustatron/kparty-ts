@@ -21,6 +21,8 @@ interface useAuth {
   logout: () => void;
   isLoading: boolean;
   loginWithGithub: () => void;
+  error?;
+  string;
 }
 
 const AuthContext = createContext(null);
