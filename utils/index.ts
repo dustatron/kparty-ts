@@ -6,7 +6,6 @@ import {
   IVideoData,
   IUser,
   IAuth,
-  IUseFetchYT,
   ISongAction,
   ActionTypes,
 } from "./interfaces"
@@ -20,7 +19,6 @@ import { videoToSong } from "./normalize"
 
 export {
   Rooms,
-  useFetchYT,
   useAuth,
   AuthProvider,
   auth,
@@ -37,7 +35,6 @@ export type {
   IVideoData,
   IUser,
   IAuth,
-  IUseFetchYT,
   ISongAction,
   RoomDataHook,
 }

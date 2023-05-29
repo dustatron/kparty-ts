@@ -1,27 +1,16 @@
 import { useState } from "react";
-import { IUseFetchYT } from "./";
+import { useQuery } from "react-query";
+import { IVideoData } from "./index";
 
-export const useFetchYT = (): IUseFetchYT => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [results, setResults] = useState([]);
-  const [error, setError] = useState(null);
+export const useFetchYT = (songTitle) => {
 
-  const runSearch = (songTitle: string) => {
-    setIsLoading(true);
-    try {
-      const data = fetch(`/api/yt?song=${songTitle}`)
-        .then((data) => data.json())
-        .then((json) => setResults(json.videos))
-        .then(() => setIsLoading(false));
-    } catch (error) {
-      setError(error.message);
-      setIsLoading(false);
-    }
-  };
 
-  const clearResults = () => {
-    setResults([]);
-  };
 
-  return { isLoading, results, error, runSearch, clearResults };
+  const fetcher = async () => {
+    const result = await fetch(`/api/yt?song=${songTitle}`)
+    const data = await result.json()
+    return data
+  }
+  return useQuery<IVideoData[]>(['songSearch', songTitle], fetcher, { enabled: false })
+  // return { isLoading, results, error, runSearch, clearResults };
 };
