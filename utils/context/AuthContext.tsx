@@ -4,84 +4,85 @@ import React, {
   useEffect,
   ReactElement,
   createContext,
-} from "react"
-import firebase from "firebase/app"
-import { auth, IUser, IAuth, ISong } from "../index"
+} from "react";
+import firebase from "firebase/app";
+import { auth, IUser, IAuth, ISong } from "../index";
 
 type AuthContext = {
-  currentUser: object
-  login: () => void
-  logout: () => void
-  error?: string
-}
+  currentUser: object;
+  login: () => void;
+  logout: () => void;
+  error?: string;
+};
 
 interface useAuth {
-  currentUser
-  login: () => void
-  logout: () => void
-  loading: boolean
-  loginWithGithub: () => void
+  currentUser;
+  login: () => void;
+  logout: () => void;
+  isLoading: boolean;
+  loginWithGithub: () => void;
 }
 
-const AuthContext = createContext(null)
+const AuthContext = createContext(null);
 
 export function useAuth(): useAuth {
-  return useContext(AuthContext)
+  return useContext(AuthContext);
 }
 
 export function AuthProvider({ children }): ReactElement {
-  const [currentUser, setCurrentUser] = useState<any>(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState()
+  const [currentUser, setCurrentUser] = useState<any>(null);
+  const [isLoading, setLoading] = useState(true);
+  const [error, setError] = useState();
 
   const resetStates = () => {
-    setError(undefined)
-    setLoading(true)
-  }
+    setError(undefined);
+    setLoading(true);
+  };
 
   const login = async () => {
-    resetStates()
-    const provider = new firebase.auth.GoogleAuthProvider()
-    auth.useDeviceLanguage()
+    resetStates();
+    const provider = new firebase.auth.GoogleAuthProvider();
+    auth.useDeviceLanguage();
     try {
-      await auth.signInWithPopup(provider)
+      await auth.signInWithRedirect(provider);
     } catch (error) {
-      setError(error)
+      setError(error);
     }
-    setLoading(false)
-  }
+    setLoading(false);
+  };
 
   const loginWithGithub = async () => {
-    resetStates()
-    const provider = new firebase.auth.GithubAuthProvider()
-    auth.useDeviceLanguage()
-    await auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+    resetStates();
+    const provider = new firebase.auth.GithubAuthProvider();
+    auth.useDeviceLanguage();
+    await auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
     try {
-      await auth.signInWithPopup(provider)
+      await auth.signInWithPopup(provider);
     } catch (error) {
-      setError(error)
+      setError(error);
     }
-    setLoading(false)
-  }
+    setLoading(false);
+  };
 
   const logout = async () => {
     try {
-      await auth.signOut()
-      setCurrentUser(undefined)
+      await auth.signOut();
+      setCurrentUser(undefined);
     } catch (error) {
-      setError(error)
-      console.error(error.message)
+      setError(error);
+      console.error(error.message);
     }
-  }
+  };
 
   const getUserProfile = (user) => {
-    const userDB = firebase.firestore().collection("users")
+    const userDB = firebase.firestore().collection("users");
     if (user.uid) {
-      const userData = userDB.doc(user.uid)
+      const userData = userDB.doc(user.uid);
       userData.onSnapshot((snap) => {
         if (snap.exists) {
-          const data = snap.data()
-          setCurrentUser(data)
+          const data = snap.data();
+          setCurrentUser(data);
+          setLoading(false);
         } else {
           userData
             .set({
@@ -91,24 +92,24 @@ export function AuthProvider({ children }): ReactElement {
               uid: user.uid,
               favorites: [],
             })
-            .then(() => setLoading(false))
+            .then(() => setLoading(false));
         }
-      })
+      });
     }
-  }
+  };
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
-        localStorage.setItem("kparty.expectSignIn", "1")
-        getUserProfile(user)
+        localStorage.setItem("kparty.expectSignIn", "1");
+        getUserProfile(user);
       } else {
-        localStorage.removeItem("kparty.expectSignIn")
+        localStorage.removeItem("kparty.expectSignIn");
+        setLoading(false);
       }
-    })
-    setLoading(false)
-    return unsubscribe
-  }, [])
+    });
+    return unsubscribe;
+  }, []);
 
   const value: IAuth = {
     currentUser,
@@ -116,8 +117,8 @@ export function AuthProvider({ children }): ReactElement {
     loginWithGithub,
     logout,
     error,
-    loading,
-  }
+    isLoading,
+  };
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

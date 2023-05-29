@@ -1,22 +1,22 @@
-import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd"
-import { ISong, useFirestoreAction } from "../../utils"
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import { ISong, useFirestoreAction } from "../../utils";
 
-import React from "react"
-import SongBox from "../SongBox"
-import { VStack } from "@chakra-ui/react"
-import styles from "./styles.module.css"
+import React from "react";
+import SongBox from "../SongBox";
+import { VStack } from "@chakra-ui/react";
+import styles from "./styles.module.css";
 
 interface Props {
-  songList: any[]
-  currentSong: number
-  playlist: ISong[]
-  roomId: string
-  setSongList: (songList: ISong[]) => void
-  handleTabsChange: (index: number) => void
-  showModal: () => void
-  tabIndex: number
-  isFav: (song: ISong) => boolean
-  isActive: boolean
+  songList: any[];
+  currentSong: number;
+  playlist: ISong[];
+  roomId: string;
+  setSongList: (songList: ISong[]) => void;
+  handleTabsChange: (index: number) => void;
+  showModal: () => void;
+  tabIndex: number;
+  isFav: (song: ISong) => boolean;
+  isActive: boolean;
 }
 
 export const Playlist = ({
@@ -32,30 +32,30 @@ export const Playlist = ({
   isActive,
 }: Props) => {
   const { playlistUpdate, nextSong, prevSong, resetRoom } =
-    useFirestoreAction(roomId)
+    useFirestoreAction(roomId);
   // a little function to help us with reordering the result
   const reorder = (list, startIndex, endIndex) => {
-    const result: ISong[] = Array.from(list)
-    const [removed] = result.splice(startIndex, 1)
-    result.splice(endIndex, 0, removed)
+    const result: ISong[] = Array.from(list);
+    const [removed] = result.splice(startIndex, 1);
+    result.splice(endIndex, 0, removed);
 
-    return result
-  }
+    return result;
+  };
   const onDragEnd = (result) => {
-    if (!result.destination) return
+    if (!result.destination) return;
 
     const reorderedList = reorder(
       songList,
       result.source.index,
       result.destination.index
-    )
-    const startOfList = playlist.slice(0, currentSong)
+    );
+    const startOfList = playlist.slice(0, currentSong);
     const updatedList =
-      currentSong === 0 ? reorderedList : [...startOfList, ...reorderedList]
+      currentSong === 0 ? reorderedList : [...startOfList, ...reorderedList];
 
-    playlistUpdate(updatedList)
-    setSongList(reorderedList)
-  }
+    playlistUpdate(updatedList);
+    setSongList(reorderedList);
+  };
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
@@ -65,6 +65,7 @@ export const Playlist = ({
             {...provided.droppableProps}
             ref={provided.innerRef}
             align="center"
+            p="0"
           >
             {songList.map((song: ISong, index) => (
               <Draggable
@@ -98,5 +99,5 @@ export const Playlist = ({
         )}
       </Droppable>
     </DragDropContext>
-  )
-}
+  );
+};
