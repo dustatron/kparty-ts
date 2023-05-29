@@ -17,7 +17,7 @@ type Props = {
 };
 
 const Navbar: FC<Props> = ({ heading }) => {
-  const { login, logout, currentUser, loading, error }: IAuth = useAuth();
+  const { login, logout, currentUser, isLoading, error } = useAuth();
   const [isShowingError, setIsShowingError] = useState(false);
 
   useEffect(() => {
@@ -51,7 +51,7 @@ const Navbar: FC<Props> = ({ heading }) => {
               {!currentUser && (
                 <Link href="/signIn">
                   <a>
-                    <Button variant="ghost" isLoading={loading}>
+                    <Button variant="ghost" isLoading={isLoading}>
                       Sign In
                     </Button>
                   </a>
