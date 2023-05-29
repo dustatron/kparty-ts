@@ -7,19 +7,19 @@ import {
   Icon,
   Input,
   VStack,
-} from "@chakra-ui/react"
-import { IUseFetchYT, useFetchYT } from "../../utils"
-import React, { useState } from "react"
+} from "@chakra-ui/react";
+import React, { useState } from "react";
 
-import { FiSearch } from "react-icons/fi"
-import SongSearchResultBox from "../SongSearchResultBox"
-import { useAuth } from "../../utils"
+import { FiSearch } from "react-icons/fi";
+import SongSearchResultBox from "../SongSearchResultBox";
+import { useAuth } from "../../utils";
+import { useFetchYT } from "../../utils/useFetchYT";
 
 interface Props {
-  changeTab: (index: number) => void
-  handleShowPreview: (link, title, handleSave) => void
-  roomId: string
-  isKJ: boolean
+  changeTab: (index: number) => void;
+  handleShowPreview: (link, title, handleSave) => void;
+  roomId: string;
+  isKJ: boolean;
 }
 
 export const SongSearch = ({
@@ -28,20 +28,18 @@ export const SongSearch = ({
   roomId,
   isKJ,
 }: Props) => {
-  const [inputData, setInputData] = useState<string>("")
-  const { error, isLoading, runSearch, results, clearResults }: IUseFetchYT =
-    useFetchYT()
-  const { currentUser } = useAuth()
+  const [inputData, setInputData] = useState<string>("");
+  const { data: results, isLoading, error, refetch } = useFetchYT(inputData);
+  const { currentUser } = useAuth();
 
   const handleSearch = (e) => {
-    e.preventDefault()
-    runSearch(inputData)
-  }
+    e.preventDefault();
+    refetch();
+  };
 
   const clearInput = () => {
-    setInputData("")
-    clearResults()
-  }
+    setInputData("");
+  };
 
   return (
     <>
@@ -56,7 +54,7 @@ export const SongSearch = ({
                   disabled={isLoading}
                   value={inputData}
                   onChange={(e) => {
-                    setInputData(e.target.value)
+                    setInputData(e.target.value);
                   }}
                 />
               </FormControl>
@@ -83,7 +81,7 @@ export const SongSearch = ({
               handleShowPreview={handleShowPreview}
               isKJ={isKJ}
             />
-          )
+          );
         })}
       {results?.length === 0 && !isLoading && (
         <Heading w="100%" textAlign="center" p="5" size="sm">
@@ -91,9 +89,13 @@ export const SongSearch = ({
         </Heading>
       )}
 
-      {error && <Heading>Error: {error}</Heading>}
+      {error && (
+        <Heading>
+          <>Error: {error}</>
+        </Heading>
+      )}
     </>
-  )
-}
+  );
+};
 
-export default SongSearch
+export default SongSearch;
