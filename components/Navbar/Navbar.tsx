@@ -9,7 +9,7 @@ import {
   Text,
   Button,
 } from "@chakra-ui/react";
-import { IAuth, useAuth } from "../../utils";
+import { useAuth } from "../../utils";
 import Error from "./Error";
 
 type Props = {

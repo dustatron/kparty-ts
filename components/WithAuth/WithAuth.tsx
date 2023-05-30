@@ -10,8 +10,6 @@ interface Props {
 const WithAuth = (WrappedComponent) => {
   return (props) => {
     const { currentUser, isLoading } = useAuth();
-    console.log("isLoading", isLoading);
-    console.log("currentUser", currentUser);
 
     if (isLoading) {
       return (

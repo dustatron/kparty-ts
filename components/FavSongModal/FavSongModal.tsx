@@ -7,27 +7,27 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-} from "@chakra-ui/react"
-import React, { ReactElement } from "react"
-import { useAuth, useFirestoreAction, useRoomData } from "../../utils"
+} from "@chakra-ui/react";
+import React, { ReactElement } from "react";
+import { useAuth, useFirestoreAction, useRoomData } from "../../utils";
 
 interface Props {
-  isFavModalShowing: boolean
-  hideFavModal: () => void
+  isFavModalShowing: boolean;
+  hideFavModal: () => void;
 }
 
 function FavSongModal({
   isFavModalShowing,
   hideFavModal,
 }: Props): ReactElement {
-  const { removeFavorite } = useFirestoreAction()
-  const { currentUser } = useAuth()
-  const { selected } = useRoomData()
+  const { removeFavorite } = useFirestoreAction();
+  const { currentUser } = useAuth();
+  const { selected } = useRoomData();
 
   const handleDelete = () => {
-    removeFavorite(selected, currentUser)
-    hideFavModal()
-  }
+    removeFavorite(selected, currentUser);
+    hideFavModal();
+  };
 
   return (
     <>
@@ -50,13 +50,13 @@ function FavSongModal({
               <Button colorScheme="red" mr={3} onClick={handleDelete}>
                 delete
               </Button>
-              <Button variant="ghost">Save</Button>
+              {/* <Button variant="ghost">Save</Button> */}
             </ModalFooter>
           </ModalContent>
         )}
       </Modal>
     </>
-  )
+  );
 }
 
-export default FavSongModal
+export default FavSongModal;

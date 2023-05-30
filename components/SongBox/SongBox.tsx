@@ -85,6 +85,7 @@ function SongBox({
       bg={isDragging || isActive ? "#b3e1f9" : "#F7FAFC"}
       justifyContent="space-between"
       alignItems="center"
+      boxShadow="lg"
     >
       <Image
         w="30%"
