@@ -18,8 +18,8 @@ export default async (req, res) => {
         const { duration, id, title, channel } = vid
         return { artist: channel?.name || 'no artist info', duration: duration || 0, id, original_title: title, publishedAt: '', title }
       })
-      res.status(200).json(resultsConformed);
+      return res.status(200).json(resultsConformed);
     }
-    res.status(403).json({ message: "Bad request" })
+    return res.status(403).json({ message: "Bad request" })
   }
 };
