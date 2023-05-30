@@ -5,6 +5,7 @@ import {
   Icon,
   Image,
   Input,
+  Stack,
   Text,
   VStack,
   Wrap,
@@ -87,15 +88,15 @@ const SongSearchResultBox = ({
 
   return (
     <Box
-      p={{ sm: "2", md: "2" }}
-      margin="5px auto"
+      p={{ sm: "1", md: "1" }}
       border="1px"
-      borderRadius="lg"
-      borderColor="gray.400"
+      borderRadius="sm"
+      borderColor="gray.300"
       justifyContent="center"
       backgroundColor="white"
+      boxShadow="md"
     >
-      <Wrap p="2">
+      <Stack direction="row" justifyContent="space-between" p="2">
         <Box w="20%">
           <Image src={thumbnail} alt="thumbnail" borderRadius="lg" h="5rem" />
         </Box>
@@ -112,25 +113,28 @@ const SongSearchResultBox = ({
           </Box>
         )}
         {!isShowingUserInput && (
-          <Box w="60%">
+          <Box
+            w="60%"
+            onClick={() => handleShowPreview(link, title, handleAdd)}
+            cursor="pointer"
+          >
             <Heading w="100%" textAlign="left" size="sm">
               {title}
             </Heading>
             <Text fontSize="xs"> artist: {artist} </Text>
-            <Text fontSize="xs"> created on : {getDate(publishedAt)} </Text>
             <Text fontSize="xs"> duration: {getDuration(duration)} </Text>
           </Box>
         )}
 
-        <VStack w="10%">
+        <VStack w="10%" justifyContent="space-between">
           <Button
-            variant="outline"
+            variant="ghost"
             onClick={() => handleShowPreview(link, title, handleAdd)}
           >
             <Icon as={FaPlay} marginRight="5px" />
           </Button>
           {!isShowingUserInput && (
-            <Button onClick={handleAdd}>
+            <Button onClick={handleAdd} variant="ghost">
               <Icon as={SiAddthis} />
             </Button>
           )}
@@ -148,7 +152,7 @@ const SongSearchResultBox = ({
           <Icon as={FaHeart} />
         </Button> */}
         </VStack>
-      </Wrap>
+      </Stack>
     </Box>
   );
 };

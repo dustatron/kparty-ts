@@ -1,16 +1,17 @@
-import { Box, Button, VStack } from "@chakra-ui/react"
-import { FaBackward, FaForward } from "react-icons/fa"
+import { Box, Button, VStack } from "@chakra-ui/react";
+import { FaBackward, FaForward } from "react-icons/fa";
 
-import React from "react"
+import React from "react";
+import DeleteButton from "./DeleteButton";
 
 interface Props {
-  getDuration: () => string
-  handleNextSong: () => void
-  isNextDisabled: boolean
-  handlePreviousSong: () => void
-  isPrevDisabled: boolean
-  resetRoom: () => void
-  deletePlaylist: () => void
+  getDuration: () => string;
+  handleNextSong: () => void;
+  isNextDisabled: boolean;
+  handlePreviousSong: () => void;
+  isPrevDisabled: boolean;
+  resetRoom: () => void;
+  deletePlaylist: () => void;
 }
 
 export const Controls = ({
@@ -22,7 +23,7 @@ export const Controls = ({
   resetRoom,
   deletePlaylist,
 }: Props) => {
-  const totalDuration = getDuration()
+  const totalDuration = getDuration();
   return (
     <VStack>
       <Box
@@ -61,15 +62,7 @@ export const Controls = ({
       >
         Restart
       </Button>
-      <Button
-        onClick={deletePlaylist}
-        size="lg"
-        w="90%"
-        variant="outline"
-        colorScheme="red"
-      >
-        Delete All Songs
-      </Button>
+      <DeleteButton deletePlaylist={deletePlaylist} />
     </VStack>
-  )
-}
+  );
+};

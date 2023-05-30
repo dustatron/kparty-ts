@@ -6,6 +6,7 @@ import {
   Heading,
   Icon,
   Input,
+  Stack,
   VStack,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
@@ -49,6 +50,7 @@ export const SongSearch = ({
         borderBottom="1px"
         p="1"
         borderColor={{ base: "none", sm: "black", md: "gray.300" }}
+        boxShadow="xl"
       >
         <form onSubmit={handleSearch}>
           <VStack justify="center" p="2">
@@ -73,7 +75,7 @@ export const SongSearch = ({
           </VStack>
         </form>
       </Box>
-      <Box p={{ base: "1", sm: "2", md: "0" }} bgColor="gray.50">
+      <Stack marginTop={4} spacing={4} p={{ base: "1", sm: "2", md: "0" }}>
         {results &&
           results.map((video, index) => {
             return (
@@ -90,7 +92,7 @@ export const SongSearch = ({
               />
             );
           })}
-      </Box>
+      </Stack>
       {results?.length === 0 && !isLoading && (
         <Heading w="100%" textAlign="center" p="5" size="sm">
           No Search Results

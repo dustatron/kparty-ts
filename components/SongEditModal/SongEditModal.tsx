@@ -15,17 +15,17 @@ import {
   Tbody,
   Td,
   Tr,
-} from "@chakra-ui/react"
-import React, { ReactElement, useState } from "react"
-import { useFirestoreAction, useRoomData } from "../../utils"
+} from "@chakra-ui/react";
+import React, { ReactElement, useState } from "react";
+import { useFirestoreAction, useRoomData } from "../../utils";
 
-import Link from "next/link"
-import { secondsToHours } from "../../utils"
+import Link from "next/link";
+import { secondsToHours } from "../../utils";
 
 interface Props {
-  isModalShowing: boolean
-  hideModal: () => void
-  roomId: string | string[]
+  isModalShowing: boolean;
+  hideModal: () => void;
+  roomId: string | string[];
 }
 
 function SongEditModal({
@@ -33,21 +33,21 @@ function SongEditModal({
   hideModal,
   roomId,
 }: Props): ReactElement {
-  const [isShowingConfirm, setIsShowingConfirm] = useState(false)
+  const [isShowingConfirm, setIsShowingConfirm] = useState(false);
 
-  const { removeSong } = useFirestoreAction(roomId as string)
-  const { selected } = useRoomData()
+  const { removeSong } = useFirestoreAction(roomId as string);
+  const { selected } = useRoomData();
 
   const handleDelete = () => {
-    removeSong(selected)
-    hideModal()
-    setIsShowingConfirm(false)
-  }
+    removeSong(selected);
+    hideModal();
+    setIsShowingConfirm(false);
+  };
 
   const handleHideModal = () => {
-    hideModal()
-    setIsShowingConfirm(false)
-  }
+    hideModal();
+    setIsShowingConfirm(false);
+  };
 
   return (
     <>
@@ -93,7 +93,7 @@ function SongEditModal({
               )}
               {isShowingConfirm && (
                 <Box>
-                  <Heading as="h2" size="lg">
+                  <Heading as="h3" size="lg">
                     Deleting...
                   </Heading>
                   <Heading as="h3" size="md">
@@ -127,7 +127,7 @@ function SongEditModal({
         )}
       </Modal>
     </>
-  )
+  );
 }
 
-export default SongEditModal
+export default SongEditModal;
