@@ -1,5 +1,6 @@
 import { Box, Button, VStack } from "@chakra-ui/react";
 import { FaBackward, FaForward } from "react-icons/fa";
+import { GrPause } from "react-icons/gr";
 
 import React from "react";
 import DeleteButton from "./DeleteButton";
@@ -12,6 +13,7 @@ interface Props {
   isPrevDisabled: boolean;
   resetRoom: () => void;
   deletePlaylist: () => void;
+  handlePause: () => void;
 }
 
 export const Controls = ({
@@ -53,6 +55,17 @@ export const Controls = ({
       >
         Previous
       </Button>
+
+      {/* <Button
+        leftIcon={<GrPause />}
+        onClick={handlePreviousSong}
+        disabled={isPrevDisabled}
+        size="lg"
+        w="90%"
+      >
+        Pause
+      </Button> */}
+
       <Button
         onClick={resetRoom}
         size="lg"

@@ -1,4 +1,4 @@
-import { ISong } from "../../utils";
+import { ISong, IVideoData } from "../../utils";
 import React from "react";
 import SongBox from "../SongBox";
 import { VStack } from "@chakra-ui/react";
@@ -8,6 +8,7 @@ interface Props {
   showFavModal: () => void;
   handleTabsChange: (index: number) => void;
   tabIndex: number;
+  showPreview: (songData: ISong | IVideoData) => void;
   isFav: (song: ISong) => boolean;
   roomId: string;
 }
@@ -15,6 +16,7 @@ interface Props {
 export const Favorites = ({
   favorites,
   showFavModal,
+  showPreview,
   handleTabsChange,
   tabIndex,
   isFav,
@@ -26,7 +28,7 @@ export const Favorites = ({
         <SongBox
           key={`${index}-${song.songTitle}`}
           songData={song}
-          showModal={() => showFavModal()}
+          showModal={() => showPreview(song)}
           changeTab={handleTabsChange}
           currentTab={tabIndex}
           fromFavorites={isFav(song)}

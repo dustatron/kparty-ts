@@ -15,6 +15,7 @@ export default async (req, res) => {
 
     if (!!results.items.length) {
       const resultsConformed: IVideoData[] = results.items.map((vid) => {
+        console.log(vid)
         const { duration, id, title, channel } = vid
         return { artist: channel?.name || 'no artist info', duration: duration || 0, id, original_title: title, publishedAt: '', title }
       })

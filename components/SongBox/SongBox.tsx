@@ -70,7 +70,7 @@ function SongBox({
   };
 
   const handleAdd = () => {
-    addSong(songData);
+    addSong(songData, currentUser);
     changeTab(0);
   };
 
@@ -111,7 +111,7 @@ function SongBox({
               />
             )}
             <strong> Singer: </strong>
-            <Text fontSize="sm"> {songData.singer.slice(0, 12)}</Text>
+            <Text fontSize="sm"> {songData.singer?.slice(0, 12)}</Text>
             <Spacer />
           </Wrap>
         </Box>

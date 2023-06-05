@@ -29,7 +29,7 @@ interface Props {
   roomId: string;
   changeTab: (index: number) => void;
   clear: () => void;
-  handleShowPreview: (link, title, handleAdd) => void;
+  handleShowPreview: (songData: IVideoData, handleAdd) => void;
   isKJ: boolean;
 }
 
@@ -53,8 +53,8 @@ const SongSearchResultBox = ({
     if (isKJ) {
       setIsShowingCustomUser(true);
     } else {
-      const songNormalized = videoToSong(videoData, user);
-      addSong(songNormalized);
+      // const songNormalized = videoToSong(videoData, user);
+      addSong(videoData, user);
       changeTab(0);
       clear();
     }
@@ -67,8 +67,8 @@ const SongSearchResultBox = ({
       photoURL: "",
       uid: "custom-user",
     };
-    const songNormalized = videoToSong(videoData, customUser);
-    addSong(songNormalized);
+    // const songNormalized = videoToSong(videoData, customUser);
+    addSong(videoData, customUser);
     changeTab(0);
     clear();
   };
@@ -77,13 +77,6 @@ const SongSearchResultBox = ({
     const toMinutes = seconds / 60;
     const time = toMinutes.toFixed(2);
     return time.toString().replace(".", ":");
-  };
-
-  const getDate = (date) => {
-    const dateObj = new Date(date);
-    const month = dateObj.getMonth();
-    const year = dateObj.getFullYear();
-    return `${month} / ${year}`;
   };
 
   return (
@@ -115,7 +108,7 @@ const SongSearchResultBox = ({
         {!isShowingUserInput && (
           <Box
             w="60%"
-            onClick={() => handleShowPreview(link, title, handleAdd)}
+            onClick={() => handleShowPreview(videoData, handleAdd)}
             cursor="pointer"
           >
             <Heading w="100%" textAlign="left" size="sm">
@@ -129,7 +122,7 @@ const SongSearchResultBox = ({
         <VStack w="10%" justifyContent="space-between">
           <Button
             variant="ghost"
-            onClick={() => handleShowPreview(link, title, handleAdd)}
+            onClick={() => handleShowPreview(videoData, handleAdd)}
           >
             <Icon as={FaPlay} marginRight="5px" />
           </Button>
@@ -147,10 +140,6 @@ const SongSearchResultBox = ({
               Add
             </Button>
           )}
-
-          {/* <Button variant="ghost">
-          <Icon as={FaHeart} />
-        </Button> */}
         </VStack>
       </Stack>
     </Box>

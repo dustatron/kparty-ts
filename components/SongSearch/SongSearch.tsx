@@ -13,12 +13,12 @@ import React, { useState } from "react";
 
 import { FiSearch } from "react-icons/fi";
 import SongSearchResultBox from "../SongSearchResultBox";
-import { useAuth } from "../../utils";
+import { IVideoData, useAuth } from "../../utils";
 import { useFetchYT } from "../../utils/useFetchYT";
 
 interface Props {
   changeTab: (index: number) => void;
-  handleShowPreview: (link, title, handleSave) => void;
+  handleShowPreview: (songData: IVideoData, handleSave) => void;
   roomId: string;
   isKJ: boolean;
 }
