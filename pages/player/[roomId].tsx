@@ -1,40 +1,41 @@
-import React, { useEffect, useState } from "react"
-import { useRouter } from "next/router"
-import VideoPlayer from "../../components/VideoPlayer"
-import WithAuth from "../../components/WithAuth"
-import { useRoomData, useFirestoreAction } from "../../utils"
-import PlayerTag from "../../components/PlayerTag"
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import VideoPlayer from "../../components/VideoPlayer";
+import WithAuth from "../../components/WithAuth";
+import { useRoomData, useFirestoreAction } from "../../utils";
+import PlayerTag from "../../components/PlayerTag";
 interface Props {
-  setTitle: Function
+  setTitle: Function;
 }
 
 const player: React.FC<Props> = ({ setTitle }) => {
-  const router = useRouter()
-  const { roomId } = router.query
+  const router = useRouter();
+  const { roomId } = router.query;
 
-  const { roomData, setRoomKey } = useRoomData()
-  const { nextSong, prevSong, isLoading, setIsActive, resetRoom } =
-    useFirestoreAction(roomId as string)
-  const [isPlaying, setIsPlaying] = useState(false)
+  const { roomData, setRoomKey } = useRoomData();
+  const { nextSong, prevSong, isLoading, setIsActive } = useFirestoreAction(
+    roomId as string
+  );
+  const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
-    setRoomKey(roomId)
+    setRoomKey(roomId);
 
     return () => {
-      setRoomKey(null)
-    }
-  }, [])
+      setRoomKey(null);
+    };
+  }, []);
 
   useEffect(() => {
     if (roomData && isPlaying) {
-      const songTitle = roomData.playlist[roomData.currentSong]?.songTitle
-      setTitle(`playing ${songTitle}`)
+      const songTitle = roomData.playlist[roomData.currentSong]?.songTitle;
+      setTitle(`playing ${songTitle}`);
     }
     if (roomData && !isPlaying) {
-      setTitle(roomData.title)
+      setTitle(roomData.title);
     }
-    setIsActive(roomId, isPlaying)
-  }, [roomData, isPlaying])
+    setIsActive(roomId, isPlaying);
+  }, [roomData, isPlaying]);
 
   return (
     <>
@@ -45,10 +46,10 @@ const player: React.FC<Props> = ({ setTitle }) => {
             isPlaying={isPlaying}
             setIsPlaying={setIsPlaying}
             nextSong={() => {
-              nextSong(roomId)
+              nextSong(roomId);
             }}
             previousSong={() => {
-              prevSong(roomId)
+              prevSong(roomId);
             }}
             isLoading={isLoading}
           />
@@ -56,7 +57,7 @@ const player: React.FC<Props> = ({ setTitle }) => {
         </>
       )}
     </>
-  )
-}
+  );
+};
 
-export default WithAuth(player)
+export default WithAuth(player);

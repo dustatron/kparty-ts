@@ -37,6 +37,8 @@ export interface ISong {
   singer?: string
   publishedAt?: string
   userPhoto?: string
+  title?: string
+  id?: string
 }
 export interface IRoom {
   title: string

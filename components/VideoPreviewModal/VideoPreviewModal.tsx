@@ -1,5 +1,6 @@
 import {
   Button,
+  Icon,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -8,44 +9,54 @@ import {
   ModalHeader,
   ModalOverlay,
   Spacer,
-} from "@chakra-ui/react"
+} from "@chakra-ui/react";
+import { SiAddthis } from "react-icons/si";
 
-import React from "react"
-import SimplePlayer from "../SimplePlayer"
-
-interface previewData {
-  link: string
-  title: string
-}
+import React from "react";
+import SimplePlayer from "../SimplePlayer";
+import { ISong, IVideoData, useAuth } from "../../utils";
 
 interface Props {
-  previewData: previewData
-  isShowing: boolean
-  hideModal: () => void
+  previewData: ISong | IVideoData;
+  isShowing: boolean;
+  hideModal: () => void;
+  addSong: (videoData: any, user) => void;
 }
 
-const VideoPreviewModal = ({ previewData, isShowing, hideModal }: Props) => {
+const VideoPreviewModal = ({
+  previewData,
+  isShowing,
+  hideModal,
+  addSong,
+}: Props) => {
+  // @ts-ignore
+  const Id = previewData?.songId ? previewData?.songId : previewData?.id;
+  const link = `https://www.youtube.com/watch?v=${Id}`;
+  const { currentUser } = useAuth();
   const handleSave = () => {
-    hideModal()
-  }
+    addSong(previewData, currentUser);
+    hideModal();
+  };
   return (
     <>
       <Modal size="xl" isOpen={isShowing} onClose={hideModal}>
+        <ModalOverlay />
         <ModalContent>
-          <ModalHeader> {previewData.title}</ModalHeader>
+          <ModalHeader> {previewData?.title}</ModalHeader>
+          <ModalCloseButton />
           <ModalBody>
-            <SimplePlayer link={previewData.link} />
+            <SimplePlayer link={link} />
           </ModalBody>
           <ModalFooter>
             <Spacer />
-            <Button colorScheme="blue" mr={3} onClick={hideModal}>
-              Close
+            <Button colorScheme="blue" mr={3} onClick={handleSave}>
+              Add <Icon ml="2" as={SiAddthis} />
             </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
     </>
-  )
-}
+  );
+};
 
-export default VideoPreviewModal
+export default VideoPreviewModal;

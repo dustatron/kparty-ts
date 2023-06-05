@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from "react";
 import { Skeleton, Stack } from "@chakra-ui/react";
-import { useFirestoreAction, useRoomData } from "../../utils";
+import { IVideoData, useFirestoreAction, useRoomData } from "../../utils";
 
 import { Container } from "@chakra-ui/react";
 import FavSongModal from "../FavSongModal";
@@ -19,10 +19,9 @@ const playlistWrapper: FC<Props> = ({ setTitle, roomId, isKJ }) => {
   const [isFavModalShowing, setIsFavModalShowing] = useState<boolean>(false);
   const [isPreviewModalShowing, setIsPreviewModalShowing] =
     useState<boolean>(false);
-  const [previewData, setPreviewData] = useState({
-    title: "",
-    link: "",
-  });
+  const [previewData, setPreviewData] = useState<IVideoData>();
+
+  const { addSong } = useFirestoreAction(roomId as string);
   const { roomData, setRoomKey } = useRoomData();
 
   useEffect(() => {
@@ -50,8 +49,8 @@ const playlistWrapper: FC<Props> = ({ setTitle, roomId, isKJ }) => {
     setIsFavModalShowing(true);
   };
 
-  const handleShowPreview = (link, title) => {
-    setPreviewData({ link, title });
+  const handleShowPreview = (songData: IVideoData) => {
+    setPreviewData(songData);
     setIsPreviewModalShowing(true);
   };
 
@@ -94,6 +93,7 @@ const playlistWrapper: FC<Props> = ({ setTitle, roomId, isKJ }) => {
         isFavModalShowing={isFavModalShowing}
       />
       <VideoPreviewModal
+        addSong={addSong}
         previewData={previewData}
         isShowing={isPreviewModalShowing}
         hideModal={handleHidePreviewModal}

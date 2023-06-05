@@ -12,6 +12,7 @@ import {
 import { Controls, Favorites, Playlist, Search } from "./";
 import {
   ISong,
+  IVideoData,
   secondsToHours,
   useAuth,
   useFirestoreAction,
@@ -26,7 +27,7 @@ interface Props {
   showFavModal: () => void;
   currentSong: number;
   isActive: boolean;
-  handleShowPreview: (link, title, handleSave) => void;
+  handleShowPreview: (songData: IVideoData | ISong) => void;
   isKJ?: boolean;
 }
 
@@ -40,8 +41,14 @@ export const UserPlaylistContainer = ({
   handleShowPreview,
   isKJ,
 }: Props) => {
-  const { nextSong, prevSong, resetRoom, createPlaylist, deletePlaylist } =
-    useFirestoreAction(roomId);
+  const {
+    nextSong,
+    prevSong,
+    resetRoom,
+    createPlaylist,
+    deletePlaylist,
+    setIsActive,
+  } = useFirestoreAction(roomId);
 
   const [songList, setSongList] = useState([]);
   const [tabIndex, setTabIndex] = useState<number>(0);
@@ -70,6 +77,10 @@ export const UserPlaylistContainer = ({
       setPrevDisabled(false);
     }
   }, [playlist, currentSong]);
+
+  const handlePause = () => {
+    setIsActive(roomId, false);
+  };
 
   const handleTabsChange = (index) => {
     setTabIndex(index);
@@ -160,6 +171,7 @@ export const UserPlaylistContainer = ({
           </TabPanel>
           <TabPanel p={{ base: "2", sm: "2", md: "4" }}>
             <Favorites
+              showPreview={handleShowPreview}
               favorites={currentUser.favorites}
               showFavModal={showFavModal}
               handleTabsChange={handleTabsChange}
@@ -171,6 +183,7 @@ export const UserPlaylistContainer = ({
           <TabPanel p={{ base: "2", sm: "2", md: "4" }}>
             <Controls
               getDuration={() => getDuration(songList)}
+              handlePause={handlePause}
               handleNextSong={handleNextSong}
               isNextDisabled={isNextDisabled}
               handlePreviousSong={handlePreviousSong}
