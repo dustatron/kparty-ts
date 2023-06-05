@@ -1,11 +1,12 @@
-import React from "react"
-import SongSearch from "../SongSearch"
+import React from "react";
+import { ISong, IVideoData } from "../../utils";
+import SongSearch from "../SongSearch";
 
 interface Props {
-  handleTabsChange: (index: number) => void
-  handleShowPreview: (link: any, title: any, handleSave: any) => void
-  roomId: string
-  isKJ: boolean
+  handleTabsChange: (index: number) => void;
+  handleShowPreview: (songData: IVideoData, handleSave: any) => void;
+  roomId: string;
+  isKJ: boolean;
 }
 
 export const Search = ({
@@ -20,4 +21,4 @@ export const Search = ({
     roomId={roomId}
     isKJ={isKJ}
   />
-)
+);
