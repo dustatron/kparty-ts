@@ -46,7 +46,7 @@ export function AuthProvider({ children }): ReactElement {
     const provider = new firebase.auth.GoogleAuthProvider();
     auth.useDeviceLanguage();
     try {
-      await auth.signInWithRedirect(provider);
+      await auth.signInWithPopup(provider);
     } catch (error) {
       setError(error);
     }
