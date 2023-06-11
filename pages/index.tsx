@@ -10,9 +10,5 @@ interface Props {
 }
 
 export default function Home({ setTitle, roomsList }: Props) {
-  return (
-    <>
-      <Hero setTitle={setTitle} roomsList={roomsList} />
-    </>
-  );
+  return <Hero setTitle={setTitle} roomsList={roomsList} />;
 }

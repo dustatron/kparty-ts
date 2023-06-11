@@ -8,8 +8,7 @@ import {
   IAuth,
   ISongAction,
   ActionTypes,
-} from "./interfaces"
-import { useFetchYT } from "./useFetchYT"
+} from "./Types"
 import { useAuth, AuthProvider } from "./context/AuthContext"
 import { secondsToHours } from "./tools"
 import { auth } from "./firebase"

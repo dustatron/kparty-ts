@@ -1,6 +1,6 @@
 import React from "react";
 import { create } from "zustand";
-import { IRoom, ISong } from "../interfaces";
+import { IRoom, ISong } from "../Types";
 import firebase from "firebase/app";
 import useFirestoreAction from "./useFirestoreAction";
 

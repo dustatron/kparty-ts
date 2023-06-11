@@ -6,6 +6,7 @@ import SongBox from "../SongBox";
 import { VStack } from "@chakra-ui/react";
 import styles from "./styles.module.css";
 import useRoomData from "../../utils/hooks/useRoomData";
+import reorder from "../../utils/reorder";
 
 interface Props {
   handleTabsChange: (index: number) => void;
@@ -27,32 +28,32 @@ export const Playlist = ({
     playlist,
     roomId,
     setRemainingSongs,
-  ] = useRoomData((state) => [
-    state.roomData?.currentSong,
-    state.roomData?.isActive,
-    state.remainingSongs,
-    state.playlist,
-    state.roomKey,
-    state.setRemainingSongs,
-  ]);
+  ] = useRoomData(
+    ({
+      roomData: { currentSong, isActive },
+      remainingSongs,
+      playlist,
+      roomKey,
+      setRemainingSongs,
+    }) => [
+      currentSong,
+      isActive,
+      remainingSongs,
+      playlist,
+      roomKey,
+      setRemainingSongs,
+    ]
+  );
 
   const { playlistUpdate } = useFirestoreAction(roomId);
-  // a little function to help reorder the result
-  const reorder = (list, startIndex, endIndex) => {
-    const result: ISong[] = Array.from(list);
-    const [removed] = result.splice(startIndex, 1);
-    result.splice(endIndex, 0, removed);
-
-    return result;
-  };
 
   const onDragEnd = (result) => {
     if (!result.destination) return;
-    if (
-      isActive &&
-      (result.destination.index === 0 || result.source.index === 0)
-    )
-      return;
+
+    const isSourceOrDestinationIndexZero =
+      result.destination.index === 0 || result.source.index === 0;
+
+    if (isActive && isSourceOrDestinationIndexZero) return;
 
     const reorderedList = reorder(
       remainingSongs,
