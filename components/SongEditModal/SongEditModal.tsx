@@ -17,10 +17,11 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import React, { ReactElement, useState } from "react";
-import { useFirestoreAction, useRoomData } from "../../utils";
+import { useFirestoreAction } from "../../utils";
 
 import Link from "next/link";
 import { secondsToHours } from "../../utils";
+import useRoomData from "../../utils/hooks/useRoomData";
 
 interface Props {
   isModalShowing: boolean;
@@ -36,7 +37,7 @@ function SongEditModal({
   const [isShowingConfirm, setIsShowingConfirm] = useState(false);
 
   const { removeSong } = useFirestoreAction(roomId as string);
-  const { selected } = useRoomData();
+  const selected = useRoomData((state) => state?.selected);
 
   const handleDelete = () => {
     removeSong(selected);

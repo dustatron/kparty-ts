@@ -153,8 +153,6 @@ const useFirestoreAction = (roomId?: string) => {
       .then((querySnapshot) => {
         let roomList = [];
         querySnapshot.forEach((doc) => {
-          // doc.data() is never undefined for query doc snapshots
-          // console.log(doc.id, " => ", doc.data())
           roomList.push(doc.data());
         });
         setRoomsList(roomList);

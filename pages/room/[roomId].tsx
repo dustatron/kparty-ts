@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import Image from "next/image";
 import WithAuth from "../../components/WithAuth";
-import { useRoomData } from "../../utils";
+import useRoomData from "../../utils/hooks/useRoomData";
 import {
   Container,
   Center,
@@ -20,10 +20,13 @@ interface Props {
 const room: React.FC<Props> = ({ setTitle }) => {
   const router = useRouter();
   const { roomId } = router.query;
-  const { roomData, setRoomKey, isLoading } = useRoomData();
+  const { roomData, setRoomKey } = useRoomData((state) => ({
+    roomData: state.roomData,
+    setRoomKey: state.setRoomKey,
+  }));
 
   useEffect(() => {
-    setRoomKey(roomId);
+    setRoomKey(roomId as string);
 
     return () => {
       setRoomKey(null);

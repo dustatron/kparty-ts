@@ -1,6 +1,7 @@
 import React, { FC, useEffect, useState } from "react";
 import { Skeleton, Stack } from "@chakra-ui/react";
-import { IVideoData, useFirestoreAction, useRoomData } from "../../utils";
+import { IVideoData, useFirestoreAction } from "../../utils";
+import useRoomData from "../../utils/hooks/useRoomData";
 
 import { Container } from "@chakra-ui/react";
 import FavSongModal from "../FavSongModal";
@@ -10,7 +11,7 @@ import VideoPreviewModal from "../VideoPreviewModal";
 
 interface Props {
   setTitle: (title: string) => void;
-  roomId: string | string[];
+  roomId: string;
   isKJ?: boolean;
 }
 
@@ -22,13 +23,17 @@ const playlistWrapper: FC<Props> = ({ setTitle, roomId, isKJ }) => {
   const [previewData, setPreviewData] = useState<IVideoData>();
 
   const { addSong } = useFirestoreAction(roomId as string);
-  const { roomData, setRoomKey } = useRoomData();
+  const [roomData, setRoomKey, clearRoomData] = useRoomData((state) => [
+    state?.roomData,
+    state?.setRoomKey,
+    state.clearRoomData,
+  ]);
 
   useEffect(() => {
     setRoomKey(roomId);
 
     return () => {
-      setRoomKey(null);
+      clearRoomData();
     };
   }, [roomId]);
 
@@ -66,12 +71,8 @@ const playlistWrapper: FC<Props> = ({ setTitle, roomId, isKJ }) => {
     <Container centerContent p={{ base: "0", sm: "0", md: "5" }}>
       {roomData && (
         <UserPlaylistContainer
-          playlist={roomData.playlist}
           showModal={handleShowModal}
           showFavModal={handleShowFavModal}
-          roomId={roomId}
-          currentSong={roomData.currentSong}
-          isActive={roomData.isActive}
           handleShowPreview={handleShowPreview}
           isKJ={isKJ}
         />

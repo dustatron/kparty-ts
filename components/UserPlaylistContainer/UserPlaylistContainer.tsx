@@ -9,7 +9,7 @@ import {
   Tabs,
   Text,
 } from "@chakra-ui/react";
-import { Controls, Favorites, Playlist, Search } from "./";
+import { Controls, Favorites, Playlist } from "./";
 import {
   ISong,
   IVideoData,
@@ -19,28 +19,30 @@ import {
 } from "../../utils";
 import React, { useEffect, useState } from "react";
 import SongSearch from "../SongSearch";
+import useRoomData from "../../utils/hooks/useRoomData";
 
 interface Props {
   showModal: () => void;
-  playlist: ISong[];
-  roomId: any;
   showFavModal: () => void;
-  currentSong: number;
-  isActive: boolean;
   handleShowPreview: (songData: IVideoData | ISong) => void;
   isKJ?: boolean;
 }
 
 export const UserPlaylistContainer = ({
   showModal,
-  playlist,
-  roomId,
   showFavModal,
-  currentSong,
-  isActive,
   handleShowPreview,
   isKJ,
 }: Props) => {
+  const { playlist, currentSong, roomId, remainingSongs } = useRoomData(
+    ({ roomData: { playlist, currentSong }, roomKey, remainingSongs }) => ({
+      playlist,
+      currentSong,
+      roomId: roomKey,
+      remainingSongs,
+    })
+  );
+
   const {
     nextSong,
     prevSong,
@@ -50,17 +52,12 @@ export const UserPlaylistContainer = ({
     setIsActive,
   } = useFirestoreAction(roomId);
 
-  const [songList, setSongList] = useState([]);
   const [tabIndex, setTabIndex] = useState<number>(0);
   const [isNextDisabled, setNextDisabled] = useState<boolean>(false);
   const [isPrevDisabled, setPrevDisabled] = useState<boolean>(false);
   const { currentUser } = useAuth();
 
   useEffect(() => {
-    if (playlist) {
-      setSongList(playlist?.slice(currentSong));
-    } else {
-    }
     if (!playlist || playlist.length === 0) {
       createPlaylist();
     }
@@ -97,7 +94,7 @@ export const UserPlaylistContainer = ({
   };
 
   const getDuration = (songList) => {
-    const totalSeconds = songList.reduce((accumulator, song: ISong) => {
+    const totalSeconds = songList?.reduce((accumulator, song: ISong) => {
       return accumulator + song.duration;
     }, 0);
     return secondsToHours(totalSeconds);
@@ -124,7 +121,7 @@ export const UserPlaylistContainer = ({
       >
         <TabList>
           <Tab>Playlist</Tab>
-          <Tab>Search</Tab>
+          <Tab>Add Song</Tab>
           <Tab>Favorites</Tab>
           <Tab>Controls</Tab>
         </TabList>
@@ -133,14 +130,8 @@ export const UserPlaylistContainer = ({
           <TabPanel p={{ base: "2", sm: "2", md: "4" }}>
             {playlist && (
               <Playlist
-                songList={songList}
-                currentSong={currentSong}
-                playlist={playlist}
-                roomId={roomId}
                 handleTabsChange={handleTabsChange}
-                isActive={isActive}
                 isFav={isFav}
-                setSongList={setSongList}
                 showModal={showModal}
                 tabIndex={tabIndex}
               />
@@ -182,7 +173,7 @@ export const UserPlaylistContainer = ({
           </TabPanel>
           <TabPanel p={{ base: "2", sm: "2", md: "4" }}>
             <Controls
-              getDuration={() => getDuration(songList)}
+              getDuration={() => getDuration(remainingSongs)}
               handlePause={handlePause}
               handleNextSong={handleNextSong}
               isNextDisabled={isNextDisabled}

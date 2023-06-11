@@ -12,12 +12,13 @@ import {
   Wrap,
 } from "@chakra-ui/react";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
-import { ISong, useAuth, useFirestoreAction, useRoomData } from "../../utils";
+import { ISong, useAuth, useFirestoreAction } from "../../utils";
 import React, { ReactElement, useState } from "react";
 
 import { HiOutlineCog } from "react-icons/hi";
 import { MdOpenInNew } from "react-icons/md";
 import { SiAddthis } from "react-icons/si";
+import useRoomData from "../../utils/hooks/useRoomData";
 
 interface Props {
   songData: ISong;
@@ -44,7 +45,7 @@ function SongBox({
 }: Props): ReactElement {
   const { songTitle, thumbnail } = songData;
   const [isFav, setIsFav] = useState(fromFavorites);
-  const { setSelected } = useRoomData();
+  const setSelected = useRoomData((state) => state.setSelected);
   const { addFavSong, addSong, removeFavorite } = useFirestoreAction(
     roomId as string
   );

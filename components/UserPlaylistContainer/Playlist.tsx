@@ -5,56 +5,67 @@ import React from "react";
 import SongBox from "../SongBox";
 import { VStack } from "@chakra-ui/react";
 import styles from "./styles.module.css";
+import useRoomData from "../../utils/hooks/useRoomData";
+import reorder from "../../utils/reorder";
 
 interface Props {
-  songList: any[];
-  currentSong: number;
-  playlist: ISong[];
-  roomId: string;
-  setSongList: (songList: ISong[]) => void;
   handleTabsChange: (index: number) => void;
   showModal: () => void;
   tabIndex: number;
   isFav: (song: ISong) => boolean;
-  isActive: boolean;
 }
 
 export const Playlist = ({
-  songList,
-  currentSong,
-  playlist,
-  roomId,
-  setSongList,
   handleTabsChange,
   showModal,
   tabIndex,
   isFav,
-  isActive,
 }: Props) => {
-  const { playlistUpdate, nextSong, prevSong, resetRoom } =
-    useFirestoreAction(roomId);
-  // a little function to help us with reordering the result
-  const reorder = (list, startIndex, endIndex) => {
-    const result: ISong[] = Array.from(list);
-    const [removed] = result.splice(startIndex, 1);
-    result.splice(endIndex, 0, removed);
+  const [
+    currentSong,
+    isActive,
+    remainingSongs,
+    playlist,
+    roomId,
+    setRemainingSongs,
+  ] = useRoomData(
+    ({
+      roomData: { currentSong, isActive },
+      remainingSongs,
+      playlist,
+      roomKey,
+      setRemainingSongs,
+    }) => [
+      currentSong,
+      isActive,
+      remainingSongs,
+      playlist,
+      roomKey,
+      setRemainingSongs,
+    ]
+  );
 
-    return result;
-  };
+  const { playlistUpdate } = useFirestoreAction(roomId);
+
   const onDragEnd = (result) => {
     if (!result.destination) return;
 
+    const isSourceOrDestinationIndexZero =
+      result.destination.index === 0 || result.source.index === 0;
+
+    if (isActive && isSourceOrDestinationIndexZero) return;
+
     const reorderedList = reorder(
-      songList,
+      remainingSongs,
       result.source.index,
       result.destination.index
     );
+
     const startOfList = playlist.slice(0, currentSong);
     const updatedList =
       currentSong === 0 ? reorderedList : [...startOfList, ...reorderedList];
-
     playlistUpdate(updatedList);
-    setSongList(reorderedList);
+    setRemainingSongs(updatedList);
   };
 
   return (
@@ -67,7 +78,7 @@ export const Playlist = ({
             align="center"
             p="0"
           >
-            {songList.map((song: ISong, index) => (
+            {remainingSongs?.map((song: ISong, index) => (
               <Draggable
                 key={song.songId}
                 draggableId={song.songId}
