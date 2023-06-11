@@ -124,7 +124,7 @@ export const UserPlaylistContainer = ({
       >
         <TabList>
           <Tab>Playlist</Tab>
-          <Tab>Search</Tab>
+          <Tab>Add Song</Tab>
           <Tab>Favorites</Tab>
           <Tab>Controls</Tab>
         </TabList>

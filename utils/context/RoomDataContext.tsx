@@ -4,60 +4,54 @@ import React, {
   useEffect,
   ReactElement,
   createContext,
-} from "react"
-import { RoomDataHook } from "../index"
-import firebase from "firebase/app"
-import "firebase/firestore"
-import { isNil } from "lodash"
+} from "react";
+import { RoomDataHook } from "../index";
+import firebase from "firebase/app";
+import "firebase/firestore";
+import { isNil } from "lodash";
 
-// This seems like a mistake
-// type RoomDataContext = {
-//   currentUser: object
-//   login: () => void
-//   logout: () => void
-// }
-
-const RoomDataContext = createContext(null)
+const RoomDataContext = createContext(null);
 
 export function useRoomData() {
-  return useContext<RoomDataHook>(RoomDataContext)
+  return useContext<RoomDataHook>(RoomDataContext);
 }
 
 export function RoomDataProvider({ children }): ReactElement {
-  const [roomData, setRoomData] = useState(null)
-  const [playlist, setPlaylist] = useState(null)
-  const [roomKey, setRoomKey] = useState(null)
-  const [isLoading, setIsLoading] = useState(false)
-  const [selected, setSelected] = useState(null)
+  const [roomData, setRoomData] = useState(null);
+  const [playlist, setPlaylist] = useState(null);
+  const [roomKey, setRoomKey] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [selected, setSelected] = useState(null);
 
   useEffect(() => {
     if (!roomData && roomKey) {
-      setIsLoading(true)
-      const roomDBRef = firebase.firestore().collection("rooms")
+      setIsLoading(true);
+      const roomDBRef = firebase.firestore().collection("rooms");
       roomDBRef.doc(roomKey).onSnapshot((doc) => {
-        const data = doc.data()
-        setRoomData(data)
-        setPlaylist(data?.playlist)
-        setIsLoading(false)
-      })
+        const data = doc.data();
+        setRoomData(data);
+        setPlaylist(data?.playlist);
+        setIsLoading(false);
+      });
     }
     if (isNil(roomKey) && roomData) {
-      setRoomData(null)
+      setRoomData(null);
     }
-  }, [roomKey])
+  }, [roomKey]);
 
   const value: RoomDataHook = {
     roomData,
     playlist,
+    setPlaylist,
     setRoomKey,
     isLoading,
     selected,
     setSelected,
-  }
+  };
 
   return (
     <RoomDataContext.Provider value={value}>
       {children}
     </RoomDataContext.Provider>
-  )
+  );
 }

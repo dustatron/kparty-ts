@@ -81,7 +81,8 @@ export interface useTube {
 
 export interface RoomDataHook {
   roomData: IRoom
-  playlist: Array<ISong>
+  playlist: ISong[]
+  setPlaylist: (songs: ISong[]) => void
   setRoomKey: (string) => void
   isLoading: boolean
   selected: ISong
