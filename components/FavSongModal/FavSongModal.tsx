@@ -9,7 +9,8 @@ import {
   ModalOverlay,
 } from "@chakra-ui/react";
 import React, { ReactElement } from "react";
-import { useAuth, useFirestoreAction, useRoomData } from "../../utils";
+import { useAuth, useFirestoreAction } from "../../utils";
+import useRoomData from "../../utils/hooks/useRoomData";
 
 interface Props {
   isFavModalShowing: boolean;
@@ -22,7 +23,7 @@ function FavSongModal({
 }: Props): ReactElement {
   const { removeFavorite } = useFirestoreAction();
   const { currentUser } = useAuth();
-  const { selected } = useRoomData();
+  const selected = useRoomData((state) => state?.selected);
 
   const handleDelete = () => {
     removeFavorite(selected, currentUser);

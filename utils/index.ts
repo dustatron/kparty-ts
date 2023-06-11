@@ -11,7 +11,6 @@ import {
 } from "./interfaces"
 import { useFetchYT } from "./useFetchYT"
 import { useAuth, AuthProvider } from "./context/AuthContext"
-import { RoomDataProvider, useRoomData } from "./context/RoomDataContext"
 import { secondsToHours } from "./tools"
 import { auth } from "./firebase"
 import useFirestoreAction from "./hooks/useFirestoreAction"
@@ -22,8 +21,6 @@ export {
   useAuth,
   AuthProvider,
   auth,
-  RoomDataProvider,
-  useRoomData,
   useFirestoreAction,
   ActionTypes,
   videoToSong,

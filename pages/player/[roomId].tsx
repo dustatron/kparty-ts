@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import VideoPlayer from "../../components/VideoPlayer";
 import WithAuth from "../../components/WithAuth";
-import { useRoomData, useFirestoreAction } from "../../utils";
+import { useFirestoreAction } from "../../utils";
 import PlayerTag from "../../components/PlayerTag";
+import useRoomData from "../../utils/hooks/useRoomData";
 interface Props {
   setTitle: Function;
 }
@@ -12,17 +13,20 @@ const player: React.FC<Props> = ({ setTitle }) => {
   const router = useRouter();
   const { roomId } = router.query;
 
-  const { roomData, setRoomKey } = useRoomData();
+  const { roomData, setRoomKey } = useRoomData((state) => ({
+    roomData: state.roomData,
+    setRoomKey: state.setRoomKey,
+  }));
   const { nextSong, prevSong, isLoading, setIsActive } = useFirestoreAction(
     roomId as string
   );
   const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
-    setRoomKey(roomId);
+    setRoomKey(roomId as string);
 
     return () => {
-      setRoomKey(null);
+      setRoomKey();
     };
   }, []);
 

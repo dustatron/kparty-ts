@@ -3,12 +3,7 @@ import { ChakraProvider } from "@chakra-ui/react";
 import type { AppProps /*, AppContext */ } from "next/app";
 import Navbar from "../components/Navbar";
 import Head from "next/head";
-import {
-  AuthProvider,
-  IRoom,
-  RoomDataProvider,
-  useFirestoreAction,
-} from "../utils";
+import { AuthProvider, IRoom, useFirestoreAction } from "../utils";
 import { QueryClient, QueryClientProvider } from "react-query";
 
 function App({ Component, pageProps }: AppProps) {
@@ -32,18 +27,16 @@ function App({ Component, pageProps }: AppProps) {
     <QueryClientProvider client={queryClient}>
       <ChakraProvider>
         <AuthProvider>
-          <RoomDataProvider>
-            <Head>
-              <title>KParty</title>
-              <link rel="icon" href="/favicon.ico" />
-            </Head>
-            <Navbar heading={subTitle} />
-            <Component
-              {...pageProps}
-              setTitle={setSubTitle}
-              roomsList={roomsList}
-            />
-          </RoomDataProvider>
+          <Head>
+            <title>KParty</title>
+            <link rel="icon" href="/favicon.ico" />
+          </Head>
+          <Navbar heading={subTitle} />
+          <Component
+            {...pageProps}
+            setTitle={setSubTitle}
+            roomsList={roomsList}
+          />
         </AuthProvider>
       </ChakraProvider>
     </QueryClientProvider>
