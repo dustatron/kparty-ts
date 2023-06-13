@@ -14,12 +14,10 @@ import {
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { ISong, useAuth, useFirestoreAction } from "../../utils";
 import React, { ReactElement, useState } from "react";
-
-import { HiOutlineCog } from "react-icons/hi";
 import { MdOpenInNew } from "react-icons/md";
 import { SiAddthis } from "react-icons/si";
-import useRoomData from "../../utils/hooks/useRoomData";
 import EditSongButton from "../ModalButtons/EditSongButton";
+import useRoomData from "../../utils/hooks/useRoomData";
 
 interface Props {
   songData: ISong;
@@ -29,9 +27,7 @@ interface Props {
   currentTab?: number;
   isActive?: boolean;
   isPlayer?: boolean;
-  roomId: string;
   isFavView?: boolean;
-  isKJ?: boolean;
 }
 
 function SongBox({
@@ -42,11 +38,11 @@ function SongBox({
   currentTab,
   isActive,
   isPlayer,
-  roomId,
   isFavView,
 }: Props): ReactElement {
   const { songTitle, thumbnail } = songData;
   const [isFav, setIsFav] = useState(fromFavorites);
+  const roomId = useRoomData((state) => state.roomKey);
   const { addFavSong, addSong, removeFavorite } = useFirestoreAction(
     roomId as string
   );

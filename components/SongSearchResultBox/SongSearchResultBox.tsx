@@ -24,6 +24,7 @@ import { SiAddthis } from "react-icons/si";
 import { useState } from "react";
 import PreviewButton from "../ModalButtons/PreviewButton";
 import PreviewTitle from "../ModalButtons/PreviewTitle";
+import useRoomData from "../../utils/hooks/useRoomData";
 
 interface Props {
   videoData: IVideoData;
@@ -32,7 +33,6 @@ interface Props {
   roomId: string;
   changeTab: (index: number) => void;
   clear: () => void;
-  isKJ: boolean;
 }
 
 const SongSearchResultBox = ({
@@ -41,8 +41,8 @@ const SongSearchResultBox = ({
   user,
   changeTab,
   clear,
-  isKJ,
 }: Props) => {
+  const isKJ = useRoomData((state) => state.isKJ);
   const [isShowingUserInput, setIsShowingCustomUser] = useState(false);
   const [customUserName, setCustomUserName] = useState("");
   const { addSong } = useFirestoreAction(roomId);

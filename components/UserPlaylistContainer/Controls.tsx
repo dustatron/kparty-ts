@@ -6,26 +6,20 @@ import React, { useEffect, useState } from "react";
 import DeleteButton from "./DeleteButton";
 import { useFirestoreAction } from "../../utils";
 import useRoomData from "../../utils/hooks/useRoomData";
+import { getDurationSongList } from "../../utils/getDuration";
 
-interface Props {
-  getDuration: () => string;
-}
+interface Props {}
 
-export const Controls = ({ getDuration }: Props) => {
+export const Controls = () => {
   const [isNextDisabled, setNextDisabled] = useState<boolean>(false);
   const [isPrevDisabled, setPrevDisabled] = useState<boolean>(false);
   const {
-    id: roomId,
-    currentSong,
-    playlist,
-  } = useRoomData((state) => state.roomData);
+    roomData: { id: roomId, currentSong, playlist },
+    remainingSongs,
+  } = useRoomData((state) => state);
 
   const { resetRoom, setIsActive, nextSong, prevSong } = useFirestoreAction();
-  const totalDuration = getDuration();
-
-  // const handlePause = () => {
-  //   setIsActive(roomId, false);
-  // };
+  const totalDuration = getDurationSongList(remainingSongs);
 
   const handleNextSong = () => {
     nextSong(roomId);
@@ -38,9 +32,6 @@ export const Controls = ({ getDuration }: Props) => {
   };
 
   useEffect(() => {
-    // if (!playlist || playlist.length === 0) {
-    //   createPlaylist();
-    // }
     //Next Btn
     if (playlist?.length <= currentSong) {
       setNextDisabled(true);

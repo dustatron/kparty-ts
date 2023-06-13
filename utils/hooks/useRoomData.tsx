@@ -9,12 +9,14 @@ type RoomData = {
   remainingSongs: ISong[];
   roomData?: IRoom;
   roomKey?: string;
+  isKJ: boolean;
   setPlaylist: (songs: ISong[]) => void;
-  setRoomKey: (roomKey?: string) => void;
+  setRoomKey: (roomKey?: string | string[]) => void;
   selected?: ISong;
   setSelected: (sting) => void;
   setRoomData: (roomData: IRoom) => void;
   setRemainingSongs: (songList: ISong[]) => void;
+  setIsKJ: () => void;
   clearRoomData: () => void;
 };
 
@@ -45,12 +47,20 @@ const useRoomData = create<RoomData>((set) => ({
   roomData: undefined,
   selected: undefined,
   roomKey: undefined,
+  isKJ: false,
   setPlaylist: (newList) => set({ playlist: newList }),
   setRoomKey: (roomKey) => {
-    set((state) => {
-      fetchRoomData(set, roomKey, state.roomData);
-      return { roomKey };
-    });
+    if (typeof roomKey === "string") {
+      set((state) => {
+        fetchRoomData(set, roomKey, state.roomData);
+        return { roomKey };
+      });
+    } else {
+      set((state) => {
+        fetchRoomData(set, roomKey[0], state.roomData);
+        return { roomKey: roomKey[0] };
+      });
+    }
   },
   setSelected: (selected) => {
     set({ selected });
@@ -61,6 +71,7 @@ const useRoomData = create<RoomData>((set) => ({
   setRemainingSongs: (songList) => {
     set({ remainingSongs: songList });
   },
+  setIsKJ: () => set({ isKJ: true }),
   clearRoomData: () => set({ roomData: undefined }),
 }));
 export default useRoomData;

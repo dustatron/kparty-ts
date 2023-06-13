@@ -1,5 +1,5 @@
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import { ISong, useFirestoreAction } from "../../utils";
+import { ISong, useAuth, useFirestoreAction } from "../../utils";
 
 import React from "react";
 import SongBox from "../SongBox";
@@ -7,38 +7,20 @@ import { VStack } from "@chakra-ui/react";
 import styles from "./styles.module.css";
 import useRoomData from "../../utils/hooks/useRoomData";
 import reorder from "../../utils/reorder";
+import checkIsFavSong from "../../utils/checkIsFavSong";
 
 interface Props {
   handleTabsChange: (index: number) => void;
   tabIndex: number;
-  isFav: (song: ISong) => boolean;
 }
 
-export const Playlist = ({ handleTabsChange, tabIndex, isFav }: Props) => {
-  const [
-    currentSong,
-    isActive,
-    remainingSongs,
-    playlist,
-    roomId,
-    setRemainingSongs,
-  ] = useRoomData(
-    ({
-      roomData: { currentSong, isActive },
-      remainingSongs,
-      playlist,
-      roomKey,
-      setRemainingSongs,
-    }) => [
-      currentSong,
-      isActive,
-      remainingSongs,
-      playlist,
-      roomKey,
-      setRemainingSongs,
-    ]
+export const Playlist = ({ handleTabsChange, tabIndex }: Props) => {
+  const { currentUser } = useAuth();
+  const { roomData, roomKey, remainingSongs, setRemainingSongs } = useRoomData(
+    (state) => state
   );
-  const { playlistUpdate } = useFirestoreAction(roomId);
+  const { isActive, playlist, currentSong } = roomData;
+  const { playlistUpdate } = useFirestoreAction(roomKey);
 
   const onDragEnd = (result) => {
     if (!result.destination) return;
@@ -89,10 +71,10 @@ export const Playlist = ({ handleTabsChange, tabIndex, isFav }: Props) => {
                         songData={song}
                         isDragging={snapshot.isDragging}
                         changeTab={handleTabsChange}
-                        fromFavorites={isFav(song)}
+                        fromFavorites={checkIsFavSong(song, currentUser)}
                         currentTab={tabIndex}
                         isActive={isActive && index === 0}
-                        roomId={roomId}
+                        roomId={roomKey}
                       />
                     </div>
                   )}

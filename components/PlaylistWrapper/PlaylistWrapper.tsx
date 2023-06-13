@@ -8,23 +8,10 @@ import UserPlaylistContainer from "../UserPlaylistContainer";
 interface Props {
   setTitle: (title: string) => void;
   roomId: string;
-  isKJ?: boolean;
 }
 
-const playlistWrapper: FC<Props> = ({ setTitle, roomId, isKJ }) => {
-  const [roomData, setRoomKey, clearRoomData] = useRoomData((state) => [
-    state?.roomData,
-    state?.setRoomKey,
-    state.clearRoomData,
-  ]);
-
-  useEffect(() => {
-    setRoomKey(roomId);
-
-    return () => {
-      clearRoomData();
-    };
-  }, [roomId]);
+const playlistWrapper: FC<Props> = ({ setTitle }) => {
+  const [roomData] = useRoomData((state) => [state?.roomData]);
 
   useEffect(() => {
     if (roomData) {
@@ -34,7 +21,7 @@ const playlistWrapper: FC<Props> = ({ setTitle, roomId, isKJ }) => {
 
   return (
     <Container centerContent p={{ base: "0", sm: "0", md: "5" }}>
-      {roomData && <UserPlaylistContainer isKJ={isKJ} />}
+      {roomData && <UserPlaylistContainer />}
       {!roomData && (
         <Stack>
           <Skeleton height="20px" />

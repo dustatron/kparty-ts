@@ -7,7 +7,7 @@ import {
   Stack,
 } from "@chakra-ui/react";
 import { IRoom, useAuth } from "../../utils";
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import { Playlist } from "../../components/UserPlaylistContainer";
 import WithAuth from "../../components/WithAuth";
 import useRoomData from "../../utils/hooks/useRoomData";
@@ -21,11 +21,14 @@ interface Props {
 const index = ({ roomsList, setTitle }: Props) => {
   setTitle("KJ View");
   const { currentUser } = useAuth();
-  const [setRoomKey, clearRoomData, roomData] = useRoomData((state) => [
-    state.setRoomKey,
-    state.clearRoomData,
-    state.roomData,
-  ]);
+  const [setRoomKey, clearRoomData, roomData, setIsKJ] = useRoomData(
+    (state) => [
+      state.setRoomKey,
+      state.clearRoomData,
+      state.roomData,
+      state.setIsKJ,
+    ]
+  );
 
   const [selectedRoom, setSelectedRoom] = useState<string>();
 
@@ -36,6 +39,10 @@ const index = ({ roomsList, setTitle }: Props) => {
     clearRoomData();
     setRoomKey(e.target.value);
   };
+
+  useEffect(() => {
+    setIsKJ();
+  }, []);
 
   const isFav = (song) => {
     if (currentUser) {

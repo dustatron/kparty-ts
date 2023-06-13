@@ -35,7 +35,7 @@ function AdminControls({ roomId, currentUser }: Props) {
 
       <TabPanels>
         <TabPanel p={{ base: "0", sm: "0", md: "4" }}>
-          <SongSearch changeTab={() => {}} roomId={roomId} isKJ />
+          <SongSearch changeTab={() => {}} roomId={roomId} />
         </TabPanel>
         <TabPanel p={{ base: "0", sm: "0", md: "4" }}>
           {roomData && (
@@ -44,11 +44,9 @@ function AdminControls({ roomId, currentUser }: Props) {
         </TabPanel>
         <TabPanel p={{ base: "0", sm: "0", md: "4" }}>
           <Favorites
-            favorites={currentUser.favorites}
             handleTabsChange={handleTabsChange}
             tabIndex={tabIndex}
             roomId={roomId}
-            isKJ
           />
         </TabPanel>
       </TabPanels>

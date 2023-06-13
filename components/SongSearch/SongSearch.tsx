@@ -13,19 +13,19 @@ import React, { useState } from "react";
 
 import { FiSearch } from "react-icons/fi";
 import SongSearchResultBox from "../SongSearchResultBox";
-import { IVideoData, useAuth } from "../../utils";
+import { useAuth } from "../../utils";
 import { useFetchYT } from "../../utils/useFetchYT";
+import useRoomData from "../../utils/hooks/useRoomData";
 
 interface Props {
   changeTab: (index: number) => void;
-  roomId: string;
-  isKJ?: boolean;
 }
 
-export const SongSearch = ({ changeTab, roomId, isKJ }: Props) => {
+export const SongSearch = ({ changeTab }: Props) => {
   const [inputData, setInputData] = useState<string>("");
   const { data: results, isLoading, error, refetch } = useFetchYT(inputData);
   const { currentUser } = useAuth();
+  const roomId = useRoomData((state) => state.roomKey);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -81,7 +81,6 @@ export const SongSearch = ({ changeTab, roomId, isKJ }: Props) => {
                 user={currentUser}
                 roomId={roomId as string}
                 clear={clearInput}
-                isKJ={isKJ}
               />
             );
           })}
