@@ -1,79 +1,98 @@
 import {
   Box,
-  Button,
   Container,
   Heading,
   Select,
   Skeleton,
   Stack,
-  Text,
-} from "@chakra-ui/react"
-import { IRoom, useFirestoreAction } from "../../utils"
-import React, { ChangeEvent, useState } from "react"
-
-import PlaylistWrapper from "../../components/PlaylistWrapper"
-import WithAuth from "../../components/WithAuth"
+} from "@chakra-ui/react";
+import { IRoom, useAuth } from "../../utils";
+import React, { ChangeEvent, useEffect, useState } from "react";
+import { Playlist } from "../../components/UserPlaylistContainer";
+import WithAuth from "../../components/WithAuth";
+import useRoomData from "../../utils/hooks/useRoomData";
+import AdminControls from "../../components/AdminControls";
 
 interface Props {
-  roomsList?: IRoom[]
-  setTitle: (title: string) => void
+  roomsList?: IRoom[];
+  setTitle: (title: string) => void;
 }
 
 const index = ({ roomsList, setTitle }: Props) => {
-  const [selectedRoom, setSelectedRoom] = useState<IRoom>()
-  const [isShowingRoomDetails, setIsShowingRoomDetails] = useState(false)
-  // const { getAllRooms, roomsList } = useFirestoreAction()
+  setTitle("KJ View");
+  const { currentUser } = useAuth();
+  const [setRoomKey, clearRoomData, roomData, setIsKJ] = useRoomData(
+    (state) => [
+      state.setRoomKey,
+      state.clearRoomData,
+      state.roomData,
+      state.setIsKJ,
+    ]
+  );
+
+  const [selectedRoom, setSelectedRoom] = useState<string>();
 
   const selectRoom = (e: ChangeEvent<HTMLSelectElement>) => {
-    const roomData = roomsList.find((room) => room.id === e.target.value)
-    if (selectRoom) {
-      setSelectedRoom(roomData)
+    const room = roomsList.find((room) => room.id === e.target.value);
+
+    setSelectedRoom(room?.id);
+    clearRoomData();
+    setRoomKey(e.target.value);
+  };
+
+  useEffect(() => {
+    setIsKJ();
+  }, []);
+
+  const isFav = (song) => {
+    if (currentUser) {
+      const hasSong = currentUser.favorites?.find(
+        (favSong) => favSong.songId === song.songId
+      );
+      return hasSong;
     }
-  }
+    return false;
+  };
 
   return (
-    <Container maxW="container.xl" centerContent p="5">
-      <Heading>KJ Dashboard</Heading>
-      <Box>
-        {!roomsList && <Skeleton height="40px" />}
-        {roomsList && (
-          <Select placeholder="Select option" onChange={selectRoom}>
-            {roomsList?.map((room) => (
-              <option value={room.id}>{room.title}</option>
-            ))}
-          </Select>
-        )}
-      </Box>
-      {selectedRoom && (
-        <Stack spacing="3">
-          <Heading>
-            Room Details{" "}
-            <Button
-              onClick={() => {
-                setIsShowingRoomDetails(!isShowingRoomDetails)
-              }}
+    <Container maxW="container.2xl" centerContent p="5">
+      <Stack direction="row">
+        <Heading>KJ Dashboard</Heading>
+        <Box>
+          {!roomsList && <Skeleton height="40px" />}
+          {roomsList && (
+            <Select
+              value={selectedRoom}
+              placeholder="select a room"
+              onChange={selectRoom}
             >
-              {isShowingRoomDetails ? "Hide Details" : "Show Details"}
-            </Button>
-          </Heading>
-          {isShowingRoomDetails && (
-            <Box>
-              <Text>Title: {selectedRoom.title}</Text>
-              <Text>Room ID: {selectedRoom.id}</Text>
-              <Text>
-                Current Song: {selectedRoom.currentSong} |{" "}
-                {selectedRoom.playlist[selectedRoom.currentSong].songTitle}
-              </Text>
-              <Text>Status: {selectedRoom.isActive ? "Active" : "Empty"}</Text>
-              <Text>Public: {selectedRoom.isPublic ? "true" : "false"}</Text>
-              <Text>Song count: {selectedRoom.playlist.length}</Text>
-            </Box>
+              {roomsList?.map((room) => (
+                <option value={room.id}>{room.title}</option>
+              ))}
+            </Select>
           )}
-          <PlaylistWrapper setTitle={setTitle} roomId={selectedRoom.id} isKJ />
-        </Stack>
-      )}
-    </Container>
-  )
-}
+        </Box>
+      </Stack>
 
-export default WithAuth(index)
+      <Stack
+        direction={{ base: "column-reverse", md: "row" }}
+        w="100%"
+        spacing="2"
+      >
+        <Box
+          w={{ base: "100%", md: "50%" }}
+          h={{ base: "auto", md: "80vh" }}
+          pb={{ base: "2", md: "0" }}
+          overflow="scroll"
+        >
+          {roomData && <Playlist handleTabsChange={() => {}} tabIndex={0} />}
+        </Box>
+        <Box w={{ base: "100%", md: "50%" }}>
+          {selectedRoom && <AdminControls />}
+        </Box>
+      </Stack>
+    </Container>
+  );
+};
+
+export default WithAuth(index);

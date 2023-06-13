@@ -1,5 +1,5 @@
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import { ISong, useFirestoreAction } from "../../utils";
+import { ISong, useAuth, useFirestoreAction } from "../../utils";
 
 import React from "react";
 import SongBox from "../SongBox";
@@ -7,45 +7,20 @@ import { VStack } from "@chakra-ui/react";
 import styles from "./styles.module.css";
 import useRoomData from "../../utils/hooks/useRoomData";
 import reorder from "../../utils/reorder";
+import checkIsFavSong from "../../utils/checkIsFavSong";
 
 interface Props {
   handleTabsChange: (index: number) => void;
-  showModal: () => void;
   tabIndex: number;
-  isFav: (song: ISong) => boolean;
 }
 
-export const Playlist = ({
-  handleTabsChange,
-  showModal,
-  tabIndex,
-  isFav,
-}: Props) => {
-  const [
-    currentSong,
-    isActive,
-    remainingSongs,
-    playlist,
-    roomId,
-    setRemainingSongs,
-  ] = useRoomData(
-    ({
-      roomData: { currentSong, isActive },
-      remainingSongs,
-      playlist,
-      roomKey,
-      setRemainingSongs,
-    }) => [
-      currentSong,
-      isActive,
-      remainingSongs,
-      playlist,
-      roomKey,
-      setRemainingSongs,
-    ]
+export const Playlist = ({ handleTabsChange, tabIndex }: Props) => {
+  const { currentUser } = useAuth();
+  const { roomData, roomKey, remainingSongs, setRemainingSongs } = useRoomData(
+    (state) => state
   );
-
-  const { playlistUpdate } = useFirestoreAction(roomId);
+  const { isActive, playlist, currentSong } = roomData;
+  const { playlistUpdate } = useFirestoreAction(roomKey);
 
   const onDragEnd = (result) => {
     if (!result.destination) return;
@@ -69,46 +44,46 @@ export const Playlist = ({
   };
 
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable droppableId="droppable">
-        {(provided) => (
-          <VStack
-            {...provided.droppableProps}
-            ref={provided.innerRef}
-            align="center"
-            p="0"
-          >
-            {remainingSongs?.map((song: ISong, index) => (
-              <Draggable
-                key={song.songId}
-                draggableId={song.songId}
-                index={index}
-              >
-                {(provided, snapshot) => (
-                  <div
-                    ref={provided.innerRef}
-                    {...provided.draggableProps}
-                    {...provided.dragHandleProps}
-                    className={styles.fit}
-                  >
-                    <SongBox
-                      songData={song}
-                      isDragging={snapshot.isDragging}
-                      changeTab={handleTabsChange}
-                      showModal={() => showModal()}
-                      fromFavorites={isFav(song)}
-                      currentTab={tabIndex}
-                      isActive={isActive && index === 0}
-                      roomId={roomId}
-                    />
-                  </div>
-                )}
-              </Draggable>
-            ))}
-            {provided.placeholder}
-          </VStack>
-        )}
-      </Droppable>
-    </DragDropContext>
+    <>
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable droppableId="droppable">
+          {(provided) => (
+            <VStack
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+              align="center"
+              p="0"
+            >
+              {remainingSongs?.map((song: ISong, index) => (
+                <Draggable
+                  key={song.songId}
+                  draggableId={song.songId}
+                  index={index}
+                >
+                  {(provided, snapshot) => (
+                    <div
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                      className={styles.fit}
+                    >
+                      <SongBox
+                        songData={song}
+                        isDragging={snapshot.isDragging}
+                        changeTab={handleTabsChange}
+                        fromFavorites={checkIsFavSong(song, currentUser)}
+                        currentTab={tabIndex}
+                        isActive={isActive && index === 0}
+                      />
+                    </div>
+                  )}
+                </Draggable>
+              ))}
+              {provided.placeholder}
+            </VStack>
+          )}
+        </Droppable>
+      </DragDropContext>
+    </>
   );
 };

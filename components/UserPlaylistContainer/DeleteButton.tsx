@@ -11,11 +11,11 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import React from "react";
+import { useFirestoreAction } from "../../utils";
 
-type Props = { deletePlaylist: () => void };
-
-function DeleteButton({ deletePlaylist }: Props) {
+function DeleteButton() {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { deletePlaylist } = useFirestoreAction();
   return (
     <>
       <Button

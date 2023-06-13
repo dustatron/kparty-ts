@@ -14,38 +14,35 @@ import {
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { ISong, useAuth, useFirestoreAction } from "../../utils";
 import React, { ReactElement, useState } from "react";
-
-import { HiOutlineCog } from "react-icons/hi";
 import { MdOpenInNew } from "react-icons/md";
 import { SiAddthis } from "react-icons/si";
+import EditSongButton from "../ModalButtons/EditSongButton";
 import useRoomData from "../../utils/hooks/useRoomData";
 
 interface Props {
   songData: ISong;
   isDragging?: () => boolean;
-  showModal?: () => void;
   fromFavorites?: boolean;
   changeTab?: (index: number) => void;
   currentTab?: number;
   isActive?: boolean;
   isPlayer?: boolean;
-  roomId: string;
+  isFavView?: boolean;
 }
 
 function SongBox({
   songData,
   isDragging,
-  showModal,
   fromFavorites,
   changeTab,
   currentTab,
   isActive,
   isPlayer,
-  roomId,
+  isFavView,
 }: Props): ReactElement {
   const { songTitle, thumbnail } = songData;
   const [isFav, setIsFav] = useState(fromFavorites);
-  const setSelected = useRoomData((state) => state.setSelected);
+  const roomId = useRoomData((state) => state.roomKey);
   const { addFavSong, addSong, removeFavorite } = useFirestoreAction(
     roomId as string
   );
@@ -66,8 +63,6 @@ function SongBox({
     if (isPlayer) {
       return window.open(songData.link, "_blank");
     }
-    setSelected(songData);
-    showModal();
   };
 
   const handleAdd = () => {
@@ -124,11 +119,7 @@ function SongBox({
             <Icon as={SiAddthis} />
           </Button>
         )}
-        {!isPlayer && (
-          <Button variant="ghost" marginBottom="5px" onClick={handleShowModal}>
-            <Icon as={HiOutlineCog} h={6} w={6} />
-          </Button>
-        )}
+        {!isPlayer && !isFavView && <EditSongButton songData={songData} />}
         {isPlayer && (
           <Button variant="ghost" marginBottom="5px" onClick={handleShowModal}>
             <Icon as={MdOpenInNew} h={6} w={6} />

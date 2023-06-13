@@ -23,7 +23,7 @@ const player: React.FC<Props> = ({ setTitle }) => {
   const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
-    setRoomKey(roomId as string);
+    setRoomKey(roomId);
 
     return () => {
       setRoomKey();
@@ -57,7 +57,7 @@ const player: React.FC<Props> = ({ setTitle }) => {
             }}
             isLoading={isLoading}
           />
-          <PlayerTag roomId={roomData.id} />
+          <PlayerTag />
         </>
       )}
     </>

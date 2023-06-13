@@ -1,15 +1,13 @@
-import React from "react"
-import QRCode from "react-qr-code"
-import { Box, Container, Heading, Stack, Button, Text } from "@chakra-ui/react"
-import Link from "next/link"
+import React from "react";
+import QRCode from "react-qr-code";
+import { Box, Container, Heading, Stack, Button, Text } from "@chakra-ui/react";
+import Link from "next/link";
+import useRoomData from "../../utils/hooks/useRoomData";
 
-interface Props {
-  roomId: string
-}
-
-export const PlayerTag = ({ roomId }: Props) => {
-  const host = window.location.hostname
-  const link = `${host}/playlist/${roomId}`
+export const PlayerTag = () => {
+  const host = window.location.hostname;
+  const roomId = useRoomData((state) => state.roomKey);
+  const link = `${host}/playlist/${roomId}`;
   return (
     <Container maxW="6xl" centerContent p="1">
       <Stack direction="row" spacing="10" alignContent="center">
@@ -29,7 +27,7 @@ export const PlayerTag = ({ roomId }: Props) => {
         </Box>
       </Stack>
     </Container>
-  )
-}
+  );
+};
 
-export default PlayerTag
+export default PlayerTag;

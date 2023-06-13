@@ -1,42 +1,31 @@
-import { Box, Button, Wrap } from "@chakra-ui/react"
-import { ISong, useFirestoreAction } from "../../utils"
-import React, { ReactElement, useEffect, useState } from "react"
+import { Box, Button, Wrap } from "@chakra-ui/react";
+import { ISong, useFirestoreAction } from "../../utils";
+import React, { ReactElement, useEffect, useState } from "react";
 
-import SongBox from "../SongBox"
+import SongBox from "../SongBox";
 
 interface Props {
-  playlist: ISong[]
-  currentSong: number
-  isPlaying: boolean
-  handelRest: () => void
-  roomId: string
+  playlist: ISong[];
+  currentSong: number;
+  handelRest: () => void;
 }
 
 function VideoPlaylist({
   playlist,
   currentSong,
-  isPlaying,
   handelRest,
-  roomId,
 }: Props): ReactElement {
-  const [upcomingSongs, setUpcomingSongs] = useState([])
-  const { resetRoom } = useFirestoreAction()
+  const [upcomingSongs, setUpcomingSongs] = useState([]);
 
   useEffect(() => {
-    setUpcomingSongs(playlist.slice(currentSong))
-  }, [playlist, currentSong])
+    setUpcomingSongs(playlist.slice(currentSong));
+  }, [playlist, currentSong]);
   return (
     <>
       <Wrap p="2" justify="center">
         {upcomingSongs.map((song: ISong, index) => (
           <Box w={[null, "100%", "30%"]}>
-            <SongBox
-              songData={song}
-              isActive={index === 0}
-              showModal={() => {}}
-              isPlayer
-              roomId={roomId}
-            />
+            <SongBox songData={song} isActive={index === 0} isPlayer />
           </Box>
         ))}
         {currentSong >= playlist.length && (
@@ -48,7 +37,7 @@ function VideoPlaylist({
         )}
       </Wrap>
     </>
-  )
+  );
 }
 
-export default VideoPlaylist
+export default VideoPlaylist;
