@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { Controls, Favorites, Playlist } from "./";
 import { useFirestoreAction } from "../../utils";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import SongSearch from "../SongSearch";
 import useRoomData from "../../utils/hooks/useRoomData";
 import { getDurationSongList } from "../../utils/getDuration";
