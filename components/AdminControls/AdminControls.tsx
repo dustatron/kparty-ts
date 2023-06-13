@@ -35,19 +35,13 @@ function AdminControls({ roomId, currentUser }: Props) {
 
       <TabPanels>
         <TabPanel p={{ base: "0", sm: "0", md: "4" }}>
-          <SongSearch changeTab={() => {}} roomId={roomId} />
+          <SongSearch changeTab={() => {}} />
         </TabPanel>
         <TabPanel p={{ base: "0", sm: "0", md: "4" }}>
-          {roomData && (
-            <Controls getDuration={() => getDurationSongList(remainingSongs)} />
-          )}
+          {roomData && <Controls />}
         </TabPanel>
         <TabPanel p={{ base: "0", sm: "0", md: "4" }}>
-          <Favorites
-            handleTabsChange={handleTabsChange}
-            tabIndex={tabIndex}
-            roomId={roomId}
-          />
+          <Favorites handleTabsChange={handleTabsChange} tabIndex={tabIndex} />
         </TabPanel>
       </TabPanels>
     </Tabs>
