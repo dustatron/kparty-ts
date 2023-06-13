@@ -20,20 +20,13 @@ import {
 import React, { useEffect, useState } from "react";
 import SongSearch from "../SongSearch";
 import useRoomData from "../../utils/hooks/useRoomData";
+import { getDurationSongList } from "../../utils/getDuration";
 
 interface Props {
-  showModal: () => void;
-  showFavModal: () => void;
-  handleShowPreview: (songData: IVideoData | ISong) => void;
   isKJ?: boolean;
 }
 
-export const UserPlaylistContainer = ({
-  showModal,
-  showFavModal,
-  handleShowPreview,
-  isKJ,
-}: Props) => {
+export const UserPlaylistContainer = ({ isKJ }: Props) => {
   const { playlist, currentSong, roomId, remainingSongs } = useRoomData(
     ({ roomData: { playlist, currentSong }, roomKey, remainingSongs }) => ({
       playlist,
@@ -93,13 +86,6 @@ export const UserPlaylistContainer = ({
     }
   };
 
-  const getDuration = (songList) => {
-    const totalSeconds = songList?.reduce((accumulator, song: ISong) => {
-      return accumulator + song.duration;
-    }, 0);
-    return secondsToHours(totalSeconds);
-  };
-
   const isFav = (song) => {
     if (currentUser) {
       const hasSong = currentUser.favorites?.find(
@@ -121,7 +107,7 @@ export const UserPlaylistContainer = ({
       >
         <TabList>
           <Tab>Playlist</Tab>
-          <Tab>Add Song</Tab>
+          <Tab>➕ Add</Tab>
           <Tab>Favorites</Tab>
           <Tab>Controls</Tab>
         </TabList>
@@ -132,7 +118,6 @@ export const UserPlaylistContainer = ({
               <Playlist
                 handleTabsChange={handleTabsChange}
                 isFav={isFav}
-                showModal={showModal}
                 tabIndex={tabIndex}
               />
             )}
@@ -155,33 +140,20 @@ export const UserPlaylistContainer = ({
           <TabPanel p={{ base: "0", sm: "0", md: "4" }}>
             <SongSearch
               changeTab={handleTabsChange}
-              handleShowPreview={handleShowPreview}
               roomId={roomId}
               isKJ={isKJ}
             />
           </TabPanel>
           <TabPanel p={{ base: "2", sm: "2", md: "4" }}>
             <Favorites
-              showPreview={handleShowPreview}
               favorites={currentUser.favorites}
-              showFavModal={showFavModal}
               handleTabsChange={handleTabsChange}
               tabIndex={tabIndex}
-              isFav={isFav}
               roomId={roomId}
             />
           </TabPanel>
           <TabPanel p={{ base: "2", sm: "2", md: "4" }}>
-            <Controls
-              getDuration={() => getDuration(remainingSongs)}
-              handlePause={handlePause}
-              handleNextSong={handleNextSong}
-              isNextDisabled={isNextDisabled}
-              handlePreviousSong={handlePreviousSong}
-              isPrevDisabled={isPrevDisabled}
-              resetRoom={() => resetRoom()}
-              deletePlaylist={deletePlaylist}
-            />
+            <Controls getDuration={() => getDurationSongList(remainingSongs)} />
           </TabPanel>
         </TabPanels>
       </Tabs>

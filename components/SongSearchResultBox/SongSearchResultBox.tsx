@@ -12,6 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { FaHeart, FaPlay } from "react-icons/fa";
 import {
+  ISong,
   IUser,
   IVideoData,
   useFirestoreAction,
@@ -21,6 +22,8 @@ import {
 import React from "react";
 import { SiAddthis } from "react-icons/si";
 import { useState } from "react";
+import PreviewButton from "../ModalButtons/PreviewButton";
+import PreviewTitle from "../ModalButtons/PreviewTitle";
 
 interface Props {
   videoData: IVideoData;
@@ -29,7 +32,6 @@ interface Props {
   roomId: string;
   changeTab: (index: number) => void;
   clear: () => void;
-  handleShowPreview: (songData: IVideoData, handleAdd) => void;
   isKJ: boolean;
 }
 
@@ -39,21 +41,17 @@ const SongSearchResultBox = ({
   user,
   changeTab,
   clear,
-  handleShowPreview,
   isKJ,
 }: Props) => {
   const [isShowingUserInput, setIsShowingCustomUser] = useState(false);
   const [customUserName, setCustomUserName] = useState("");
-  const { title, artist, duration, id, publishedAt } = videoData;
   const { addSong } = useFirestoreAction(roomId);
-  const thumbnail = `https://i.ytimg.com/vi/${id}/default.jpg`;
-  const link = `https://www.youtube.com/watch?v=${id}`;
+  const thumbnail = `https://i.ytimg.com/vi/${videoData.id}/default.jpg`;
 
   const handleAdd = () => {
     if (isKJ) {
       setIsShowingCustomUser(true);
     } else {
-      // const songNormalized = videoToSong(videoData, user);
       addSong(videoData, user);
       changeTab(0);
       clear();
@@ -67,16 +65,9 @@ const SongSearchResultBox = ({
       photoURL: "",
       uid: "custom-user",
     };
-    // const songNormalized = videoToSong(videoData, customUser);
     addSong(videoData, customUser);
     changeTab(0);
     clear();
-  };
-
-  const getDuration = (seconds) => {
-    const toMinutes = seconds / 60;
-    const time = toMinutes.toFixed(2);
-    return time.toString().replace(".", ":");
   };
 
   return (
@@ -106,26 +97,12 @@ const SongSearchResultBox = ({
           </Box>
         )}
         {!isShowingUserInput && (
-          <Box
-            w="60%"
-            onClick={() => handleShowPreview(videoData, handleAdd)}
-            cursor="pointer"
-          >
-            <Heading w="100%" textAlign="left" size="sm">
-              {title}
-            </Heading>
-            <Text fontSize="xs"> artist: {artist} </Text>
-            <Text fontSize="xs"> duration: {getDuration(duration)} </Text>
-          </Box>
+          <PreviewTitle handleAdd={handleAdd} video={videoData} />
         )}
 
         <VStack w="10%" justifyContent="space-between">
-          <Button
-            variant="ghost"
-            onClick={() => handleShowPreview(videoData, handleAdd)}
-          >
-            <Icon as={FaPlay} marginRight="5px" />
-          </Button>
+          <PreviewButton handleAdd={handleAdd} video={videoData} />
+
           {!isShowingUserInput && (
             <Button onClick={handleAdd} variant="ghost">
               <Icon as={SiAddthis} />

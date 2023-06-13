@@ -18,17 +18,11 @@ import { useFetchYT } from "../../utils/useFetchYT";
 
 interface Props {
   changeTab: (index: number) => void;
-  handleShowPreview: (songData: IVideoData, handleSave) => void;
   roomId: string;
-  isKJ: boolean;
+  isKJ?: boolean;
 }
 
-export const SongSearch = ({
-  changeTab,
-  handleShowPreview,
-  roomId,
-  isKJ,
-}: Props) => {
+export const SongSearch = ({ changeTab, roomId, isKJ }: Props) => {
   const [inputData, setInputData] = useState<string>("");
   const { data: results, isLoading, error, refetch } = useFetchYT(inputData);
   const { currentUser } = useAuth();
@@ -87,7 +81,6 @@ export const SongSearch = ({
                 user={currentUser}
                 roomId={roomId as string}
                 clear={clearInput}
-                handleShowPreview={handleShowPreview}
                 isKJ={isKJ}
               />
             );

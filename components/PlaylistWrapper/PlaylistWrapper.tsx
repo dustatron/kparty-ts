@@ -1,13 +1,9 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useEffect } from "react";
 import { Skeleton, Stack } from "@chakra-ui/react";
-import { IVideoData, useFirestoreAction } from "../../utils";
 import useRoomData from "../../utils/hooks/useRoomData";
 
 import { Container } from "@chakra-ui/react";
-import FavSongModal from "../FavSongModal";
-import SongEditModal from "../SongEditModal";
 import UserPlaylistContainer from "../UserPlaylistContainer";
-import VideoPreviewModal from "../VideoPreviewModal";
 
 interface Props {
   setTitle: (title: string) => void;
@@ -16,13 +12,6 @@ interface Props {
 }
 
 const playlistWrapper: FC<Props> = ({ setTitle, roomId, isKJ }) => {
-  const [isModalShowing, setIsModalShowing] = useState<boolean>(false);
-  const [isFavModalShowing, setIsFavModalShowing] = useState<boolean>(false);
-  const [isPreviewModalShowing, setIsPreviewModalShowing] =
-    useState<boolean>(false);
-  const [previewData, setPreviewData] = useState<IVideoData>();
-
-  const { addSong } = useFirestoreAction(roomId as string);
   const [roomData, setRoomKey, clearRoomData] = useRoomData((state) => [
     state?.roomData,
     state?.setRoomKey,
@@ -43,40 +32,9 @@ const playlistWrapper: FC<Props> = ({ setTitle, roomId, isKJ }) => {
     }
   }, [roomData]);
 
-  const handleShowModal = (hide?: boolean) => {
-    if (hide) {
-      setIsModalShowing(false);
-    } else {
-      setIsModalShowing(true);
-    }
-  };
-  const handleShowFavModal = () => {
-    setIsFavModalShowing(true);
-  };
-
-  const handleShowPreview = (songData: IVideoData) => {
-    setPreviewData(songData);
-    setIsPreviewModalShowing(true);
-  };
-
-  const handleHideFavModal = () => {
-    setIsFavModalShowing(false);
-  };
-
-  const handleHidePreviewModal = () => {
-    setIsPreviewModalShowing(false);
-  };
-
   return (
     <Container centerContent p={{ base: "0", sm: "0", md: "5" }}>
-      {roomData && (
-        <UserPlaylistContainer
-          showModal={handleShowModal}
-          showFavModal={handleShowFavModal}
-          handleShowPreview={handleShowPreview}
-          isKJ={isKJ}
-        />
-      )}
+      {roomData && <UserPlaylistContainer isKJ={isKJ} />}
       {!roomData && (
         <Stack>
           <Skeleton height="20px" />
@@ -84,21 +42,6 @@ const playlistWrapper: FC<Props> = ({ setTitle, roomId, isKJ }) => {
           <Skeleton height="20px" />
         </Stack>
       )}
-      <SongEditModal
-        hideModal={() => handleShowModal(true)}
-        isModalShowing={isModalShowing}
-        roomId={roomId}
-      />
-      <FavSongModal
-        hideFavModal={handleHideFavModal}
-        isFavModalShowing={isFavModalShowing}
-      />
-      <VideoPreviewModal
-        addSong={addSong}
-        previewData={previewData}
-        isShowing={isPreviewModalShowing}
-        hideModal={handleHidePreviewModal}
-      />
     </Container>
   );
 };

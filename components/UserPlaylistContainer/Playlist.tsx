@@ -10,17 +10,11 @@ import reorder from "../../utils/reorder";
 
 interface Props {
   handleTabsChange: (index: number) => void;
-  showModal: () => void;
   tabIndex: number;
   isFav: (song: ISong) => boolean;
 }
 
-export const Playlist = ({
-  handleTabsChange,
-  showModal,
-  tabIndex,
-  isFav,
-}: Props) => {
+export const Playlist = ({ handleTabsChange, tabIndex, isFav }: Props) => {
   const [
     currentSong,
     isActive,
@@ -44,7 +38,6 @@ export const Playlist = ({
       setRemainingSongs,
     ]
   );
-
   const { playlistUpdate } = useFirestoreAction(roomId);
 
   const onDragEnd = (result) => {
@@ -69,46 +62,47 @@ export const Playlist = ({
   };
 
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable droppableId="droppable">
-        {(provided) => (
-          <VStack
-            {...provided.droppableProps}
-            ref={provided.innerRef}
-            align="center"
-            p="0"
-          >
-            {remainingSongs?.map((song: ISong, index) => (
-              <Draggable
-                key={song.songId}
-                draggableId={song.songId}
-                index={index}
-              >
-                {(provided, snapshot) => (
-                  <div
-                    ref={provided.innerRef}
-                    {...provided.draggableProps}
-                    {...provided.dragHandleProps}
-                    className={styles.fit}
-                  >
-                    <SongBox
-                      songData={song}
-                      isDragging={snapshot.isDragging}
-                      changeTab={handleTabsChange}
-                      showModal={() => showModal()}
-                      fromFavorites={isFav(song)}
-                      currentTab={tabIndex}
-                      isActive={isActive && index === 0}
-                      roomId={roomId}
-                    />
-                  </div>
-                )}
-              </Draggable>
-            ))}
-            {provided.placeholder}
-          </VStack>
-        )}
-      </Droppable>
-    </DragDropContext>
+    <>
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable droppableId="droppable">
+          {(provided) => (
+            <VStack
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+              align="center"
+              p="0"
+            >
+              {remainingSongs?.map((song: ISong, index) => (
+                <Draggable
+                  key={song.songId}
+                  draggableId={song.songId}
+                  index={index}
+                >
+                  {(provided, snapshot) => (
+                    <div
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                      className={styles.fit}
+                    >
+                      <SongBox
+                        songData={song}
+                        isDragging={snapshot.isDragging}
+                        changeTab={handleTabsChange}
+                        fromFavorites={isFav(song)}
+                        currentTab={tabIndex}
+                        isActive={isActive && index === 0}
+                        roomId={roomId}
+                      />
+                    </div>
+                  )}
+                </Draggable>
+              ))}
+              {provided.placeholder}
+            </VStack>
+          )}
+        </Droppable>
+      </DragDropContext>
+    </>
   );
 };

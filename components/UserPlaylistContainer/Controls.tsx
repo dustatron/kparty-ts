@@ -2,30 +2,59 @@ import { Box, Button, VStack } from "@chakra-ui/react";
 import { FaBackward, FaForward } from "react-icons/fa";
 import { GrPause } from "react-icons/gr";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import DeleteButton from "./DeleteButton";
+import { useFirestoreAction } from "../../utils";
+import useRoomData from "../../utils/hooks/useRoomData";
 
 interface Props {
   getDuration: () => string;
-  handleNextSong: () => void;
-  isNextDisabled: boolean;
-  handlePreviousSong: () => void;
-  isPrevDisabled: boolean;
-  resetRoom: () => void;
-  deletePlaylist: () => void;
-  handlePause: () => void;
 }
 
-export const Controls = ({
-  getDuration,
-  handleNextSong,
-  isNextDisabled,
-  handlePreviousSong,
-  isPrevDisabled,
-  resetRoom,
-  deletePlaylist,
-}: Props) => {
+export const Controls = ({ getDuration }: Props) => {
+  const [isNextDisabled, setNextDisabled] = useState<boolean>(false);
+  const [isPrevDisabled, setPrevDisabled] = useState<boolean>(false);
+  const {
+    id: roomId,
+    currentSong,
+    playlist,
+  } = useRoomData((state) => state.roomData);
+
+  const { resetRoom, setIsActive, nextSong, prevSong } = useFirestoreAction();
   const totalDuration = getDuration();
+
+  // const handlePause = () => {
+  //   setIsActive(roomId, false);
+  // };
+
+  const handleNextSong = () => {
+    nextSong(roomId);
+  };
+
+  const handlePreviousSong = () => {
+    if (currentSong > 0) {
+      prevSong(roomId);
+    }
+  };
+
+  useEffect(() => {
+    // if (!playlist || playlist.length === 0) {
+    //   createPlaylist();
+    // }
+    //Next Btn
+    if (playlist?.length <= currentSong) {
+      setNextDisabled(true);
+    } else {
+      setNextDisabled(false);
+    }
+    //Prev Btn
+    if (currentSong <= 0) {
+      setPrevDisabled(true);
+    } else {
+      setPrevDisabled(false);
+    }
+  }, [playlist, currentSong]);
+
   return (
     <VStack>
       <Box
@@ -75,7 +104,7 @@ export const Controls = ({
       >
         Restart
       </Button>
-      <DeleteButton deletePlaylist={deletePlaylist} />
+      <DeleteButton />
     </VStack>
   );
 };
