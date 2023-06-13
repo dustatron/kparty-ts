@@ -74,7 +74,6 @@ export const Playlist = ({ handleTabsChange, tabIndex }: Props) => {
                         fromFavorites={checkIsFavSong(song, currentUser)}
                         currentTab={tabIndex}
                         isActive={isActive && index === 0}
-                        roomId={roomKey}
                       />
                     </div>
                   )}
