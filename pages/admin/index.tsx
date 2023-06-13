@@ -85,9 +85,7 @@ const index = ({ roomsList, setTitle }: Props) => {
           pb={{ base: "2", md: "0" }}
           overflow="scroll"
         >
-          {roomData && (
-            <Playlist handleTabsChange={() => {}} isFav={isFav} tabIndex={0} />
-          )}
+          {roomData && <Playlist handleTabsChange={() => {}} tabIndex={0} />}
         </Box>
         <Box w={{ base: "100%", md: "50%" }}>
           {selectedRoom && (
