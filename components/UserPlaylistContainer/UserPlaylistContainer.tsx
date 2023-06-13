@@ -17,7 +17,7 @@ import useRoomData from "../../utils/hooks/useRoomData";
 import { getDurationSongList } from "../../utils/getDuration";
 
 export const UserPlaylistContainer = () => {
-  const { playlist, currentSong, roomId, remainingSongs } = useRoomData(
+  const { playlist, currentSong, roomId } = useRoomData(
     ({ roomData: { playlist, currentSong }, roomKey, remainingSongs }) => ({
       playlist,
       currentSong,

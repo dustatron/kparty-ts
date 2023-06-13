@@ -17,13 +17,12 @@ const player: React.FC<Props> = ({ setTitle }) => {
     roomData: state.roomData,
     setRoomKey: state.setRoomKey,
   }));
-  const { nextSong, prevSong, isLoading, setIsActive } = useFirestoreAction(
-    roomId as string
-  );
+  const { nextSong, prevSong, isLoading, setIsActive } =
+    useFirestoreAction(roomId);
   const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
-    setRoomKey(roomId as string);
+    setRoomKey(roomId);
 
     return () => {
       setRoomKey();
@@ -57,7 +56,7 @@ const player: React.FC<Props> = ({ setTitle }) => {
             }}
             isLoading={isLoading}
           />
-          <PlayerTag roomId={roomData.id} />
+          <PlayerTag />
         </>
       )}
     </>

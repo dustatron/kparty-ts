@@ -8,17 +8,14 @@ interface Props {
   playlist: ISong[];
   currentSong: number;
   handelRest: () => void;
-  roomId: string;
 }
 
 function VideoPlaylist({
   playlist,
   currentSong,
   handelRest,
-  roomId,
 }: Props): ReactElement {
   const [upcomingSongs, setUpcomingSongs] = useState([]);
-  const { resetRoom } = useFirestoreAction();
 
   useEffect(() => {
     setUpcomingSongs(playlist.slice(currentSong));

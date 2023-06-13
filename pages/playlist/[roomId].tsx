@@ -23,7 +23,7 @@ const playlist: FC<Props> = ({ setTitle }) => {
       clearRoomData();
     };
   }, [roomId]);
-  return <PlaylistWrapper setTitle={setTitle} roomId={roomId as string} />;
+  return <PlaylistWrapper setTitle={setTitle} />;
 };
 
 export default WithAuth(playlist);

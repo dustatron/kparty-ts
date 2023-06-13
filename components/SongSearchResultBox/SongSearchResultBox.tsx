@@ -30,19 +30,12 @@ interface Props {
   videoData: IVideoData;
   authorId: string;
   user: IUser;
-  roomId: string;
   changeTab: (index: number) => void;
   clear: () => void;
 }
 
-const SongSearchResultBox = ({
-  videoData,
-  roomId,
-  user,
-  changeTab,
-  clear,
-}: Props) => {
-  const isKJ = useRoomData((state) => state.isKJ);
+const SongSearchResultBox = ({ videoData, user, changeTab, clear }: Props) => {
+  const [isKJ, roomId] = useRoomData((state) => [state.isKJ, state.roomKey]);
   const [isShowingUserInput, setIsShowingCustomUser] = useState(false);
   const [customUserName, setCustomUserName] = useState("");
   const { addSong } = useFirestoreAction(roomId);

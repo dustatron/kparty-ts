@@ -7,7 +7,6 @@ import UserPlaylistContainer from "../UserPlaylistContainer";
 
 interface Props {
   setTitle: (title: string) => void;
-  roomId: string;
 }
 
 const playlistWrapper: FC<Props> = ({ setTitle }) => {

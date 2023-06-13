@@ -88,9 +88,7 @@ const index = ({ roomsList, setTitle }: Props) => {
           {roomData && <Playlist handleTabsChange={() => {}} tabIndex={0} />}
         </Box>
         <Box w={{ base: "100%", md: "50%" }}>
-          {selectedRoom && (
-            <AdminControls roomId={selectedRoom} currentUser={currentUser} />
-          )}
+          {selectedRoom && <AdminControls />}
         </Box>
       </Stack>
     </Container>

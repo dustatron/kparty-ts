@@ -6,9 +6,7 @@ import useRoomData from "../../utils/hooks/useRoomData";
 import SongSearch from "../../components/SongSearch";
 import { getDurationSongList } from "../../utils/getDuration";
 
-type Props = { roomId: string; currentUser: any };
-
-function AdminControls({ roomId, currentUser }: Props) {
+function AdminControls() {
   const [tabIndex, setTabIndex] = useState<number>(0);
 
   const [remainingSongs, roomData] = useRoomData((state) => [
