@@ -17,8 +17,9 @@ const player: React.FC<Props> = ({ setTitle }) => {
     roomData: state.roomData,
     setRoomKey: state.setRoomKey,
   }));
-  const { nextSong, prevSong, isLoading, setIsActive } =
-    useFirestoreAction(roomId);
+  const { nextSong, prevSong, isLoading, setIsActive } = useFirestoreAction(
+    roomId as string
+  );
   const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
